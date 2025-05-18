@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="5" failures="0" skipped="0" tests="5" time="3.911" timestamp="2025-04-30T05:56:58.048753-07:00" hostname="pop"><testcase classname="" name="tests.test_integration" time="0.000"><error message="collection failure">ImportError while importing test module '/home/trim/Documents/GitHub/markdown_decision_process/tests/test_integration.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+test_integration.py:14: in &lt;module&gt;
+    from mdp.document import Document
+E   ImportError: cannot import name 'Document' from 'mdp.document' (/home/trim/Documents/GitHub/markdown_decision_process/src/mdp/document.py)</error></testcase><testcase classname="" name="tests.test_performance" time="0.000"><error message="collection failure">ImportError while importing test module '/home/trim/Documents/GitHub/markdown_decision_process/tests/test_performance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+test_performance.py:17: in &lt;module&gt;
+    from mdp.document import Document
+E   ImportError: cannot import name 'Document' from 'mdp.document' (/home/trim/Documents/GitHub/markdown_decision_process/src/mdp/document.py)</error></testcase><testcase classname="" name="tests.test_plugin_architecture" time="0.000"><error message="collection failure">ImportError while importing test module '/home/trim/Documents/GitHub/markdown_decision_process/tests/test_plugin_architecture.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+test_plugin_architecture.py:15: in &lt;module&gt;
+    from mdp.document import Document
+E   ImportError: cannot import name 'Document' from 'mdp.document' (/home/trim/Documents/GitHub/markdown_decision_process/src/mdp/document.py)</error></testcase><testcase classname="" name="tests.test_property_based" time="0.000"><error message="collection failure">ImportError while importing test module '/home/trim/Documents/GitHub/markdown_decision_process/tests/test_property_based.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+test_property_based.py:15: in &lt;module&gt;
+    from mdp.document import Document
+E   ImportError: cannot import name 'Document' from 'mdp.document' (/home/trim/Documents/GitHub/markdown_decision_process/src/mdp/document.py)</error></testcase><testcase classname="" name="tests.test_snapshot" time="0.000"><error message="collection failure">ImportError while importing test module '/home/trim/Documents/GitHub/markdown_decision_process/tests/test_snapshot.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+test_snapshot.py:16: in &lt;module&gt;
+    from mdp.document import Document
+E   ImportError: cannot import name 'Document' from 'mdp.document' (/home/trim/Documents/GitHub/markdown_decision_process/src/mdp/document.py)</error></testcase></testsuite></testsuites>

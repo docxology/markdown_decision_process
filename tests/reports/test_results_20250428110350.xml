@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="13" time="4.094" timestamp="2025-04-28T11:03:51.573622-07:00" hostname="pop"><testcase classname="test_document" name="test_get_headings" time="0.003" /><testcase classname="test_document" name="test_get_structure" time="0.004" /><testcase classname="test_document" name="test_initialization" time="0.003" /><testcase classname="test_document" name="test_get_lists" time="0.003" /><testcase classname="test_document" name="test_search" time="0.002" /><testcase classname="test_document" name="test_get_statistics" time="0.002" /><testcase classname="test_document" name="test_get_code_blocks" time="0.002" /><testcase classname="test_document" name="test_get_content" time="0.002" /><testcase classname="test_document" name="test_get_paragraphs" time="0.004"><failure message="AssertionError: assert 'important' in 'Another paragraph with additional content. Some more text here. This is another paragraph with the word paragraph repeated.'">sample_document = &lt;mdp.document.MarkdownDocument object at 0x72f0e22be380&gt;
+
+    def test_get_paragraphs(sample_document):
+        """Test retrieving paragraphs from the document."""
+        paragraphs = sample_document.get_paragraphs()
+        assert isinstance(paragraphs, list)
+        assert len(paragraphs) &gt;= 2  # At least 2 paragraphs in SAMPLE_MARKDOWN
+    
+        # Check for paragraph content - use more general assertions
+        paragraph_text = ' '.join(paragraphs)
+&gt;       assert "important" in paragraph_text
+E       AssertionError: assert 'important' in 'Another paragraph with additional content. Some more text here. This is another paragraph with the word paragraph repeated.'
+
+/tmp/tmpxkh5wicx/test_document.py:147: AssertionError</failure></testcase><testcase classname="test_document" name="test_document_metrics_visualization" time="0.007" /><testcase classname="test_document" name="test_update_content" time="0.004" /><testcase classname="test_document" name="test_save" time="0.003" /><testcase classname="test_document" name="test_invalid_file_path" time="0.002" /></testsuite></testsuites>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="13" time="3.878" timestamp="2025-04-30T06:28:10.257904-07:00" hostname="pop"><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_update_confidence" time="0.004" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_save_and_load_beliefs" time="0.003"><failure message="AssertionError: assert {'definition'...': 0.125, ...} == {'coherence':...': 0.125, ...}&#10;  &#10;  Omitting 8 identical items, use -vv to show&#10;  Right contains 4 more items:&#10;  {'coherence': 0.67, 'consistency': 0.91, 'readability': 0.82, 'structure': 0.75}&#10;  &#10;  Full diff:&#10;    {...&#10;  &#10;  ...Full output truncated (13 lines hidden), use '-vv' to show">self = &lt;test_belief_updater.TestBeliefUpdater object at 0x757f2fcc6380&gt;
+
+    def test_save_and_load_beliefs(self):
+        """Test saving and loading belief states."""
+        updater = BeliefUpdater()
+    
+        # Set some beliefs
+        test_beliefs = {
+            'structure': 0.75,
+            'readability': 0.82,
+            'coherence': 0.67,
+            'consistency': 0.91
+        }
+    
+        for belief, value in test_beliefs.items():
+            updater.update_belief(belief, value)
+    
+        # Save beliefs to a temporary file
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmp_path = Path(tmp.name)
+    
+        try:
+            updater.save_beliefs(tmp_path)
+    
+            # Save a copy to the outputs directory for inspection
+            output_dir = Path('tests/outputs')
+            output_dir.mkdir(exist_ok=True)
+            output_path = output_dir / 'belief_states.json'
+    
+            # Generate the output file with detailed information
+            with open(output_path, 'w') as f:
+                # Save the original belief state for comparison
+                output_data = {
+                    'original_beliefs': updater.belief_state,
+                    'confidence': updater.confidence,
+                    'timestamp': str(Path(tmp_path).stat().st_mtime)
+                }
+    
+                # Create a new updater and load the beliefs
+                new_updater = BeliefUpdater()
+                new_updater.load_beliefs(tmp_path)
+    
+                # Add the loaded belief state to the output
+                output_data['loaded_beliefs'] = new_updater.belief_state
+                output_data['loaded_confidence'] = new_updater.confidence
+    
+                # Check if beliefs were preserved
+                output_data['beliefs_match'] = updater.belief_state == new_updater.belief_state
+                output_data['confidence_match'] = updater.confidence == new_updater.confidence
+    
+                # Write the output
+                json.dump(output_data, f, indent=2)
+    
+            # Now do the actual test assertions
+            new_updater = BeliefUpdater()
+            new_updater.load_beliefs(tmp_path)
+    
+            # Beliefs should be preserved
+&gt;           assert new_updater.belief_state == updater.belief_state
+E           AssertionError: assert {'definition'...': 0.125, ...} == {'coherence':...': 0.125, ...}
+E             
+E             Omitting 8 identical items, use -vv to show
+E             Right contains 4 more items:
+E             {'coherence': 0.67, 'consistency': 0.91, 'readability': 0.82, 'structure': 0.75}
+E             
+E             Full diff:
+E               {...
+E             
+E             ...Full output truncated (13 lines hidden), use '-vv' to show
+
+/tmp/tmpjpregzca/test_belief_updater.py:257: AssertionError</failure></testcase><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_apply_noise" time="0.002" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_get_belief" time="0.001" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_update_belief" time="0.002" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_combine_beliefs" time="0.002" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_get_all_beliefs" time="0.001" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_reset_beliefs" time="0.003" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_calculate_entropy" time="0.004" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_update_from_observation" time="0.004" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_analyze_document" time="0.002" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_initialization" time="0.002" /><testcase classname="test_belief_updater.TestBeliefUpdater" name="test_custom_initialization" time="0.002" /></testsuite></testsuites>

@@ -1,0 +1,31 @@
+{
+  "original_beliefs": {
+    "instruction": 0.125,
+    "explanation": 0.125,
+    "example": 0.125,
+    "reference": 0.125,
+    "summary": 0.125,
+    "definition": 0.125,
+    "warning": 0.125,
+    "note": 0.125,
+    "structure": 0.75,
+    "readability": 0.82,
+    "coherence": 0.67,
+    "consistency": 0.91
+  },
+  "confidence": 0.5,
+  "timestamp": "1746020672.3471882",
+  "loaded_beliefs": {
+    "instruction": 0.125,
+    "explanation": 0.125,
+    "example": 0.125,
+    "reference": 0.125,
+    "summary": 0.125,
+    "definition": 0.125,
+    "warning": 0.125,
+    "note": 0.125
+  },
+  "loaded_confidence": 0.5,
+  "beliefs_match": false,
+  "confidence_match": true
+}

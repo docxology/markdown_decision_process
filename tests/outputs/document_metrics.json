@@ -1,0 +1,44 @@
+{
+  "simple_document": {
+    "avg_paragraph_length": 8.0,
+    "heading_density": 12.121212121212121,
+    "structure_depth": 3,
+    "list_to_paragraph_ratio": 1.0,
+    "code_block_ratio": 15.15151515151515,
+    "complexity_score": 8.5
+  },
+  "complex_document": {
+    "avg_paragraph_length": 13.375,
+    "heading_density": 5.699481865284974,
+    "structure_depth": 3,
+    "list_to_paragraph_ratio": 0.5,
+    "code_block_ratio": 2.5906735751295336,
+    "complexity_score": 7.5
+  },
+  "comparison": {
+    "heading_density": {
+      "difference": -6.421730255927147,
+      "ratio": 0.47020725388601037
+    },
+    "complexity_score": {
+      "difference": -1.0,
+      "ratio": 0.8823529411764706
+    },
+    "code_block_ratio": {
+      "difference": -12.560841576385616,
+      "ratio": 0.17098445595854922
+    },
+    "structure_depth": {
+      "difference": 0,
+      "ratio": 1.0
+    },
+    "list_to_paragraph_ratio": {
+      "difference": -0.5,
+      "ratio": 0.5
+    },
+    "avg_paragraph_length": {
+      "difference": 5.375,
+      "ratio": 1.671875
+    }
+  }
+}

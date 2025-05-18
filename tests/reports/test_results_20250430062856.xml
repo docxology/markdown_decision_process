@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="26" time="5.400" timestamp="2025-04-30T06:28:57.493534-07:00" hostname="pop"><testcase classname="test_state_space" name="test_visualize_empty" time="0.643" /><testcase classname="test_state_space" name="test_visualize" time="0.670" /><testcase classname="test_state_space" name="test_analyze_directory" time="0.002" /><testcase classname="test_state_space" name="test_print_statistics" time="0.004" /><testcase classname="test_state_space" name="test_parse_states" time="0.002" /><testcase classname="test_state_space" name="test_analyze_single_file" time="0.003" /><testcase classname="test_state_space" name="test_state_space_initialization" time="0.002" /><testcase classname="test_state_space" name="test_process_document" time="0.002" /><testcase classname="test_state_space" name="test_get_state_metadata" time="0.002" /><testcase classname="test_state_space.TestStateSpace" name="test_get_successor_states" time="0.002" /><testcase classname="test_state_space.TestStateSpace" name="test_initialization" time="0.001" /><testcase classname="test_state_space.TestStateSpace" name="test_get_state" time="0.002" /><testcase classname="test_state_space.TestStateSpace" name="test_calculate_transition_probabilities" time="0.002" /><testcase classname="test_state_space.TestStateSpace" name="test_extract_structure" time="0.003"><failure message="AssertionError: assert 'header' in {'content': '# Test Document', 'state': 'h1', 'type': 'header'}">self = &lt;test_state_space.TestStateSpace object at 0x7875c7a03a30&gt;
+populated_state_space = &lt;mdp.state_space.StateSpace object at 0x7875c686bdc0&gt;
+
+    def test_extract_structure(self, populated_state_space):
+        """Test extracting document structure."""
+        # Create a content string for testing
+        content = SAMPLE_MARKDOWN
+    
+        # Extract the structure from the test content
+        structure = populated_state_space.extract_structure(content)
+    
+        # Save the structure to the outputs directory for inspection
+        output_dir = Path('tests/outputs')
+        output_dir.mkdir(exist_ok=True)
+        output_path = output_dir / 'document_structure.md'
+    
+        # Generate a markdown representation of the structure
+        with open(output_path, 'w') as f:
+            f.write("# Document Structure Analysis\n\n")
+            f.write("This file shows the structure extracted from the test document.\n\n")
+    
+            # Write the original markdown for reference
+            f.write("## Original Markdown\n\n")
+            f.write("```markdown\n")
+            f.write(content)
+            f.write("\n```\n\n")
+    
+            # Write the extracted structure
+            f.write("## Extracted Structure\n\n")
+    
+            for i, section in enumerate(structure):
+                f.write(f"### Section {i+1}\n\n")
+                f.write(f"**Header**: {section.get('header', 'No header')}\n\n")
+                f.write(f"**Level**: {section.get('level', 'Unknown')}\n\n")
+                f.write("**Content**:\n\n")
+                f.write("```\n")
+                f.write(section.get('content', 'No content'))
+                f.write("\n```\n\n")
+    
+                if 'subsections' in section and section['subsections']:
+                    f.write("**Subsections**:\n\n")
+                    for j, subsection in enumerate(section['subsections']):
+                        f.write(f"#### Subsection {j+1}\n\n")
+                        f.write(f"**Header**: {subsection.get('header', 'No header')}\n\n")
+                        f.write(f"**Level**: {subsection.get('level', 'Unknown')}\n\n")
+                        f.write("**Content**:\n\n")
+                        f.write("```\n")
+                        f.write(subsection.get('content', 'No content'))
+                        f.write("\n```\n\n")
+    
+        # Should return a list of sections
+        assert isinstance(structure, list)
+        assert len(structure) &gt; 0
+    
+        # Each section should have a header and content
+        for section in structure:
+&gt;           assert 'header' in section
+E           AssertionError: assert 'header' in {'content': '# Test Document', 'state': 'h1', 'type': 'header'}
+
+/tmp/tmp_76au6l7/test_state_space.py:381: AssertionError</failure></testcase><testcase classname="test_state_space.TestStateSpace" name="test_parse_markdown" time="0.002"><failure message="assert 0 &gt; 0&#10; +  where 0 = len({})&#10; +    where {} = &lt;mdp.state_space.StateSpace object at 0x7875c6703df0&gt;.states">self = &lt;test_state_space.TestStateSpace object at 0x7875c7a02800&gt;
+state_space = &lt;mdp.state_space.StateSpace object at 0x7875c6703df0&gt;
+
+    def test_parse_markdown(self, state_space):
+        """Test parsing markdown content into states."""
+        state_space.parse_markdown(SAMPLE_MARKDOWN)
+    
+        # Should have created nodes in the graph
+        assert state_space.graph.number_of_nodes() &gt; 0
+    
+        # Should have created transitions between nodes
+        assert state_space.graph.number_of_edges() &gt; 0
+    
+        # Should have populated states
+&gt;       assert len(state_space.states) &gt; 0
+E       assert 0 &gt; 0
+E        +  where 0 = len({})
+E        +    where {} = &lt;mdp.state_space.StateSpace object at 0x7875c6703df0&gt;.states
+
+/tmp/tmp_76au6l7/test_state_space.py:124: AssertionError</failure></testcase><testcase classname="test_state_space.TestStateSpace" name="test_calculate_pagerank" time="0.078" /><testcase classname="test_state_space.TestStateSpace" name="test_add_state" time="0.003" /><testcase classname="test_state_space.TestStateSpace" name="test_get_features" time="0.005" /><testcase classname="test_state_space.TestStateSpace" name="test_parse_markdown_file" time="0.004" /><testcase classname="test_state_space.TestStateSpace" name="test_save_and_load" time="0.012" /><testcase classname="test_state_space.TestStateSpace" name="test_get_state_sequence" time="0.010"><failure message="AssertionError: assert 'blank' in {'h1': {'content': '# Test Header', 'level': 1, 'type': 'header'}}&#10; +  where {'h1': {'content': '# Test Header', 'level': 1, 'type': 'header'}} = &lt;mdp.state_space.StateSpace object at 0x7875c68f0e20&gt;.states">self = &lt;test_state_space.TestStateSpace object at 0x7875c7a03850&gt;
+populated_state_space = &lt;mdp.state_space.StateSpace object at 0x7875c68f0e20&gt;
+
+    def test_get_state_sequence(self, populated_state_space):
+        """Test retrieving a sequence of states."""
+        # Create a content string for testing
+        content = "# Test Document\n\nThis is a test paragraph.\n\n## Section 1\n\nMore content here."
+    
+        # Get the sequence
+        sequence = populated_state_space.get_state_sequence(content)
+    
+        # Save the state sequence to the outputs directory for inspection
+        output_dir = Path('tests/outputs')
+        output_dir.mkdir(exist_ok=True)
+        output_path = output_dir / 'state_sequence.md'
+    
+        # Generate a markdown representation of the state sequence
+        with open(output_path, 'w') as f:
+            f.write("# State Sequence Analysis\n\n")
+            f.write("This file shows the state sequence generated from the test content.\n\n")
+    
+            # Write the original content for reference
+            f.write("## Original Content\n\n")
+            f.write("```markdown\n")
+            f.write(content)
+            f.write("\n```\n\n")
+    
+            # Write the state sequence
+            f.write("## Generated State Sequence\n\n")
+            f.write("| # | State ID | State Type | Content Preview |\n")
+            f.write("|---|----------|------------|----------------|\n")
+    
+            for i, state_id in enumerate(sequence):
+                state = populated_state_space.get_state(state_id)
+                state_type = state.get('type', 'unknown') if state else 'unknown'
+                content_preview = state.get('content', '')[:30] + '...' if state and 'content' in state else 'No content'
+    
+                f.write(f"| {i+1} | `{state_id}` | {state_type} | {content_preview} |\n")
+    
+        # Should return a list of state IDs
+        assert isinstance(sequence, list)
+        assert len(sequence) &gt; 0
+    
+        # Each state in the sequence should be a valid state
+        for state_id in sequence:
+&gt;           assert state_id in populated_state_space.states
+E           AssertionError: assert 'blank' in {'h1': {'content': '# Test Header', 'level': 1, 'type': 'header'}}
+E            +  where {'h1': {'content': '# Test Header', 'level': 1, 'type': 'header'}} = &lt;mdp.state_space.StateSpace object at 0x7875c68f0e20&gt;.states
+
+/tmp/tmp_76au6l7/test_state_space.py:326: AssertionError</failure></testcase><testcase classname="test_state_space.TestStateSpace" name="test_get_markdown" time="0.003" /><testcase classname="test_state_space.TestStateSpace" name="test_add_transition" time="0.004" /><testcase classname="test_state_space.TestStateSpace" name="test_get_transitions" time="0.004"><failure message="AssertionError: assert False&#10; +  where False = isinstance({'blank': 1}, list)">self = &lt;test_state_space.TestStateSpace object at 0x7875c7a030d0&gt;
+populated_state_space = &lt;mdp.state_space.StateSpace object at 0x7875c632fdc0&gt;
+
+    def test_get_transitions(self, populated_state_space):
+        """Test retrieving transitions for a state."""
+        # Get a state ID that has outgoing transitions
+        for state_id in populated_state_space.states:
+            if populated_state_space.graph.out_degree(state_id) &gt; 0:
+                break
+    
+        # Get transitions
+        transitions = populated_state_space.get_transitions(state_id)
+    
+        # Should return a list of transitions
+&gt;       assert isinstance(transitions, list)
+E       AssertionError: assert False
+E        +  where False = isinstance({'blank': 1}, list)
+
+/tmp/tmp_76au6l7/test_state_space.py:218: AssertionError</failure></testcase><testcase classname="test_state_space.TestStateSpace" name="test_state_features" time="0.002" /><testcase classname="test_state_space.TestStateSpace" name="test_visualize" time="0.003"><failure message="Failed: visualize() raised an exception: StateSpace.visualize() got an unexpected keyword argument 'show'">self = &lt;test_state_space.TestStateSpace object at 0x7875c7a03c10&gt;
+populated_state_space = &lt;mdp.state_space.StateSpace object at 0x7875c632db10&gt;
+
+    def test_visualize(self, populated_state_space):
+        """Test generating a visualization (without showing it)."""
+        # This just tests that the method runs without errors
+        try:
+&gt;           populated_state_space.visualize(show=False)
+E           TypeError: StateSpace.visualize() got an unexpected keyword argument 'show'
+
+/tmp/tmp_76au6l7/test_state_space.py:388: TypeError
+
+During handling of the above exception, another exception occurred:
+
+self = &lt;test_state_space.TestStateSpace object at 0x7875c7a03c10&gt;
+populated_state_space = &lt;mdp.state_space.StateSpace object at 0x7875c632db10&gt;
+
+    def test_visualize(self, populated_state_space):
+        """Test generating a visualization (without showing it)."""
+        # This just tests that the method runs without errors
+        try:
+            populated_state_space.visualize(show=False)
+            assert True  # If we get here, no exception was raised
+        except Exception as e:
+&gt;           pytest.fail(f"visualize() raised an exception: {e}")
+E           Failed: visualize() raised an exception: StateSpace.visualize() got an unexpected keyword argument 'show'
+
+/tmp/tmp_76au6l7/test_state_space.py:391: Failed</failure></testcase></testsuite></testsuites>

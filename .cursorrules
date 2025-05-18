@@ -1,0 +1,60 @@
+# Markdown Decision Process Editor Rules
+
+# Python Code Style
+python.line_length = 88
+python.docstring_style = "google"
+python.sort_imports = true
+python.format_on_save = true
+
+# Markdown Settings
+markdown.wrap_line_length = 100
+markdown.format_on_save = true
+
+# Project Structure
+project.src_dir = "src"
+project.test_dir = "tests"
+project.docs_dir = "docs"
+project.examples_dir = "examples"
+
+# Theme
+# The theme of this project is Markov Decision Processes (MDPs) reimagined for Markdown.
+# Code should maintain this theme with appropriate terminology:
+# - Markdown elements = states
+# - Transitions between elements = state transitions
+# - Document quality metrics = rewards
+# - Generation/transformation strategies = policies
+# - Semantic interpretation = belief states
+# - User preferences = value functions
+
+# Naming Conventions
+convention.module_names = "snake_case"
+convention.class_names = "PascalCase"
+convention.function_names = "snake_case"
+convention.variable_names = "snake_case"
+convention.constant_names = "UPPER_SNAKE_CASE"
+
+# Comments
+# Maintain a playful, scientifically accurate tone that keeps the joke going.
+# Each module should have at least one witty parallel to MDP/POMDP concepts.
+# Examples:
+# - "The belief updater handles the partial observability of user intent"
+# - "We use a value iteration approach to optimize the reward function"
+
+# Testing
+test.framework = "pytest"
+test.naming = "test_*.py"
+test.coverage_threshold = 80
+
+# Documentation
+docs.format = "markdown"
+docs.api_reference_style = "module-first"
+docs.include_examples = true
+
+# Development Workflow
+workflow.branch_prefix = "feature/"
+workflow.commit_style = "conventional"
+workflow.pr_template = "PULL_REQUEST_TEMPLATE.md"
+
+# Dependencies
+dependencies.pinned = false
+dependencies.minimum_versions = true 

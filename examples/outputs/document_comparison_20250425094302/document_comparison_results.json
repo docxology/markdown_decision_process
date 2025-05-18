@@ -1,0 +1,107 @@
+{
+  "state_spaces": {
+    "research_paper": {
+      "num_states": 0,
+      "num_transitions": 10,
+      "visualization": "document_comparison_20250425094302/research_paper_state_space.png"
+    },
+    "document_with_markers": {
+      "num_states": 0,
+      "num_transitions": 5,
+      "visualization": "document_comparison_20250425094302/document_with_markers_state_space.png"
+    },
+    "technical_doc": {
+      "num_states": 0,
+      "num_transitions": 14,
+      "visualization": "document_comparison_20250425094302/technical_doc_state_space.png"
+    },
+    "blog_post": {
+      "num_states": 0,
+      "num_transitions": 5,
+      "visualization": "document_comparison_20250425094302/blog_post_state_space.png"
+    }
+  },
+  "beliefs": {
+    "research_paper": {
+      "overall_beliefs": {
+        "instruction": 0.04668926351910841,
+        "explanation": 0.4768913830720257,
+        "example": 0.04033876491011008,
+        "reference": 0.2307629421143783,
+        "summary": 0.176453522707972,
+        "definition": 0.01661863108043813,
+        "warning": 0.005437163852691022,
+        "note": 0.006808328743276339
+      },
+      "visualization": "document_comparison_20250425094302/research_paper_beliefs.png"
+    },
+    "document_with_markers": {
+      "overall_beliefs": {
+        "instruction": 0.022876131877378778,
+        "explanation": 0.40447521261755787,
+        "example": 0.03545601679867628,
+        "reference": 0.2519269302733365,
+        "summary": 0.25404322584677447,
+        "definition": 0.015886122439872374,
+        "warning": 0.006436950986496097,
+        "note": 0.008899409159907721
+      },
+      "visualization": "document_comparison_20250425094302/document_with_markers_beliefs.png"
+    },
+    "technical_doc": {
+      "overall_beliefs": {
+        "instruction": 0.17645853853694587,
+        "explanation": 0.44996403782935773,
+        "example": 0.12547930663278697,
+        "reference": 0.12815713432348064,
+        "summary": 0.10727544747160626,
+        "definition": 0.008081838849643905,
+        "warning": 0.0021141831972674285,
+        "note": 0.002469513158911253
+      },
+      "visualization": "document_comparison_20250425094302/technical_doc_beliefs.png"
+    },
+    "blog_post": {
+      "overall_beliefs": {
+        "instruction": 0.020958860801035192,
+        "explanation": 0.481537856003125,
+        "example": 0.11681969321230064,
+        "reference": 0.16884308299214976,
+        "summary": 0.18759760267510503,
+        "definition": 0.013722046970431653,
+        "warning": 0.004648213870384083,
+        "note": 0.005872643475468655
+      },
+      "visualization": "document_comparison_20250425094302/blog_post_beliefs.png"
+    }
+  },
+  "similarity": {
+    "matrix": [
+      [
+        1.0000000000000002,
+        0.9804632769160752,
+        0.9341760518029641,
+        0.9832680003809207
+      ],
+      [
+        0.9804632769160752,
+        0.9999999999999998,
+        0.8764960719725143,
+        0.960757056717985
+      ],
+      [
+        0.9341760518029641,
+        0.8764960719725143,
+        0.9999999999999998,
+        0.9445635829858122
+      ],
+      [
+        0.9832680003809207,
+        0.960757056717985,
+        0.9445635829858122,
+        1.0000000000000002
+      ]
+    ],
+    "visualization": "document_comparison_20250425094302/document_similarity_matrix.png"
+  }
+}

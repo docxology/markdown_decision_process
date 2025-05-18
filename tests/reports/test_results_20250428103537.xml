@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="12" skipped="0" tests="22" time="4.475" timestamp="2025-04-28T10:35:38.492302-07:00" hostname="pop"><testcase classname="test_transformations.TestCodeBlockFormatTransformation" name="test_multiple_code_blocks" time="0.003"><failure message="NameError: name 'CodeBlockFormatTransformation' is not defined">self = &lt;test_transformations.TestCodeBlockFormatTransformation object at 0x769fe2ff2da0&gt;
+complex_document = &lt;mdp.document.MarkdownDocument object at 0x769fe1ea82b0&gt;
+temp_output_path = PosixPath('/tmp/tmpa30hmrm4.md')
+
+    def test_multiple_code_blocks(self, complex_document, temp_output_path):
+        """Test transforming specific code blocks among many."""
+&gt;       transform = CodeBlockFormatTransformation(
+            target_language="javascript",
+            new_language="js"
+        )
+E       NameError: name 'CodeBlockFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:223: NameError</failure></testcase><testcase classname="test_transformations.TestCodeBlockFormatTransformation" name="test_initialization" time="0.002"><failure message="NameError: name 'CodeBlockFormatTransformation' is not defined">self = &lt;test_transformations.TestCodeBlockFormatTransformation object at 0x769fe2ff29e0&gt;
+
+    def test_initialization(self):
+        """Test initialization with different parameters."""
+        # Default initialization
+&gt;       transform = CodeBlockFormatTransformation()
+E       NameError: name 'CodeBlockFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:192: NameError</failure></testcase><testcase classname="test_transformations.TestCodeBlockFormatTransformation" name="test_language_change" time="0.004"><failure message="NameError: name 'CodeBlockFormatTransformation' is not defined">self = &lt;test_transformations.TestCodeBlockFormatTransformation object at 0x769fe2ff2bc0&gt;
+basic_document = &lt;mdp.document.MarkdownDocument object at 0x769fe1d23c10&gt;
+temp_output_path = PosixPath('/tmp/tmp7wqdt1cv.md')
+
+    def test_language_change(self, basic_document, temp_output_path):
+        """Test changing code block language."""
+&gt;       transform = CodeBlockFormatTransformation(
+            target_language="python",
+            new_language="python3"
+        )
+E       NameError: name 'CodeBlockFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:206: NameError</failure></testcase><testcase classname="test_transformations.TestTextStyleTransformation" name="test_initialization" time="0.003"><failure message="NameError: name 'TextStyleTransformation' is not defined">self = &lt;test_transformations.TestTextStyleTransformation object at 0x769fe2ff3bb0&gt;
+
+    def test_initialization(self):
+        """Test initialization with different parameters."""
+        # Default initialization
+&gt;       transform = TextStyleTransformation()
+E       NameError: name 'TextStyleTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:333: NameError</failure></testcase><testcase classname="test_transformations.TestTextStyleTransformation" name="test_style_change" time="0.002"><failure message="NameError: name 'TextStyleTransformation' is not defined">self = &lt;test_transformations.TestTextStyleTransformation object at 0x769fe2ff32b0&gt;
+complex_document = &lt;mdp.document.MarkdownDocument object at 0x769ff4343e50&gt;
+temp_output_path = PosixPath('/tmp/tmpjyt5b7ed.md')
+
+    def test_style_change(self, complex_document, temp_output_path):
+        """Test changing text styling formats."""
+&gt;       transform = TextStyleTransformation(bold_style="__", italic_style="*")
+E       NameError: name 'TextStyleTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:344: NameError</failure></testcase><testcase classname="test_transformations.TestTransformationPipeline" name="test_apply_pipeline" time="0.002"><failure message="NameError: name 'CodeBlockFormatTransformation' is not defined">self = &lt;test_transformations.TestTransformationPipeline object at 0x769fe1ea8160&gt;
+basic_document = &lt;mdp.document.MarkdownDocument object at 0x769fe1ea8c70&gt;
+temp_output_path = PosixPath('/tmp/tmpefz50duk.md')
+
+    def test_apply_pipeline(self, basic_document, temp_output_path):
+        """Test applying multiple transformations in sequence."""
+        # Create a pipeline with multiple transformations
+        heading_transform = HeadingLevelTransformation(increment=1)
+        list_transform = ListFormatTransformation(target_type="ordered")
+&gt;       code_transform = CodeBlockFormatTransformation(
+            target_language="python",
+            new_language="python3"
+        )
+E       NameError: name 'CodeBlockFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:390: NameError</failure></testcase><testcase classname="test_transformations.TestTransformationPipeline" name="test_initialization" time="0.005" /><testcase classname="test_transformations.TestTransformationPipeline" name="test_add_transformation" time="0.003" /><testcase classname="test_transformations.TestBaseTransformation" name="test_abstract_methods" time="0.002" /><testcase classname="test_transformations.TestLinkFormatTransformation" name="test_reference_to_inline" time="0.002"><failure message="NameError: name 'LinkFormatTransformation' is not defined">self = &lt;test_transformations.TestLinkFormatTransformation object at 0x769fe2ff34f0&gt;
+temp_output_path = PosixPath('/tmp/tmpmdovj1jm.md')
+
+        def test_reference_to_inline(self, temp_output_path):
+            """Test converting reference links to inline style."""
+            # Create a document with reference-style links
+            ref_markdown = """# Test Document
+    
+    This is a [reference link][1] in a paragraph.
+    
+    [1]: https://example.com
+    """
+            doc = MarkdownDocument(content=ref_markdown)
+    
+&gt;           transform = LinkFormatTransformation(style="inline")
+E           NameError: name 'LinkFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:276: NameError</failure></testcase><testcase classname="test_transformations.TestLinkFormatTransformation" name="test_inline_to_reference" time="0.002"><failure message="NameError: name 'LinkFormatTransformation' is not defined">self = &lt;test_transformations.TestLinkFormatTransformation object at 0x769fe2ff3340&gt;
+complex_document = &lt;mdp.document.MarkdownDocument object at 0x769fe1eab910&gt;
+temp_output_path = PosixPath('/tmp/tmpjgr2c_rr.md')
+
+    def test_inline_to_reference(self, complex_document, temp_output_path):
+        """Test converting inline links to reference style."""
+&gt;       transform = LinkFormatTransformation(style="reference")
+E       NameError: name 'LinkFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:253: NameError</failure></testcase><testcase classname="test_transformations.TestLinkFormatTransformation" name="test_initialization" time="0.004"><failure message="NameError: name 'LinkFormatTransformation' is not defined">self = &lt;test_transformations.TestLinkFormatTransformation object at 0x769fe2ff3160&gt;
+
+    def test_initialization(self):
+        """Test initialization with different parameters."""
+        # Default initialization
+&gt;       transform = LinkFormatTransformation()
+E       NameError: name 'LinkFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:244: NameError</failure></testcase><testcase classname="test_transformations.TestTableFormatTransformation" name="test_right_alignment" time="0.003"><failure message="NameError: name 'TableFormatTransformation' is not defined">self = &lt;test_transformations.TestTableFormatTransformation object at 0x769fe2ff3ca0&gt;
+complex_document = &lt;mdp.document.MarkdownDocument object at 0x769fe1d222c0&gt;
+temp_output_path = PosixPath('/tmp/tmpxduf1ic3.md')
+
+    def test_right_alignment(self, complex_document, temp_output_path):
+        """Test right-aligning table contents."""
+&gt;       transform = TableFormatTransformation(alignment="right")
+E       NameError: name 'TableFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:317: NameError</failure></testcase><testcase classname="test_transformations.TestTableFormatTransformation" name="test_initialization" time="0.002"><failure message="NameError: name 'TableFormatTransformation' is not defined">self = &lt;test_transformations.TestTableFormatTransformation object at 0x769fe2ff38e0&gt;
+
+    def test_initialization(self):
+        """Test initialization with different parameters."""
+        # Default initialization
+&gt;       transform = TableFormatTransformation()
+E       NameError: name 'TableFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:293: NameError</failure></testcase><testcase classname="test_transformations.TestTableFormatTransformation" name="test_table_alignment" time="0.003"><failure message="NameError: name 'TableFormatTransformation' is not defined">self = &lt;test_transformations.TestTableFormatTransformation object at 0x769fe2ff3ac0&gt;
+complex_document = &lt;mdp.document.MarkdownDocument object at 0x769fe1d233d0&gt;
+temp_output_path = PosixPath('/tmp/tmpn1mt5at1.md')
+
+    def test_table_alignment(self, complex_document, temp_output_path):
+        """Test aligning table contents."""
+&gt;       transform = TableFormatTransformation(alignment="center")
+E       NameError: name 'TableFormatTransformation' is not defined
+
+/tmp/tmpfxopbxb4/test_transformations.py:302: NameError</failure></testcase><testcase classname="test_transformations.TestListFormatTransformation" name="test_bullet_style_change" time="0.007" /><testcase classname="test_transformations.TestListFormatTransformation" name="test_nested_lists" time="0.002" /><testcase classname="test_transformations.TestListFormatTransformation" name="test_unordered_to_ordered" time="0.002" /><testcase classname="test_transformations.TestListFormatTransformation" name="test_initialization" time="0.002" /><testcase classname="test_transformations.TestHeadingLevelTransformation" name="test_apply" time="0.002" /><testcase classname="test_transformations.TestHeadingLevelTransformation" name="test_initialization" time="0.001" /><testcase classname="test_transformations.TestHeadingLevelTransformation" name="test_transform_decrease_level" time="0.002" /></testsuite></testsuites>
