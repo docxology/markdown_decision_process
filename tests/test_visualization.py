@@ -50,7 +50,7 @@ Another paragraph with [a link](https://example.com).
 @pytest.fixture
 def sample_document():
     """Create a sample document for testing."""
-    return MarkdownDocument(content=SAMPLE_MARKDOWN)
+    return Document(content=SAMPLE_MARKDOWN)
 
 @pytest.fixture
 def sample_metrics_dict():
@@ -95,10 +95,10 @@ def trained_chain():
 
 @pytest.fixture
 def multiple_documents():
-    """Create a dictionary with multiple MarkdownDocument instances."""
+    """Create a dictionary with multiple Document instances."""
     return {
-        "Doc 1": MarkdownDocument(content=SAMPLE_MARKDOWN),
-        "Doc 2": MarkdownDocument(content="""# Another Document
+        "Doc 1": Document(content=SAMPLE_MARKDOWN),
+        "Doc 2": Document(content="""# Another Document
         
 This is another document for testing comparison visualizations.
 

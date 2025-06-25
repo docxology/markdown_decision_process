@@ -66,17 +66,17 @@ This is a [reference link][1] in a paragraph.
 
 @pytest.fixture
 def basic_document():
-    """Fixture that creates a MarkdownDocument with basic content."""
+    """Fixture that creates a Document with basic content."""
     return Document(content=BASIC_MARKDOWN)
 
 @pytest.fixture
 def complex_document():
-    """Fixture that creates a MarkdownDocument with complex content."""
+    """Fixture that creates a Document with complex content."""
     return Document(content=COMPLEX_MARKDOWN)
 
 @pytest.fixture
 def ref_link_document():
-    """Fixture that creates a MarkdownDocument with reference-style links."""
+    """Fixture that creates a Document with reference-style links."""
     return Document(content=REF_LINK_MARKDOWN)
 
 @pytest.fixture

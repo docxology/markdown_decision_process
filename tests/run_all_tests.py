@@ -53,61 +53,32 @@ def fix_document_imports(content):
     Returns:
         str: Fixed content
     """
-    # Make sure MarkdownDocument is directly imported first (most important fix)
-    if "from mdp.document import" in content and "from mdp.document import MarkdownDocument" not in content:
-        if "from mdp.document import Document" in content:
-            content = content.replace(
-                "from mdp.document import Document",
-                "from mdp.document import MarkdownDocument as Document"
-            )
-        else:
-            # Add import at the top, after any other imports
-            import_statement = "from mdp.document import MarkdownDocument\n"
+    # Replace any explicit "MarkdownDocument" with "Document"
+    content = content.replace("MarkdownDocument", "Document")
+    
+    # Ensure "from mdp.document import Document" is present if Document is used
+    if "Document(" in content and "from mdp.document import Document" not in content:
+        import_statement = "from mdp.document import Document\n"
+        
+        # Find a good place to add the import
+        if "import " in content or "from " in content:
+            lines = content.split('\n')
+            # Find last import
+            last_import_line = -1
+            for i, line in enumerate(lines):
+                if line.strip().startswith("import ") or "from " in line and " import " in line:
+                    last_import_line = i
             
-            # Find a good place to add the import
-            if "import " in content:
-                import_lines = []
-                non_import_line_index = None
-                
-                for i, line in enumerate(content.split('\n')):
-                    if line.strip().startswith("import ") or "from " in line and " import " in line:
-                        import_lines.append(i)
-                    elif non_import_line_index is None and line.strip() and not line.strip().startswith('#'):
-                        non_import_line_index = i
-                        break
-                
-                if import_lines:
-                    last_import_line = max(import_lines)
-                    lines = content.split('\n')
-                    lines.insert(last_import_line + 1, import_statement.strip())
-                    content = '\n'.join(lines)
-                elif non_import_line_index:
-                    lines = content.split('\n')
-                    lines.insert(non_import_line_index, import_statement.strip())
-                    content = '\n'.join(lines)
-                else:
-                    # Fallback - just prepend
-                    content = import_statement + content
-    
-    # Handle direct references to MarkdownDocument in the file
-    if "MarkdownDocument(" in content and "from mdp.document import MarkdownDocument" not in content:
-        # Add import at the top
-        content = "from mdp.document import MarkdownDocument\n" + content
-    
-    # Replace direct MarkdownDocument references if Document is already being imported as an alias
-    if "from mdp.document import MarkdownDocument" in content and "from mdp.document import MarkdownDocument as Document" not in content:
-        content = content.replace(
-            "from mdp.document import MarkdownDocument", 
-            "from mdp.document import MarkdownDocument as Document"
-        )
-    
-    # Add Document alias if only importing MarkdownDocument
-    if "import MarkdownDocument" in content and "MarkdownDocument as Document" not in content:
-        content = content.replace(
-            "import MarkdownDocument", 
-            "import MarkdownDocument as Document"
-        )
-    
+            if last_import_line != -1:
+                lines.insert(last_import_line + 1, import_statement.strip())
+                content = '\n'.join(lines)
+            else:
+                # Fallback if no imports found somehow
+                content = import_statement + content
+        else:
+            # Prepend if no imports exist
+            content = import_statement + content
+            
     return content
 
 def create_fixed_test_document(test_file):
@@ -124,137 +95,14 @@ def create_fixed_test_document(test_file):
         # Read the content of the file
         with open(test_file, "r") as f:
             content = f.read()
+
+        # Just apply the main import fix
+        fixed_content = fix_document_imports(content)
         
-        # Check if the test_get_paragraphs function is already using the fixed version
-        if '"paragraph" in paragraph_text' in content and '"additional content" in paragraph_text' in content:
-            # The test is already fixed, don't modify it
-            logger.debug(f"Using already fixed test_document.py version")
-            return content
-            
-        # Add explicit import for MarkdownDocument if needed
-        if "from mdp.document import MarkdownDocument" not in content:
-            # Replace any existing Document import
-            if "from mdp.document import Document" in content:
-                content = content.replace(
-                    "from mdp.document import Document",
-                    "from mdp.document import MarkdownDocument"
-                )
-            else:
-                # Add import at the top after existing imports
-                import_lines = []
-                for i, line in enumerate(content.split('\n')):
-                    if line.strip().startswith("import ") or ("from " in line and " import " in line):
-                        import_lines.append(i)
-                
-                if import_lines:
-                    last_import_line = max(import_lines)
-                    lines = content.split('\n')
-                    lines.insert(last_import_line + 1, "from mdp.document import MarkdownDocument")
-                    content = '\n'.join(lines)
-                else:
-                    # Add at the beginning
-                    content = "from mdp.document import MarkdownDocument\n\n" + content
-        
-        # Fix any issues with SAMPLE_MARKDOWN
-        # Look for the SAMPLE_MARKDOWN definition and ensure it's properly formatted
-        if "SAMPLE_MARKDOWN =" in content:
-            # Find the start and end of SAMPLE_MARKDOWN variable definition
-            start_marker = "SAMPLE_MARKDOWN = "
-            triple_quote = '"""'
-            start_pos = content.find(start_marker)
-            
-            if start_pos > 0:
-                start_triple_quote = content.find(triple_quote, start_pos)
-                if start_triple_quote > 0:
-                    end_triple_quote = content.find(triple_quote, start_triple_quote + 3)
-                    if end_triple_quote > 0:
-                        # Extract the markdown content
-                        markdown_content = content[start_triple_quote+3:end_triple_quote]
-                        
-                        # Create a properly formatted version
-                        proper_markdown = """# Test Document
+        # You can add other specific fixes for test_document.py here if needed,
+        # but for now, the main fixer should handle it.
 
-This is a paragraph with some **important** information.
-
-Another paragraph with additional content.
-
-## Section 1
-
-- List item 1
-- List item 2
-
-### Subsection
-
-Some more text here.
-
-```python
-def test():
-    return "Hello World"
-```
-
-## Section 2
-
-This is another paragraph with the word paragraph repeated."""
-                        
-                        # Replace the old markdown with the proper one
-                        content = (
-                            content[:start_triple_quote+3] +
-                            proper_markdown +
-                            content[end_triple_quote:]
-                        )
-        
-        # Replace all references to Document with MarkdownDocument
-        content = re.sub(r'\bDocument\(', 'MarkdownDocument(', content)
-        content = re.sub(r'\bDocument\s+', 'MarkdownDocument ', content)
-        
-        # Ensure sample_document fixture is properly defined
-        fixture_def = """@pytest.fixture
-def sample_document():
-    \"\"\"Create a temporary markdown file and return a MarkdownDocument instance.\"\"\"
-    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as tmp:
-        tmp.write(SAMPLE_MARKDOWN)
-        tmp_path = Path(tmp.name)
-    
-    doc = MarkdownDocument(file_path=tmp_path)
-    
-    yield doc
-    
-    # Cleanup
-    if tmp_path.exists():
-        tmp_path.unlink()
-
-"""  # Note the extra newline here
-        
-        # Find and replace the fixture definition if needed
-        fixture_start = content.find("@pytest.fixture\ndef sample_document()")
-        if fixture_start > 0:
-            fixture_end = content.find("def test_", fixture_start)
-            if fixture_end > 0:
-                # Replace the fixture definition
-                content = content[:fixture_start] + fixture_def + content[fixture_end:]
-        
-        # Fix test_get_paragraphs function if it's not already fixed
-        if '"paragraph" in paragraph_text' not in content or '"additional content" in paragraph_text' not in content:
-            test_get_paragraphs_start = content.find("def test_get_paragraphs(")
-            if test_get_paragraphs_start > 0:
-                test_get_paragraphs_end = content.find("def test_", test_get_paragraphs_start + 1)
-                if test_get_paragraphs_end > 0:
-                    # Replace the test with a fixed version
-                    fixed_test_get_paragraphs = """def test_get_paragraphs(sample_document):
-    \"\"\"Test retrieving paragraphs from the document.\"\"\"
-    paragraphs = sample_document.get_paragraphs()
-    assert isinstance(paragraphs, list)
-    assert len(paragraphs) >= 2  # At least 2 paragraphs in SAMPLE_MARKDOWN
-    
-    # Check for paragraph content - use more general assertions
-    paragraph_text = ' '.join(paragraphs)
-    assert "paragraph" in paragraph_text
-    assert "additional content" in paragraph_text
-
-"""
-                    content = content[:test_get_paragraphs_start] + fixed_test_get_paragraphs + content[test_get_paragraphs_end:]
-        
-        return content
+        return fixed_content
     except Exception as e:
         logger.error(f"Error creating fixed test_document.py: {e}")
         return None
@@ -506,27 +354,6 @@ def create_fixed_tests(tests_dir, fix_imports=False):
                 if not (plugins_dir.exists() and plugins_dir.is_dir()):
                     fixed_content = "import pytest\npytest.skip('Plugins directory not found')\n\n" + fixed_content
             
-            # Fix Document references in all files
-            fixed_content = re.sub(r'\bDocument\(', 'MarkdownDocument(', fixed_content)
-            fixed_content = re.sub(r'\bfrom\s+mdp\.document\s+import\s+Document\b', 
-                                'from mdp.document import MarkdownDocument', fixed_content)
-            
-            # If we have direct MarkdownDocument references but no import, add the import
-            if "MarkdownDocument(" in fixed_content and "from mdp.document import MarkdownDocument" not in fixed_content:
-                import_lines = []
-                for i, line in enumerate(fixed_content.split('\n')):
-                    if line.strip().startswith("import ") or ("from " in line and " import " in line):
-                        import_lines.append(i)
-                
-                if import_lines:
-                    last_import_line = max(import_lines)
-                    lines = fixed_content.split('\n')
-                    lines.insert(last_import_line + 1, "from mdp.document import MarkdownDocument")
-                    fixed_content = '\n'.join(lines)
-                else:
-                    # Add at the beginning
-                    fixed_content = "from mdp.document import MarkdownDocument\n\n" + fixed_content
-            
             # Fix MDPPlugin imports
             if "from mdp.plugins import MDPPlugin" in fixed_content:
                 fixed_content = fixed_content.replace(
@@ -569,6 +396,9 @@ def create_fixed_tests(tests_dir, fix_imports=False):
             
             # Apply transformation imports fix to all files
             fixed_content = fix_transformations_imports(fixed_content)
+            
+            # Apply general document import fixes
+            fixed_content = fix_document_imports(fixed_content)
             
             # Fix visualization imports
             if "from mdp.visualization import MarkdownVisualizer" in fixed_content:

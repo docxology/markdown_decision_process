@@ -15,29 +15,36 @@ class PolicyOptimizer:
     
     def __init__(
         self, 
-        reward_weights: Dict[str, float] = None,
-        custom_rewards: Dict[str, Callable] = None,
+        state_space=None,
+        reward_function=None,
+        transformation_pipeline=None,
         learning_rate: float = 0.1,
+        discount_factor: float = 0.9,
+        exploration_factor: float = 0.2,
         max_iterations: int = 100
     ):
         """
         Initialize a PolicyOptimizer instance.
         
         Args:
-            reward_weights: Weights for different reward components
-            custom_rewards: Custom reward functions
+            state_space: The state space to optimize over
+            reward_function: Custom reward function
+            transformation_pipeline: Pipeline of transformations to apply
             learning_rate: Learning rate for policy optimization
+            discount_factor: Discount factor for future rewards
+            exploration_factor: Factor controlling exploration vs exploitation
             max_iterations: Maximum number of iterations for optimization
         """
-        self.reward_weights = reward_weights or {
-            "readability": 1.0,
-            "information_density": 0.5,
-            "structure_clarity": 0.8,
-        }
-        
-        self.custom_rewards = custom_rewards or {}
+        self.state_space = state_space
+        self.reward_function = reward_function or self._default_reward_function
+        self.transformation_pipeline = transformation_pipeline
         self.learning_rate = learning_rate
+        self.discount_factor = discount_factor
+        self.exploration_factor = exploration_factor
         self.max_iterations = max_iterations
+        
+        # Initialize Q-table or policy
+        self.q_table = {}
         
         # Register default reward functions
         self.default_rewards = {
@@ -45,6 +52,46 @@ class PolicyOptimizer:
             "information_density": self._information_density_reward,
             "structure_clarity": self._structure_clarity_reward,
         }
+    
+    def _default_reward_function(self, state):
+        """
+        Default reward function if no custom function is provided.
+        
+        Args:
+            state: Current state of the document
+        
+        Returns:
+            Reward value
+        """
+        # Simple default reward based on state type
+        if state.get('type') == 'header':
+            return 1.0
+        elif state.get('type') == 'paragraph':
+            return 0.5
+        else:
+            return 0.1
+    
+    def set_reward_function(self, reward_fn):
+        """
+        Set a custom reward function.
+        
+        Args:
+            reward_fn: Callable reward function
+        """
+        self.reward_function = reward_fn
+    
+    def optimize_with_func(self, reward_fn):
+        """
+        Optimize the document using a specific reward function.
+        
+        Args:
+            reward_fn: Reward function to use for optimization
+        
+        Returns:
+            Optimized document
+        """
+        self.set_reward_function(reward_fn)
+        return self.transform(self.state_space)
     
     def transform(self, markdown_path: str) -> str:
         """
@@ -205,16 +252,11 @@ class PolicyOptimizer:
         
         # Apply all reward functions
         for reward_name, weight in self.reward_weights.items():
-            if reward_name in self.custom_rewards:
-                reward_func = self.custom_rewards[reward_name]
-            elif reward_name in self.default_rewards:
-                reward_func = self.default_rewards[reward_name]
-            else:
-                continue
-                
-            reward = reward_func(document_structure)
-            total_reward += weight * reward
-            
+            # Use default or custom reward function
+            reward_func = self.default_rewards.get(reward_name, self.custom_rewards.get(reward_name))
+            if reward_func:
+                total_reward += weight * reward_func(document_structure)
+        
         return total_reward
     
     def _readability_reward(self, document_structure: List[Dict[str, Any]]) -> float:

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="26" time="5.806" timestamp="2025-06-25T05:23:22.015029" hostname="pop"><testcase classname="tests.test_state_space" name="test_analyze_single_file" time="0.003" /><testcase classname="tests.test_state_space" name="test_visualize_empty" time="0.636" /><testcase classname="tests.test_state_space" name="test_state_space_initialization" time="0.002" /><testcase classname="tests.test_state_space" name="test_print_statistics" time="0.003" /><testcase classname="tests.test_state_space" name="test_get_state_metadata" time="0.002" /><testcase classname="tests.test_state_space" name="test_analyze_directory" time="0.003" /><testcase classname="tests.test_state_space" name="test_process_document" time="0.002" /><testcase classname="tests.test_state_space" name="test_visualize" time="0.603" /><testcase classname="tests.test_state_space" name="test_parse_states" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_calculate_pagerank" time="0.190" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_add_state" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_add_transition" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_parse_markdown" time="0.003" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_extract_structure" time="0.003"><failure message="AssertionError: assert 'header' in {'content': '# Test Document', 'state': 'h1', 'type': 'header'}">self = &lt;test_state_space.TestStateSpace object at 0x75d26a8a0460&gt;
+populated_state_space = &lt;mdp.state_space.StateSpace object at 0x75d267dfce80&gt;
+
+    def test_extract_structure(self, populated_state_space):
+        """Test extracting document structure."""
+        # Create a content string for testing
+        content = SAMPLE_MARKDOWN
+    
+        # Extract the structure from the test content
+        structure = populated_state_space.extract_structure(content)
+    
+        # Save the structure to the outputs directory for inspection
+        output_dir = Path('tests/outputs')
+        output_dir.mkdir(exist_ok=True)
+        output_path = output_dir / 'document_structure.md'
+    
+        # Generate a markdown representation of the structure
+        with open(output_path, 'w') as f:
+            f.write("# Document Structure Analysis\n\n")
+            f.write("This file shows the structure extracted from the test document.\n\n")
+    
+            # Write the original markdown for reference
+            f.write("## Original Markdown\n\n")
+            f.write("```markdown\n")
+            f.write(content)
+            f.write("\n```\n\n")
+    
+            # Write the extracted structure
+            f.write("## Extracted Structure\n\n")
+    
+            for i, section in enumerate(structure):
+                f.write(f"### Section {i+1}\n\n")
+                f.write(f"**Header**: {section.get('header', 'No header')}\n\n")
+                f.write(f"**Level**: {section.get('level', 'Unknown')}\n\n")
+                f.write("**Content**:\n\n")
+                f.write("```\n")
+                f.write(section.get('content', 'No content'))
+                f.write("\n```\n\n")
+    
+                if 'subsections' in section and section['subsections']:
+                    f.write("**Subsections**:\n\n")
+                    for j, subsection in enumerate(section['subsections']):
+                        f.write(f"#### Subsection {j+1}\n\n")
+                        f.write(f"**Header**: {subsection.get('header', 'No header')}\n\n")
+                        f.write(f"**Level**: {subsection.get('level', 'Unknown')}\n\n")
+                        f.write("**Content**:\n\n")
+                        f.write("```\n")
+                        f.write(subsection.get('content', 'No content'))
+                        f.write("\n```\n\n")
+    
+        # Should return a list of sections
+        assert isinstance(structure, list)
+        assert len(structure) &gt; 0
+    
+        # Each section should have a header and content
+        for section in structure:
+&gt;           assert 'header' in section
+E           AssertionError: assert 'header' in {'content': '# Test Document', 'state': 'h1', 'type': 'header'}
+
+tests/test_state_space.py:376: AssertionError</failure></testcase><testcase classname="tests.test_state_space.TestStateSpace" name="test_save_and_load" time="0.004" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_parse_markdown_file" time="0.003" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_get_successor_states" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_calculate_transition_probabilities" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_get_state_sequence" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_get_features" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_visualize" time="0.605" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_state_features" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_initialization" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_get_transitions" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_get_state" time="0.002" /><testcase classname="tests.test_state_space.TestStateSpace" name="test_get_markdown" time="0.003" /></testsuite></testsuites>

@@ -14,7 +14,7 @@
     "consistency": 0.91
   },
   "confidence": 0.5,
-  "timestamp": "1747602907.5934918",
+  "timestamp": "1750856117.3390236",
   "loaded_beliefs": {
     "instruction": 0.125,
     "explanation": 0.125,
@@ -23,9 +23,13 @@
     "summary": 0.125,
     "definition": 0.125,
     "warning": 0.125,
-    "note": 0.125
+    "note": 0.125,
+    "structure": 0.75,
+    "readability": 0.82,
+    "coherence": 0.67,
+    "consistency": 0.91
   },
   "loaded_confidence": 0.5,
-  "beliefs_match": false,
+  "beliefs_match": true,
   "confidence_match": true
 }

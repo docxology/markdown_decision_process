@@ -1,3 +1,27 @@
+from mdp.markchain import MarkChain
+import numpy as np
+import random
+
+# Sample markdown for testing
+SAMPLE_MARKDOWN = """# Test Document
+
+This is a paragraph with some text that explains the concept.
+
+## Installation
+
+Follow these steps to install the package.
+
+## Usage
+
+Here's how to use the package.
+
+## Troubleshooting
+
+If you encounter issues, check the logs.
+
+**Warning**: Do not modify system files directly.
+"""
+
 def test_generate_and_analyze_samples():
     """Test generating multiple samples from MarkChain and analyze them."""
     # Initialize and train the model
@@ -9,12 +33,13 @@ def test_generate_and_analyze_samples():
     samples = []
     
     # Use random seeds for different samples
-    import random
     for i in range(num_samples):
         random.seed(i)
         np.random.seed(i)
-        sample = chain.sample(length=50)
+        sample = chain.sample()
         samples.append(sample)
+        assert isinstance(sample, str)
+        assert len(sample) > 0
     
     # Save samples to the outputs directory for inspection
     output_dir = Path('tests/outputs')

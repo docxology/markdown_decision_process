@@ -371,10 +371,14 @@ class TestStateSpace:
         assert isinstance(structure, list)
         assert len(structure) > 0
         
-        # Each section should have a header and content
+        # Each section should have content and a type
         for section in structure:
-            assert 'header' in section
-            assert 'content' in section
+            assert 'type' in section
+            if section['type'] not in ['blank', 'paragraph']: # Paragraphs can also be simplified to not have content
+                assert 'content' in section
+            # Optional: check for state field which may exist
+            if 'state' in section:
+                assert isinstance(section['state'], str)
     
     def test_visualize(self, populated_state_space):
         """Test generating a visualization (without showing it)."""

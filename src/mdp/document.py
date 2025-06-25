@@ -354,4 +354,59 @@ class Document:
         )
         metrics['complexity_score'] = min(complexity_score, 10)  # Cap at 10
         
-        return metrics 
+        return metrics
+    
+    @property
+    def content(self) -> str:
+        """
+        Provide a content property to match test expectations.
+        
+        Returns:
+            The raw markdown content
+        """
+        return self._content
+    
+    def split(self, delimiter: str = '\n') -> List[str]:
+        """
+        Provide a split method to match test expectations.
+        
+        Args:
+            delimiter: The delimiter to split on (defaults to newline)
+        
+        Returns:
+            List of strings split by the delimiter
+        """
+        return self._content.split(delimiter)
+    
+    def parse(self) -> None:
+        """
+        Provide a parse method to match test expectations.
+        This is essentially a no-op since parsing happens in __init__.
+        """
+        # Already parsed in __init__, so this is a no-op
+        pass
+    
+    def add_element(self, content: str, element_type: str = "paragraph") -> None:
+        """
+        Add a new element to the document.
+        
+        Args:
+            content: The content of the new element
+            element_type: The type of element (default is 'paragraph')
+        """
+        # Determine how to add the element based on its type
+        if element_type == "paragraph":
+            # Add a paragraph with a blank line before it
+            self._content += "\n\n" + content
+        elif element_type == "header":
+            # Add a header at the end
+            self._content += "\n\n# " + content
+        elif element_type == "list":
+            # Add a list item
+            self._content += "\n\n- " + content
+        else:
+            # For other types, just append the content
+            self._content += "\n\n" + content
+        
+        # Re-parse the document to update internal structures
+        self._parse_document() 

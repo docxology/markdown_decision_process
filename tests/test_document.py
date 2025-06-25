@@ -103,12 +103,12 @@ In conclusion, this analysis demonstrates the effectiveness of the proposed meth
 
 @pytest.fixture
 def sample_document():
-    """Create a temporary markdown file and return a MarkdownDocument instance."""
+    """Create a temporary markdown file and return a Document instance."""
     with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as tmp:
         tmp.write(SAMPLE_MARKDOWN)
         tmp_path = Path(tmp.name)
     
-    doc = Document(tmp_path)
+    doc = Document(file_path=tmp_path)
     
     yield doc
     
@@ -117,7 +117,7 @@ def sample_document():
         tmp_path.unlink()
 
 def test_initialization():
-    """Test that MarkdownDocument initializes correctly."""
+    """Test that Document initializes correctly."""
     # Create from string content
     doc = Document(content=SAMPLE_MARKDOWN)
     assert doc.get_content() == SAMPLE_MARKDOWN
