@@ -1,0 +1,95 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{mathtools}
+% Configure itemize for better spacing
+\setlist{itemsep=0.5em, topsep=0.5em}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{breakurl}
+
+% Page setup
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{\thepage}
+
+% Math setup
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Equation numbering
+\numberwithin{equation}{section}
+
+% Code listing setup
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    captionpos=b,
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    tabsize=2
+}
+
+% Hyperlink setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={$title$},
+    pdfauthor={$author$},
+    pdfkeywords={$keywords$},
+    pdfsubject={$title$},
+    pdfcreator={$author$},
+    pdfproducer=Pandoc
+}
+
+% Title page setup
+\title{$title$}
+\author{$author$ \\ \texttt{$email$} \\ $affiliation$}
+
+\begin{document}
+
+% Abstract
+\begin{abstract}
+$abstract$
+\end{abstract}
+
+% Keywords
+\textbf{Keywords:} $keywords$
+
+% Table of contents
+\tableofcontents
+\newpage
+
+% Main content will be inserted here
+$body$
+
+% Bibliography
+\bibliographystyle{ieee}
+\bibliography{$bibliography$}
+
+\end{document}

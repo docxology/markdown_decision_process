@@ -443,22 +443,24 @@ class PandocConverter:
         Raises:
             PandocNotFoundError: If Pandoc is not found (and not overridden).
         """
-        if pandoc_path_override:
-            # Basic check for the overridden path
-            if not (Path(pandoc_path_override).exists() and Path(pandoc_path_override).is_file()):
-                raise PandocNotFoundError(f"Provided Pandoc path not valid or not a file: {pandoc_path_override}")
-            self.pandoc_path = pandoc_path_override
-        else:
-            # This will raise PandocNotFoundError if pandoc is not found
-            self.pandoc_path = check_pandoc_installed()
-        
         try:
+            if pandoc_path_override:
+                # Basic check for the overridden path
+                if not (Path(pandoc_path_override).exists() and Path(pandoc_path_override).is_file()):
+                    raise PandocNotFoundError(f"Provided Pandoc path not valid or not a file: {pandoc_path_override}")
+                self.pandoc_path = pandoc_path_override
+            else:
+                # This will raise PandocNotFoundError if pandoc is not found
+                self.pandoc_path = check_pandoc_installed()
+
             # get_supported_formats uses check_pandoc_installed() internally, which is fine.
             self.supported_formats = get_supported_formats()
-        except (PandocNotFoundError, RuntimeError) as e: 
-            # PandocNotFoundError could happen if check_pandoc_installed inside get_supported_formats fails due to some edge case
+        except (PandocNotFoundError, FileNotFoundError, RuntimeError) as e:
+            # PandocNotFoundError could happen if check_pandoc_installed fails
+            # FileNotFoundError if pandoc executable is not found
             # RuntimeError if subprocess calls fail in get_supported_formats
-            print(f"Warning: Could not retrieve Pandoc supported formats: {e}. Proceeding with empty formats.")
+            print(f"Warning: Pandoc not available or could not retrieve supported formats: {e}. Proceeding with empty formats.")
+            self.pandoc_path = None
             self.supported_formats = {"input": [], "output": []}
 
     def is_pandoc_available(self) -> bool:

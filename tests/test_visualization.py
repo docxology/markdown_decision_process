@@ -244,9 +244,7 @@ More content.
         """Test the plot_filtered_state_space function."""
         # Test with heading filter
         def header_filter(state):
-            if isinstance(state, tuple) and len(state) == 1:
-                return state[0].startswith('#')
-            return False
+            return str(state).startswith('#')
         
         fig = plot_filtered_state_space(
             sample_markchain,
@@ -258,16 +256,12 @@ More content.
         
         # Test with list filter and highlighting
         def list_filter(state):
-            if isinstance(state, tuple) and len(state) == 1:
-                text = state[0].strip()
-                return text.startswith(('-', '*'))
-            return False
-        
+            text = str(state).strip()
+            return text.startswith(('-', '*'))
+
         def bullet_highlight(state):
-            if isinstance(state, tuple) and len(state) == 1:
-                text = state[0].strip()
-                return text.startswith('-')
-            return False
+            text = str(state).strip()
+            return text.startswith('-')
         
         fig = plot_filtered_state_space(
             sample_markchain,
@@ -280,9 +274,7 @@ More content.
         
         # Test with code filter
         def code_filter(state):
-            if isinstance(state, tuple) and len(state) == 1:
-                return '```' in state[0]
-            return False
+            return '```' in str(state)
         
         fig = plot_filtered_state_space(
             sample_markchain,

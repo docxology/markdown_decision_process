@@ -83,7 +83,7 @@ class TestPluginManager(unittest.TestCase):
         """Set up test environment."""
         # Create a sample document
         self.sample_content = "# Test Document\n\nThis is a test document for plugin testing.\n"
-        self.document = Document(self.sample_content)
+        self.document = Document(content=self.sample_content)
         
         # Create a plugin manager
         self.plugin_manager = PluginManager()
@@ -292,7 +292,7 @@ class TestPluginHooks(unittest.TestCase):
         """Set up test environment."""
         # Create a sample document
         self.sample_content = "# Test Document\n\nThis is a test document for plugin testing.\n"
-        self.document = Document(self.sample_content)
+        self.document = Document(content=self.sample_content)
         
         # Create fixtures directory if it doesn't exist
         self.fixtures_dir = Path(__file__).parent / "fixtures"

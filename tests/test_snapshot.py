@@ -16,11 +16,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'
 from mdp.document import Document
 from mdp.state_space import StateSpace
 from mdp.transformations import (
-    # split_paragraph, # Function not found
-    # merge_paragraphs, # Function not found
-    # normalize_headings, # Function not found
-    # change_heading_level, # Function not found
-    # apply_transformation_sequence, # Removed
+    split_paragraph,
+    merge_paragraphs,
+    normalize_headings,
+    change_heading_level,
     HeadingLevelTransformation,
     ListFormatTransformation,
     TransformationPipeline # Ensured it's imported
@@ -86,7 +85,7 @@ This is the conclusion of the document.
 """)
         
         # Load the sample document
-        self.doc = Document(self.sample_file.read_text())
+        self.doc = Document(file_path=str(self.sample_file))
     
     def assertEqualToSnapshot(self, value, snapshot_name):
         """Assert that a value matches its stored snapshot."""
@@ -136,7 +135,14 @@ class TestDocumentTransformations(SnapshotTest):
     
     def test_split_paragraph(self):
         """Test splitting a paragraph."""
-        self.skipTest("split_paragraph function not found")
+        # Find a paragraph to split
+        paragraphs = [elem for elem in self.doc.get_structure() if elem.get('type') == 'paragraph']
+        if paragraphs:
+            # Split the first paragraph in the middle
+            first_para = paragraphs[0]
+            split_point = len(first_para.get('content', '')) // 2
+            transformed_doc = split_paragraph(self.doc, 0, split_point)
+            self.assertEqualToSnapshot(transformed_doc, "split_paragraph")
         # Get the first paragraph
         # structure = self.doc.get_structure()
         # first_para_index = next(i for i, el in enumerate(structure) if not el.startswith('#') and len(el) > 20)
@@ -150,7 +156,11 @@ class TestDocumentTransformations(SnapshotTest):
     
     def test_merge_paragraphs(self):
         """Test merging paragraphs."""
-        self.skipTest("merge_paragraphs function not found")
+        # Find two adjacent paragraphs to merge
+        paragraphs = [elem for elem in self.doc.get_structure() if elem.get('type') == 'paragraph']
+        if len(paragraphs) >= 2:
+            transformed_doc = merge_paragraphs(self.doc, 0, 1)
+            self.assertEqualToSnapshot(transformed_doc, "merge_paragraphs")
         # First split a paragraph to ensure we have something to merge
         # structure = self.doc.get_structure()
         # first_para_index = next(i for i, el in enumerate(structure) if not el.startswith('#') and len(el) > 20)
@@ -166,7 +176,8 @@ class TestDocumentTransformations(SnapshotTest):
     
     def test_normalize_headings(self):
         """Test normalizing heading levels."""
-        self.skipTest("normalize_headings function not found")
+        transformed_doc = normalize_headings(self.doc)
+        self.assertEqualToSnapshot(transformed_doc, "normalize_headings")
         # Normalize headings
         # transformed_doc = normalize_headings(self.doc)
         # 
@@ -175,7 +186,11 @@ class TestDocumentTransformations(SnapshotTest):
     
     def test_change_heading_level(self):
         """Test changing heading level."""
-        self.skipTest("change_heading_level function not found")
+        # Find a heading to change
+        headings = [elem for elem in self.doc.get_structure() if elem.get('type') == 'header']
+        if headings:
+            transformed_doc = change_heading_level(self.doc, 0, 3)
+            self.assertEqualToSnapshot(transformed_doc, "change_heading_level")
         # Find a heading
         # structure = self.doc.get_structure()
         # heading_index = next(i for i, el in enumerate(structure) if el.startswith('##'))
@@ -217,14 +232,25 @@ class TestDocumentTransformations(SnapshotTest):
             temp_output_path.unlink()
 
     def test_snapshot_consistency_after_split(self):
-        # doc = split_paragraph(self.doc, paragraph_index=1, split_point=1) # split_paragraph not found
-        # self.snapshot_manager.take_snapshot(doc, "after_split")
+        """Test snapshot consistency after splitting a paragraph."""
+        # Split a paragraph
+        paragraphs = [elem for elem in self.doc.get_structure() if elem.get('type') == 'paragraph']
+        if paragraphs:
+            doc = split_paragraph(self.doc, 0, len(paragraphs[0].get('content', '')) // 2)
+            self.snapshot_manager.take_snapshot(doc, "after_split")
         # retrieved_doc = self.snapshot_manager.get_snapshot("after_split")
         # self.assertEqual(doc.content, retrieved_doc.content)
         pass # Skipping test
 
     def test_snapshot_consistency_after_multiple_transforms(self):
-        self.skipTest("split_paragraph and merge_paragraphs functions not found")
+        """Test snapshot consistency after multiple transformations."""
+        # Apply multiple transformations and check consistency
+        paragraphs = [elem for elem in self.doc.get_structure() if elem.get('type') == 'paragraph']
+        if len(paragraphs) >= 2:
+            # Split first, then merge back
+            doc1 = split_paragraph(self.doc, 0, len(paragraphs[0].get('content', '')) // 2)
+            doc2 = merge_paragraphs(doc1, 0, 1)
+            self.snapshot_manager.take_snapshot(doc2, "after_multiple_transforms")
         # doc1 = split_paragraph(self.doc, paragraph_index=0, split_point=1) # split_paragraph not found
         # self.snapshot_manager.take_snapshot(doc1, "after_split_1")
         # doc2 = merge_paragraphs(doc1, paragraph1_index=0, paragraph2_index=1) # merge_paragraphs not found

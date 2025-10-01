@@ -202,7 +202,7 @@ class BeliefUpdater:
             return 0.0
             
         normalized = [v / total for v in values]
-        
+    
         # Calculate entropy
         entropy = -sum(p * np.log2(p) for p in normalized if p > 0)
         return entropy
@@ -288,7 +288,7 @@ class BeliefUpdater:
             
         # Update confidence (simplified)
         confidence_boost = 0.05 * len(observation)
-        
+    
         # Update confidence
         self.confidence = min(self.confidence + confidence_boost * avg_certainty, 1.0)
     
@@ -755,4 +755,4 @@ class BeliefUpdater:
                     
             features['keyword_matches'] = keywords
             
-        return features 
+        return features

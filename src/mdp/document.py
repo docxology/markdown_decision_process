@@ -23,15 +23,26 @@ class Document:
         """
         if file_path is None and content is None:
             raise ValueError("Either file_path or content must be provided")
-        
-        self.file_path = Path(file_path) if file_path else None
+
+        self.file_path = None
         self._content = None
-        
+
+        # Determine if file_path is actually a file path or content
         if file_path:
-            if not Path(file_path).exists():
-                raise FileNotFoundError(f"File not found: {file_path}")
-            with open(file_path, "r", encoding="utf-8") as f:
-                self._content = f.read()
+            # Check if it's a valid file path (reasonable length and looks like a path)
+            file_path_str = str(file_path)
+            if (len(file_path_str) < 100 and  # Much shorter limit
+                ('/' in file_path_str or '\\' in file_path_str or  # Contains path separators
+                 file_path_str.endswith(('.md', '.txt', '.markdown')) or  # Common file extensions
+                 (Path(file_path_str).exists() and len(file_path_str) < 255))):  # Actually exists as a file
+                self.file_path = Path(file_path)
+                if not self.file_path.exists():
+                    raise FileNotFoundError(f"File not found: {file_path}")
+                with open(file_path, "r", encoding="utf-8") as f:
+                    self._content = f.read()
+            else:
+                # Treat as content
+                self._content = file_path
         else:
             self._content = content
             
@@ -202,7 +213,7 @@ class Document:
     def get_structure(self) -> List[Dict[str, Any]]:
         """
         Get the document structure as a hierarchical tree.
-        
+
         Returns:
             List of dictionaries representing the document structure
         """
@@ -210,30 +221,35 @@ class Document:
             structure = []
             current_sections = [None] * 7  # Level 0-6 sections (0 is the root)
             current_sections[0] = {'children': structure}
-            
+
             headings = self.get_headings()
-            
+
             for heading in headings:
                 level = heading['level']
+                if level < 1 or level > 6:
+                    continue
+
                 section = {
                     'type': 'heading',
                     'level': level,
                     'text': heading['text'],
                     'children': []
                 }
-                
+
                 # Add this section as a child of the appropriate parent
-                current_sections[level - 1]['children'].append(section)
-                
+                parent_level = level - 1
+                if parent_level < 7 and current_sections[parent_level] is not None:
+                    current_sections[parent_level]['children'].append(section)
+
                 # Update current_sections
                 current_sections[level] = section
-                
+
                 # Reset all deeper levels
                 for i in range(level + 1, 7):
                     current_sections[i] = None
-            
+
             self._parsed_structure = structure
-            
+
         return self._parsed_structure
     
     def search(self, query: str, element_types: Optional[List[str]] = None, use_regex: bool = False) -> List[Dict[str, Any]]:
@@ -409,4 +425,4 @@ class Document:
             self._content += "\n\n" + content
         
         # Re-parse the document to update internal structures
-        self._parse_document() 
+        self._parse_document()

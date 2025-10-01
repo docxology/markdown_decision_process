@@ -129,13 +129,13 @@ class TestNotebookConverter(unittest.TestCase):
         mock_glob.assert_called_once()
         self.assertEqual(len(notebooks), 2)
 
-    @patch('nbformat.read')
-    @patch('nbconvert.MarkdownExporter')
-    def test_convert_notebook(self, mock_exporter, mock_read):
+    @patch('docs.notebook_converter.MarkdownExporter')
+    @patch('docs.notebook_converter.nbformat')
+    def test_convert_notebook(self, mock_nbformat, mock_exporter):
         """Test convert_notebook function."""
         # Setup mocks
         mock_nb = MagicMock()
-        mock_read.return_value = mock_nb
+        mock_nbformat.read.return_value = mock_nb
         
         mock_exporter_instance = MagicMock()
         mock_exporter.return_value = mock_exporter_instance

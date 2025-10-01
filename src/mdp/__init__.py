@@ -19,7 +19,11 @@ from .transformations import (
     LinkFormatTransformation,
     TableFormatTransformation,
     TextStyleTransformation,
-    TransformationPipeline
+    TransformationPipeline,
+    split_paragraph,
+    merge_paragraphs,
+    normalize_headings,
+    change_heading_level
 )
 from .visualization import (
     plot_document_metrics,
@@ -40,6 +44,13 @@ from .pandoc import (
     PandocNotFoundError
 )
 from .quality import DocumentQuality
+from .animations import (
+    DocumentEvolutionAnimator,
+    StateSpaceEvolutionAnimator,
+    MarkChainGenerationAnimator,
+    BeliefStateAnimator,
+    create_comprehensive_animation
+)
 
 __all__ = [
     "MarkChain",
@@ -56,6 +67,10 @@ __all__ = [
     "TableFormatTransformation",
     "TextStyleTransformation",
     "TransformationPipeline",
+    "split_paragraph",
+    "merge_paragraphs",
+    "normalize_headings",
+    "change_heading_level",
     "plot_document_metrics",
     "plot_transitions",
     "plot_document_structure",
@@ -70,5 +85,10 @@ __all__ = [
     "extract_metadata",
     "apply_template",
     "PandocNotFoundError",
-    "DocumentQuality"
-] 
+    "DocumentQuality",
+    "DocumentEvolutionAnimator",
+    "StateSpaceEvolutionAnimator",
+    "MarkChainGenerationAnimator",
+    "BeliefStateAnimator",
+    "create_comprehensive_animation"
+]

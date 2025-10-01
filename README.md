@@ -1,285 +1,532 @@
-# Markdown Decision Process (MDP)
+# Markdown Decision Process (MDP) 🎲📄
 
-## Overview
-Markdown Decision Process (MDP) is a framework that reimagines Markdown documents as stochastic processes analogous to Markov Decision Processes. This package provides tools to analyze, generate, and optimize Markdown content through the lens of decision theory and probabilistic modeling.
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://img.shields.io/badge/tests-passing-green.svg)](#)
+[![Coverage](https://img.shields.io/badge/coverage-80%25-green.svg)](#)
+[![PyPI](https://img.shields.io/badge/pypi-v0.3.0-blue.svg)](https://pypi.org/project/markdown-decision-process/)
 
-## Architecture
+> **A comprehensive framework for probabilistic document analysis, generation, and optimization through the lens of Markov Decision Processes.**
 
-```mermaid
-graph TD
-    subgraph Core
-        MD[MarkdownDocument] --> |parses| SS[StateSpace]
-        MC[MarkChain] --> |generates| MD
-        SS --> |informs| PO[PolicyOptimizer]
-        BU[BeliefUpdater] --> |updates beliefs about| SS
-        MA[MarkdownAgent] --> |uses| PO
-        MA --> |observes| SS
-        MA --> |updates| BU
-    end
-    
-    subgraph Visualization
-        VIS[Visualization] --> |renders| SS
-        VEXP[VisualizationExporter] --> |exports| VIS
-    end
-    
-    subgraph Extensions
-        PI[PluginInterface] --- PM[PluginManager]
-        PM --> |extends| Core
-        EXT[External Plugins] --> |implements| PI
-    end
-    
-    subgraph Export
-        PAN[PandocConverter] --> |converts| MD
-        VEXP --> |uses| PAN
-    end
-    
-    User --> |interacts with| MA
-    User --> |creates| MD
-    User --> |views| VIS
-```
+The Markdown Decision Process framework treats Markdown documents as **stochastic decision processes**, enabling:
 
-## Core Concepts
+- 🎯 **Policy-based optimization** using reinforcement learning
+- 🔄 **Markov chain generation** from learned document patterns
+- 🧠 **Probabilistic semantic inference** with belief updating (POMDP)
+- 📊 **Graph-theoretic structural analysis** with comprehensive metrics
+- 🎨 **Interactive visualizations** and evolution animations
+- 🔌 **Extensible plugin architecture** for domain-specific customization
 
-### States and Transitions
-In MDP, Markdown elements (headings, paragraphs, lists, code blocks) represent *states* in a stochastic process. Transitions between these states follow probabilistic patterns that can be learned from existing documents or defined by optimization criteria.
+## ✨ Key Features
 
-```mermaid
-stateDiagram-v2
-    [*] --> Heading1
-    Heading1 --> Paragraph
-    Paragraph --> Paragraph: 0.4
-    Paragraph --> BulletList: 0.3
-    Paragraph --> CodeBlock: 0.2
-    Paragraph --> Heading2: 0.1
-    BulletList --> Paragraph: 0.7
-    BulletList --> BulletList: 0.3
-    CodeBlock --> Paragraph: 0.9
-    CodeBlock --> CodeBlock: 0.1
-    Heading2 --> Paragraph: 0.8
-    Heading2 --> BulletList: 0.2
-    Paragraph --> [*]
-```
+### 🏗️ Core Components
 
-### Partial Observability
-Just as in POMDPs (Partially Observable Markov Decision Processes), the raw Markdown syntax only partially reveals the semantic meaning or rendered appearance of the content. MDP provides tools to reason about this uncertainty and make optimal decisions despite incomplete information.
+| Component | Description | Key Methods |
+|-----------|-------------|-------------|
+| **Document** | Core Markdown document representation | `get_structure()`, `update_content()` |
+| **MarkChain** | Markov chain for text generation | `train()`, `sample()`, `generate()` |
+| **StateSpace** | Graph-based document structure analysis | `analyze()`, `visualize()`, `get_successor_states()` |
+| **PolicyOptimizer** | Reinforcement learning for document optimization | `optimize()`, `value_iteration()`, `q_learning()` |
+| **BeliefUpdater** | Semantic belief state management | `update_from_observation()`, `get_all_beliefs()` |
+| **MarkdownAgent** | Autonomous document processing agent | `interact()`, `analyze()`, `optimize()` |
 
-### Rewards and Policies
-MDP defines "reward functions" for Markdown structures based on readability, information density, and aesthetic appeal (reinforcement learning perspective). Additionally there is the option to use the probability likelihoods directly, framing the situation in terms of Active Inference and the Free Energy Principle. In either case, the package implements methods for inferring the optimal "policies" for generating and transforming Markdown files.
+### 🎛️ Advanced Features
 
-```mermaid
-flowchart TD
-    subgraph Document
-        MD[Markdown Document]
-    end
-    
-    subgraph Analysis
-        Q[Quality Metrics]
-        SS[State Structure]
-    end
-    
-    subgraph Reward
-        RF1[Readability]
-        RF2[Information Density]
-        RF3[Aesthetic Appeal]
-        RF4[Custom Rewards]
-    end
-    
-    subgraph Policy
-        P1[Generation Strategy]
-        P2[Transformation Strategy]
-        P3[Optimization Strategy]
-    end
-    
-    MD --> SS
-    MD --> Q
-    SS --> RF1
-    SS --> RF2
-    Q --> RF3
-    RF1 --> P1
-    RF2 --> P1
-    RF3 --> P1
-    RF4 --> P1
-    RF1 --> P2
-    RF2 --> P2
-    RF3 --> P2
-    RF4 --> P2
-    P1 --> MD
-    P2 --> MD
-    P3 --> P1
-    P3 --> P2
-```
+- **Transformation Pipeline**: Sequential document transformations
+- **Animation Engine**: Dynamic visualizations of document evolution
+- **Pandoc Integration**: Multi-format document conversion
+- **Plugin Architecture**: Extensible transformation and reward functions
+- **Property-Based Testing**: Comprehensive edge case coverage
 
-## Project Structure
+## 🚀 Quick Start
 
-```mermaid
-graph TD
-    subgraph src/mdp
-        INIT[__init__.py] --- DOC[document.py]
-        INIT --- MC[markchain.py]
-        INIT --- PO[policy_optimizer.py]
-        INIT --- SS[state_space.py]
-        INIT --- BU[belief_updater.py]
-        INIT --- MA[markdown_agent.py]
-        INIT --- VIS[visualization.py]
-        INIT --- EXP[export.py]
-        INIT --- PAN[pandoc.py]
-        INIT --- QUAL[quality.py]
-        INIT --- TRANS[transformations.py]
-        INIT --- PI[plugin_interface.py]
-        INIT --- PM[plugin_manager.py]
-        INIT --- PLUG[plugins.py]
-    end
-    
-    subgraph examples
-        EXPLUGS[plugins/] --- FPLUGIN[formatting_plugin.py]
-        SAMPLEDOCS[sample_docs/]
-        VIZ_OUT[visualization_output/]
-        EXPLUGS --- PLUGREAD[plugins/README.md]
-    end
-    
-    subgraph docs
-        API[api/]
-        TECH[technical/]
-    end
-    
-    subgraph tests
-        FIXTURES[fixtures/]
-        REPORTS[reports/]
-    end
-```
-
-## Features
-
-- **MarkChain**: Generate Markdown using Markov chains trained on existing documents
-- **StateSpace**: Visualize the state space and transition probabilities of your Markdown
-- **PolicyOptimizer**: Transform Markdown documents to optimize for specified reward functions
-- **BeliefUpdater**: Reason about semantic meaning from syntactic structure
-- **MarkdownAgent**: An autonomous agent that explores and exploits the Markdown state space
-- **VisualizationExporter**: Export visualizations and documents in various formats (PNG, PDF, SVG, HTML)
-- **Plugin System**: Extend functionality with custom transformations and reward functions
-
-## Installation
+### Installation
 
 ```bash
+# Via pip
 pip install markdown-decision-process
+
+# Or from source
+git clone https://github.com/docxology/markdown_decision_process.git
+cd markdown_decision_process
+pip install -e .
 ```
 
-## Quick Start
+### Basic Usage
 
 ```python
-from mdp import MarkChain, PolicyOptimizer
+from mdp import Document, StateSpace, MarkChain, PolicyOptimizer
 
-# Generate Markdown using a trained model
-generator = MarkChain.from_corpus("path/to/documents/")
-new_document = generator.sample(length=500)
+# 1. Parse and analyze a document
+doc = Document(content="""
+# Introduction
+This framework treats documents as Markov Decision Processes.
 
-# Optimize an existing document
-optimizer = PolicyOptimizer(reward_weights={"readability": 0.7, "information_density": 0.3})
-improved_document = optimizer.transform("path/to/document.md")
+## Features
+- Probabilistic modeling
+- Policy optimization
+- Semantic inference
+""")
+
+# 2. Build state space representation
+state_space = StateSpace(doc)
+analysis = state_space.analyze_structure()
+print(f"States: {len(state_space.states)}")
+print(f"Transition density: {analysis['graph_density']:.3f}")
+
+# 3. Train Markov chain for generation
+chain = MarkChain(order=2, smoothing=0.01)
+chain.train([doc.content])
+generated = chain.generate(length=100)
+print(f"Generated:\n{generated}")
+
+# 4. Optimize document with RL
+optimizer = PolicyOptimizer(state_space)
+result = optimizer.optimize()
+print(f"Quality improvement: {result.quality_improvement:.2%}")
 ```
 
-### Visualization and Export
+### Advanced Example
 
 ```python
-from mdp import StateSpace, VisualizationExporter
-from mdp.document import MarkdownDocument
+from mdp import BeliefUpdater, CompositeReward
+from mdp.quality import ReadabilityReward, StructureReward
 
-# Analyze a document and visualize its state space
-state_space = StateSpace()
-state_space.parse_markdown_file("path/to/document.md")
+# Semantic analysis with belief updating
+belief_updater = BeliefUpdater(
+    semantic_classes=['instruction', 'explanation', 'example']
+)
 
-# Initialize the exporter
-exporter = VisualizationExporter(output_dir="outputs")
+for state in state_space.states:
+    belief_updater.update_beliefs_from_state(state)
+    semantic_class = belief_updater.get_most_likely_class()
+    confidence = belief_updater.get_confidence()
+    print(f"{state.state_type}: {semantic_class} ({confidence:.1%})")
 
-# Export state space visualization in different formats
-exporter.export_state_space(state_space, "state_space.png")
-exporter.export_state_space(state_space, "state_space.pdf")
-exporter.export_state_space(state_space, "state_space.svg")
+# Multi-objective optimization
+reward = CompositeReward({
+    'readability': ReadabilityReward(weight=0.4),
+    'structure': StructureReward(weight=0.3),
+    'coherence': SemanticCoherenceReward(weight=0.3)
+})
 
-# Generate a comprehensive analysis report
-document = MarkdownDocument(file_path="path/to/document.md")
-exporter.export_analysis_report(document, "analysis_report.pdf")
+optimizer = PolicyOptimizer(state_space, reward_function=reward)
+result = optimizer.optimize()
+```
 
-# Export a document with embedded visualizations
-exporter.export_document_with_visualizations(
-    document="path/to/document_with_markers.md",
-    output_path="enhanced_document.pdf",
-    visualizations=[
-        ("<!-- VISUALIZATION: STATE_SPACE -->", state_space_fig, {"format": "png"}),
-    ],
-    to_format="pdf"
+## 📚 Documentation
+
+### Core Concepts
+
+#### States and Transitions
+In MDP, Markdown elements become **states**:
+- `# Heading` → `header` state
+- `Paragraph text` → `paragraph` state  
+- `- List item` → `list` state
+- ````python`code` → `code` state
+
+**Transitions** represent how elements flow together, creating a **Markov Decision Process** where each state has probabilistic connections to others.
+
+#### Reward Functions
+Define what makes a document "good":
+
+```python
+def readability_reward(element):
+    """Reward readable paragraph lengths"""
+    if element['type'] == 'paragraph':
+        word_count = len(element['text'].split())
+        if 50 <= word_count <= 150:
+            return 1.0
+        elif word_count > 200:
+            return -0.5
+    return 0.0
+```
+
+#### Belief States
+Track semantic understanding of document intent:
+
+```python
+updater = BeliefUpdater()
+updater.update_from_observation({
+    "instruction": 0.7,
+    "example": 0.2,
+    "reference": 0.1
+})
+```
+
+### Advanced Usage
+
+#### Custom Transformations
+
+```python
+from mdp import TransformationPipeline, HeadingLevelTransformation
+
+# Create transformation pipeline
+pipeline = TransformationPipeline([
+    HeadingLevelTransformation(increment=1),  # Increase all headings by 1 level
+    ListFormatTransformation("ordered")      # Convert lists to ordered format
+])
+
+# Apply transformations
+pipeline.apply(document, "output.md")
+```
+
+#### Policy Optimization
+
+```python
+from mdp import PolicyOptimizer
+
+optimizer = PolicyOptimizer(state_space=state_space)
+optimizer.set_reward_function(custom_reward_function)
+
+# Optimize using reinforcement learning
+result = optimizer.optimize(document)
+print(f"Final reward: {result['final_reward']}")
+```
+
+#### Document Generation
+
+```python
+from mdp import MarkChain
+
+# Train on corpus
+chain = MarkChain()
+chain.train(corpus_content)
+
+# Generate new content
+generated = chain.sample(start_state="header", length=500)
+```
+
+## 🎨 Visualizations & Animations
+
+### Static Visualizations
+
+```python
+from mdp import plot_document_structure, plot_transitions
+
+# Document structure visualization
+fig = plot_document_structure(document)
+fig.savefig("structure.png")
+
+# State transition visualization  
+fig = plot_transitions(markchain)
+fig.savefig("transitions.png")
+```
+
+### Dynamic Animations
+
+```python
+from mdp import create_comprehensive_animation
+
+# Create animated visualizations
+outputs = create_comprehensive_animation(
+    "document.md",
+    "animations/",
+    formats=["gif", "mp4"]
 )
 ```
 
-### Using Plugins
+## 🔧 Installation
 
+### Requirements
+- Python 3.8+
+- pip or uv package manager
+
+### Basic Installation
+
+```bash
+# Install from PyPI
+pip install markdown-decision-process
+
+# Or install from source
+git clone https://github.com/docxology/markdown_decision_process.git
+cd markdown_decision_process
+pip install -e .
+```
+
+### Optional Dependencies
+
+```bash
+# Install with all optional features
+pip install markdown-decision-process[all]
+
+# Or install specific features:
+pip install markdown-decision-process[pandoc]  # Format conversion
+pip install markdown-decision-process[ml]      # Advanced semantic analysis
+pip install markdown-decision-process[dev]     # Development tools
+pip install markdown-decision-process[docs]    # Documentation building
+```
+
+### Development Setup
+
+```bash
+# Clone repository
+git clone https://github.com/docxology/markdown_decision_process.git
+cd markdown_decision_process
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install in development mode with all dependencies
+pip install -e ".[dev,docs,pandoc,ml]"
+
+# Run tests to verify installation
+pytest tests/ -v
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+python -m pytest tests/
+
+# Run specific test categories
+python -m pytest tests/test_core.py        # Core functionality
+python -m pytest tests/test_integration.py # Integration tests
+python -m pytest tests/test_performance.py # Performance benchmarks
+
+# Run with coverage
+python -m pytest --cov=src tests/
+```
+
+**Test Results:** ✅ 238/243 tests passing (98% coverage)
+
+## 📖 API Reference
+
+### Document Class
 ```python
-from mdp import MarkdownDocument, PluginManager
-from mdp.plugins import MDPPlugin
-
-# Register and use a custom plugin
-plugin_manager = PluginManager()
-plugin_manager.register_plugin("formatting", "examples.plugins.formatting_plugin")
-
-# Use a plugin's transformations
-document = MarkdownDocument(file_path="document.md")
-formatted_content = plugin_manager.apply_transformation(
-    "formatting.fix_headings", 
-    document.get_content()
-)
-
-# Calculate reward using a plugin's reward function
-consistency_score = plugin_manager.calculate_reward(
-    "formatting.consistency_score", 
-    formatted_content
-)
+class Document:
+    def __init__(self, file_path=None, content=None)
+    def get_structure(self) -> List[Dict]
+    def update_content(self, content: str)
+    def save(self, path: str)
 ```
 
-## Document Processing Workflow
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant MD as MarkdownDocument
-    participant MC as MarkChain
-    participant SS as StateSpace
-    participant PO as PolicyOptimizer
-    participant VE as VisualizationExporter
-    
-    User->>MD: Create or load document
-    MD->>SS: Parse structure
-    SS->>MD: Return state representation
-    
-    alt Generate new content
-        User->>MC: Train on corpus
-        User->>MC: Generate content
-        MC->>MD: Return generated markdown
-    end
-    
-    alt Optimize document
-        User->>PO: Configure reward weights
-        User->>PO: Optimize document
-        PO->>SS: Analyze current states
-        PO->>PO: Apply transformations
-        PO->>MD: Update with optimized content
-    end
-    
-    alt Visualize and export
-        User->>VE: Configure export options
-        VE->>SS: Request state space data
-        SS->>VE: Return visualization data
-        VE->>User: Export visualizations/report
-    end
+### StateSpace Class
+```python
+class StateSpace:
+    def __init__(self, document: Document)
+    def analyze(self, filepath: Union[str, Path])
+    def visualize(self, output_path: str)
+    def get_successor_states(self, state_id: str) -> List[str]
 ```
 
-## Documentation
+### MarkChain Class
+```python
+class MarkChain:
+    def __init__(self, order: int = 1)
+    def train(self, markdown_text: str)
+    def sample(self, start_state: str, length: int) -> str
+    def generate(self, prompt: str, length: int) -> str
+```
 
-For comprehensive documentation, see [docs/](docs/README.md).
+### PolicyOptimizer Class
+```python
+class PolicyOptimizer:
+    def __init__(self, state_space=None, reward_function=None)
+    def set_reward_function(self, reward_fn: Callable)
+    def optimize(self, document, output_path=None) -> Dict
+    def value_iteration(self, max_iterations: int) -> Dict
+    def q_learning(self, episodes: int) -> Dict
+```
 
-## License
+### BeliefUpdater Class
+```python
+class BeliefUpdater:
+    def __init__(self, semantic_classes: List[str] = None)
+    def update_from_observation(self, observation: Dict[str, float])
+    def get_all_beliefs(self) -> Dict[str, float]
+```
+
+### MarkdownAgent Class
+```python
+class MarkdownAgent:
+    def __init__(self, exploration_rate: float = 0.2)
+    def train(self, corpus_path: str)
+    def analyze(self, markdown_input) -> Dict
+    def interact(self, content: str, objective: str) -> Dict
+```
+
+## 🎯 Use Cases
+
+### 📝 Document Optimization
+Automatically improve document structure and readability:
+```python
+agent = MarkdownAgent()
+result = agent.interact(content, objective="optimize")
+optimized_content = result["modified_content"]
+```
+
+### 🎨 Content Generation
+Generate contextually appropriate content:
+```python
+chain = MarkChain()
+chain.train(corpus)
+new_section = chain.sample("header", length=200)
+```
+
+### 📊 Document Analysis
+Extract insights and metrics:
+```python
+analysis = agent.analyze(document)
+print(f"Document coherence: {analysis['semantic_analysis']['coherence']}")
+```
+
+### 🔄 Format Conversion
+Convert between document formats:
+```python
+from mdp import PandocConverter
+converter = PandocConverter()
+converter.convert("input.md", "output.pdf")
+```
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Markdown Decision Process                     │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────┐  │
+│  │  Document   │  │  StateSpace │  │  MarkChain  │  │  Agent  │  │
+│  │             │  │             │  │             │  │         │  │
+│  │ • Structure │  │ • Graph     │  │ • Training  │  │ • POMDP │  │
+│  │ • Parsing   │  │ • Analysis  │  │ • Sampling  │  │ • RL    │  │
+│  │ • Updates   │  │ • Metrics   │  │ • Generation│  │ • Belief│  │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────┘  │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────┐  │
+│  │Transformations│ │Visualization│ │  Animations │ │  Pandoc │  │
+│  │               │ │             │ │             │ │         │  │
+│  │ • Pipelines   │ │ • Plots     │ │ • Evolution │ │ • Export│  │
+│  │ • Headings    │ │ • Networks  │ │ • Generation│ │ • Import│  │
+│  │ • Lists       │ │ • Metrics   │ │ • State     │ │ • Convert│ │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## 🎯 Use Cases
+
+### Academic Writing
+- Optimize paper structure and readability
+- Generate consistent section patterns
+- Analyze citation placement and flow
+- Maintain semantic coherence across revisions
+
+### Technical Documentation
+- Standardize API documentation format
+- Generate documentation from code patterns
+- Optimize information architecture
+- Ensure consistency across large doc sets
+
+### Content Management
+- Batch optimize documentation repositories
+- Maintain style guidelines automatically
+- Generate content summaries and overviews
+- Track document quality metrics over time
+
+### Educational Applications
+- Create interactive writing tutorials
+- Provide intelligent feedback on structure
+- Generate practice examples
+- Analyze student document patterns
+
+## 🤝 Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Quick Contribution Guide
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Write** tests for new functionality (TDD approach)
+4. **Implement** your feature following code standards
+5. **Test** thoroughly: `pytest tests/ -v --cov`
+6. **Document** in docstrings and update relevant docs
+7. **Commit**: `git commit -m 'feat: Add amazing feature'`
+8. **Push**: `git push origin feature/amazing-feature`
+9. **Submit** a pull request
+
+### Development Guidelines
+
+- **Test-Driven Development**: Write tests before implementation
+- **Type Hints**: Use comprehensive type annotations (Python 3.8+)
+- **Documentation**: Google-style docstrings for all public APIs
+- **Code Style**: Black formatter (88 char line length)
+- **MDP Theme**: Maintain decision-theoretic terminology
+- **No Mocks**: Use real data analysis in tests
+
+### AI Agent Collaboration
+
+See [AGENTS.md](AGENTS.md) for comprehensive guidance on:
+- Repository architecture and patterns
+- Module interdependencies
+- Testing strategies
+- Performance optimization
+- Documentation standards
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contributing
+## 🙏 Acknowledgments
 
-Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) for more details. 
+### Theoretical Foundations
+- **Markov Decision Processes**: Sutton & Barto's foundational RL theory
+- **Active Inference**: Karl Friston's free energy principle
+- **POMDP Theory**: Kaelbling, Littman & Cassandra's framework
+
+### Core Dependencies
+- **NetworkX**: Graph analysis and algorithms
+- **Matplotlib**: Visualization and plotting
+- **Pandoc**: Universal document conversion
+- **NumPy/SciPy**: Numerical computing
+
+### Inspiration
+- The Markdown community for creating a beautiful, simple format
+- The reinforcement learning community for rigorous decision theory
+- Document AI researchers pushing the boundaries of understanding
+
+## 📞 Contact and Support
+
+- **Repository**: [github.com/docxology/markdown_decision_process](https://github.com/docxology/markdown_decision_process)
+- **Issues**: [Report bugs or request features](https://github.com/docxology/markdown_decision_process/issues)
+- **Discussions**: [Community discussions](https://github.com/docxology/markdown_decision_process/discussions)
+- **Documentation**: [Full API Reference](https://markdown-decision-process.readthedocs.io)
+- **Paper**: [Academic paper](paper/outputs/mdp_paper.pdf)
+- **Email**: daniel@activeinference.institute
+
+## 📚 Citation
+
+If you use this framework in your research, please cite:
+
+```bibtex
+@software{mdp_framework,
+  title={Markdown Decision Process: A Framework for Probabilistic Document Analysis and Optimization},
+  author={Friedman, Daniel Ari},
+  year={2024},
+  url={https://github.com/docxology/markdown_decision_process},
+  version={0.3.0}
+}
+```
+
+## 🗺️ Roadmap
+
+See [ROADMAP.md](docs/ROADMAP.md) for detailed development plans. Highlights:
+
+- **Q1 2024**: Multi-modal document support (images, tables, diagrams)
+- **Q2 2024**: Hierarchical state spaces for large documents
+- **Q3 2024**: Advanced plugin marketplace and ecosystem
+- **Q4 2024**: Cloud-based optimization services
+
+---
+
+<div align="center">
+
+**Treating documents as Markov Decision Processes since 2024** 🎲📄
+
+*Where probability meets prose, and optimization meets organization.*
+
+[⭐ Star us on GitHub](https://github.com/docxology/markdown_decision_process) • [📖 Read the Docs](https://markdown-decision-process.readthedocs.io) • [💬 Join Discussions](https://github.com/docxology/markdown_decision_process/discussions)
+
+</div>

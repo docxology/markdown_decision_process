@@ -1,6 +1,7 @@
-from mdp.markchain import MarkChain
+from mdp.markchain import MarkChain, default_state_parser
 import numpy as np
 import random
+from pathlib import Path
 
 # Sample markdown for testing
 SAMPLE_MARKDOWN = """# Test Document

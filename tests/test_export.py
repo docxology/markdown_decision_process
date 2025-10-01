@@ -168,11 +168,11 @@ class TestVisualizationExporter(unittest.TestCase):
             result = self.exporter.export_analysis_report(
                 document=self.document,
                 output_path=output_path,
-                format="md"  # Use markdown for testing (doesn't require pandoc)
+                format="markdown"  # Use markdown for testing (doesn't require pandoc)
             )
             
             assert os.path.exists(result)
-            assert str(result).endswith(".md")
+            assert str(result).endswith((".md", ".markdown"))
             
             # Check report content
             with open(result, "r") as f:

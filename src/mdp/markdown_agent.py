@@ -51,9 +51,15 @@ class MarkdownAgent:
         # Initialize components
         self.generator = MarkChain(order=2)
         self.optimizer = PolicyOptimizer(
-            reward_weights=reward_weights,
-            learning_rate=learning_rate
+            learning_rate=learning_rate,
+            discount_factor=discount_factor,
+            exploration_factor=exploration_rate
         )
+        self.reward_weights = reward_weights or {
+            'readability': 1.0,
+            'structure': 1.0,
+            'density': 1.0
+        }
         self.state_space = StateSpace()
         self.belief_updater = BeliefUpdater()
         
@@ -77,10 +83,31 @@ class MarkdownAgent:
             Training statistics
         """
         # Analyze the corpus to build state space understanding
-        self.state_space.analyze(corpus_path)
+        if os.path.isdir(corpus_path):
+            # Analyze directory of markdown files
+            for filename in os.listdir(corpus_path):
+                if filename.endswith('.md'):
+                    file_path = os.path.join(corpus_path, filename)
+                    self.state_space.analyze(file_path)
+        else:
+            # Analyze single file
+            self.state_space.analyze(corpus_path)
         
         # Train the generator on the corpus
-        self.generator = MarkChain.from_corpus(corpus_path, order=2)
+        # Read all markdown files in the corpus
+        corpus_content = ""
+        if os.path.isdir(corpus_path):
+            for filename in os.listdir(corpus_path):
+                if filename.endswith('.md'):
+                    file_path = os.path.join(corpus_path, filename)
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        corpus_content += f.read() + "\n\n"
+        else:
+            with open(corpus_path, 'r', encoding='utf-8') as f:
+                corpus_content = f.read()
+
+        # Train the generator
+        self.generator.train(corpus_content)
         
         # Collect markdown documents
         if os.path.isdir(corpus_path):
@@ -172,15 +199,22 @@ class MarkdownAgent:
     def generate(self, prompt: Optional[str] = None, length: int = 100) -> str:
         """
         Generate markdown content, optionally starting from a prompt.
-        
+
         Args:
             prompt: Optional starting markdown content
             length: Desired length of generated content
-            
+
         Returns:
             Generated markdown content
         """
-        return self.generator.sample(length=length, seed_text=prompt)
+        # Use the start_state parameter if prompt is provided
+        if prompt:
+            # Extract the first few words as start state
+            start_words = prompt.split()[:2]  # Use first 2 words as start state
+            start_state = " ".join(start_words) if len(start_words) >= 2 else prompt[:10]
+            return self.generator.sample(length=length, start_state=start_state)
+        else:
+            return self.generator.sample(length=length)
     
     def optimize(self, markdown_path: str) -> str:
         """
@@ -231,8 +265,22 @@ class MarkdownAgent:
             raise TypeError(f"Unsupported input type for analysis: {type(markdown_input)}. Expected str, Path, or Document.")
 
         # Use BeliefUpdater to analyze semantics
-        # The belief_updater.analyze_document_file expects a path.
-        semantic_analysis = self.belief_updater.analyze_document_file(doc_content_for_belief)
+        # The belief_updater.analyze_document expects a state space, not a file
+        # Let's create a temporary state space for analysis
+        temp_ss = StateSpace()
+        if hasattr(doc, 'file_path') and doc.file_path and doc.file_path.exists():
+            temp_ss.analyze(str(doc.file_path))
+        else:
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+                f.write(doc.get_content())
+                temp_path = f.name
+            temp_ss.analyze(temp_path)
+            os.unlink(temp_path)
+
+        semantic_analysis = self.belief_updater.analyze_document(temp_ss)
+
+        # For testing, if analyze_document_file returns something different than expected,
+        # we may need to adjust the mock or the logic here
         if 'tmp_f' in locals() and Path(doc_content_for_belief).exists(): # Clean up temp file if created
             try:
                 os.remove(doc_content_for_belief)
@@ -241,7 +289,16 @@ class MarkdownAgent:
 
         # Use StateSpace to analyze structure
         self.state_space = StateSpace()
-        self.state_space.analyze(doc) # Pass the Document object to StateSpace.analyze
+        # Pass the file path to StateSpace.analyze (it expects a file path)
+        if hasattr(doc, 'file_path') and doc.file_path and doc.file_path.exists():
+            self.state_space.analyze(str(doc.file_path))
+        else:
+            # For content-only documents, save to temp file
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as f:
+                f.write(doc.get_content())
+                temp_path = f.name
+            self.state_space.analyze(temp_path)
+            os.unlink(temp_path)
         
         # Read the content (already available in doc object)
         content = doc.get_content()
@@ -336,7 +393,10 @@ class MarkdownAgent:
             if extension_point is not None:
                 # Generate new content
                 seed_text = elements[extension_point].get('content', '')
-                new_content = self.generator.sample(length=20, seed_text=seed_text)
+                # Extract first few words for start_state
+                start_words = seed_text.split()[:2] if seed_text else []
+                start_state = " ".join(start_words) if len(start_words) >= 2 else seed_text[:10] if seed_text else None
+                new_content = self.generator.sample(length=20, start_state=start_state)
                 
                 # Add the new content
                 modified_elements = elements.copy()
@@ -423,28 +483,63 @@ class MarkdownAgent:
     def _parse_document(self, content: str) -> List[Dict[str, Any]]:
         """
         Parse a markdown document into structured elements.
-        
+
         Args:
             content: Markdown content
-            
+
         Returns:
             List of document elements with metadata
         """
-        # Reuse the parser from BeliefUpdater
-        return self.belief_updater._parse_document(content)
-    
+        # Use StateSpace parsing
+        temp_ss = StateSpace()
+        temp_ss.parse_markdown(content)
+        elements = []
+
+        for state_id, state_data in temp_ss.states.items():
+            element = {
+                'type': state_data.get('type'),
+                'content': state_data.get('content'),
+                'state_id': state_id
+            }
+            elements.append(element)
+
+        return elements
+
     def _extract_features(self, element: Dict[str, Any]) -> Dict[str, Any]:
         """
         Extract features from a markdown element.
-        
+
         Args:
             element: Parsed markdown element
-            
+
         Returns:
             Dictionary of features
         """
-        # Reuse the feature extractor from BeliefUpdater
-        return self.belief_updater._extract_features(element)
+        element_type = element.get('type', 'unknown')
+        content = element.get('content', '')
+
+        features = {
+            'type': element_type,
+            'length': len(content),
+            'word_count': len(content.split()) if content else 0
+        }
+
+        # Add type-specific features
+        if element_type == 'header':
+            level = len(content) - len(content.lstrip('#'))
+            features['level'] = min(level, 6) if level > 0 else 1
+            features['header_level'] = features['level']  # For compatibility
+        elif element_type == 'list':
+            if content.startswith(('- ', '* ', '+ ')):
+                features['list_type'] = 'unordered'
+            else:
+                features['list_type'] = 'ordered'
+        elif element_type == 'code':
+            if content.startswith('```'):
+                lang = content[3:].strip()
+                features['language'] = lang if lang else 'plain'
+
+        return features
     
     def _state_representation(self, element: Dict[str, Any]) -> str:
         """
@@ -550,13 +645,30 @@ class MarkdownAgent:
         """
         Update the optimizer's reward functions based on agent experiences.
         """
-        # This is a simplified implementation
-        # In a real system, you would want to learn reward weights from experiences
-        
+        if not self.experiences:
+            return
+
         # Calculate average rewards for different transitions
         transition_rewards = defaultdict(list)
-        
+
         for exp in self.experiences:
+            state = exp.get('state')
+            action = exp.get('action')
+            reward = exp.get('reward', 0)
+
+            if state and action:
+                transition_rewards[(state, action)].append(reward)
+
+        # Update optimizer with learned reward weights
+        # This is a simplified approach - in practice you'd use more sophisticated learning
+        if transition_rewards:
+            avg_rewards = {
+                trans: sum(rewards) / len(rewards)
+                for trans, rewards in transition_rewards.items()
+            }
+
+            # Use these to adjust the reward weights
+            # For now, we'll just update the policy based on observed rewards
             transition = (exp["state"], exp["next_state"])
             transition_rewards[transition].append(exp["reward"])
             

@@ -43,13 +43,13 @@ class HeadingLevelTransformation(Transformation):
         self.min_level = min_level
         self.increment = increment
     
-    def apply(self, document: Document, output_path: Union[str, Path]) -> None:
+    def apply(self, document: Document, output_path: Union[str, Path, None] = None) -> None:
         """
         Apply the heading level transformation.
         
         Args:
             document: The MarkdownDocument to transform
-            output_path: Path to save the transformed document
+            output_path: Path to save the transformed document (optional)
         """
         content = document.get_content()
         lines = content.split('\n')
@@ -71,10 +71,13 @@ class HeadingLevelTransformation(Transformation):
             else:
                 transformed_lines.append(line)
         
-        # Create a new document with transformed content
+        # Update document content in-place
         new_content = '\n'.join(transformed_lines)
-        transformed_doc = Document(content=new_content)
-        transformed_doc.save(output_path)
+        document.update_content(new_content)
+        
+        # Optionally save to file
+        if output_path:
+            document.save(output_path)
 
     def change_heading_level(self, document: Document, heading_text: str, new_level: int) -> str:
         """Changes the level of a specific heading."""
@@ -515,4 +518,168 @@ class TransformationPipeline(Transformation):
             
             # Copy final transformed document to output path
             final_doc = Document(Path(tmp_dir) / f"tmp_{len(self.transformations)}.md")
-            final_doc.save(output_path) 
+            final_doc.save(output_path)
+
+
+# Utility functions for standalone transformations
+
+def split_paragraph(document: Document, paragraph_index: int, split_point: int) -> Document:
+    """
+    Split a paragraph at a specific point.
+
+    Args:
+        document: The document to modify
+        paragraph_index: Index of the paragraph to split
+        split_point: Character position to split at
+
+    Returns:
+        New document with the paragraph split
+    """
+    content = document.get_content()
+    lines = content.split('\n')
+
+    # Find the paragraph
+    paragraphs = []
+    current_paragraph = []
+
+    for line in lines:
+        if line.strip() == '':
+            if current_paragraph:
+                paragraphs.append('\n'.join(current_paragraph))
+                current_paragraph = []
+        else:
+            current_paragraph.append(line)
+
+    if current_paragraph:
+        paragraphs.append('\n'.join(current_paragraph))
+
+    if paragraph_index >= len(paragraphs):
+        return document
+
+    # Split the paragraph
+    paragraph = paragraphs[paragraph_index]
+    if split_point >= len(paragraph):
+        return document
+
+    before = paragraph[:split_point].rstrip()
+    after = paragraph[split_point:].lstrip()
+
+    paragraphs[paragraph_index] = before
+    paragraphs.insert(paragraph_index + 1, after)
+
+    # Reconstruct content
+    new_content = '\n\n'.join(paragraphs)
+
+    return Document(content=new_content)
+
+
+def merge_paragraphs(document: Document, para1_index: int, para2_index: int) -> Document:
+    """
+    Merge two adjacent paragraphs.
+
+    Args:
+        document: The document to modify
+        para1_index: Index of the first paragraph
+        para2_index: Index of the second paragraph
+
+    Returns:
+        New document with paragraphs merged
+    """
+    content = document.get_content()
+    lines = content.split('\n')
+
+    # Find paragraphs
+    paragraphs = []
+    current_paragraph = []
+
+    for line in lines:
+        if line.strip() == '':
+            if current_paragraph:
+                paragraphs.append('\n'.join(current_paragraph))
+                current_paragraph = []
+        else:
+            current_paragraph.append(line)
+
+    if current_paragraph:
+        paragraphs.append('\n'.join(current_paragraph))
+
+    if para1_index >= len(paragraphs) or para2_index >= len(paragraphs) or para1_index == para2_index:
+        return document
+
+    # Merge paragraphs
+    merged = paragraphs[para1_index] + '\n\n' + paragraphs[para2_index]
+    paragraphs[para1_index] = merged
+
+    # Remove the second paragraph
+    del paragraphs[para2_index]
+
+    # Reconstruct content
+    new_content = '\n\n'.join(paragraphs)
+
+    return Document(content=new_content)
+
+
+def normalize_headings(document: Document) -> Document:
+    """
+    Normalize heading levels in a document.
+
+    Args:
+        document: The document to normalize
+
+    Returns:
+        New document with normalized headings
+    """
+    content = document.get_content()
+    lines = content.split('\n')
+    normalized_lines = []
+
+    for line in lines:
+        if line.strip().startswith('#'):
+            # Count leading # symbols
+            level = len(line) - len(line.lstrip('#'))
+            # Normalize to reasonable levels (max 6)
+            normalized_level = min(level, 6)
+            normalized_line = '#' * normalized_level + line.lstrip('#')
+            normalized_lines.append(normalized_line)
+        else:
+            normalized_lines.append(line)
+
+    new_content = '\n'.join(normalized_lines)
+    return Document(content=new_content)
+
+
+def change_heading_level(document: Document, heading_index: int, new_level: int) -> Document:
+    """
+    Change the level of a specific heading.
+
+    Args:
+        document: The document to modify
+        heading_index: Index of the heading to change
+        new_level: New heading level (1-6)
+
+    Returns:
+        New document with the heading level changed
+    """
+    content = document.get_content()
+    lines = content.split('\n')
+
+    # Find headings
+    headings = []
+    for i, line in enumerate(lines):
+        if line.strip().startswith('#'):
+            headings.append((i, line))
+
+    if heading_index >= len(headings):
+        return document
+
+    # Change the heading level
+    line_index, old_line = headings[heading_index]
+    level = len(old_line) - len(old_line.lstrip('#'))
+    new_level = max(1, min(6, new_level))  # Clamp to valid range
+
+    if new_level != level:
+        new_line = '#' * new_level + old_line.lstrip('#')
+        lines[line_index] = new_line
+
+    new_content = '\n'.join(lines)
+    return Document(content=new_content) 

@@ -94,7 +94,7 @@ class TestPerformance:
         chain.train(sample_document)
         start_state = next(iter(chain.states), None)
         if start_state:
-            benchmark(chain.generate, start_state=start_state, length=100)
+            benchmark(chain.sample, start_state=start_state, length=100)
         else:
             pytest.skip("Cannot run MarkChain generation benchmark without states after training.")
 
@@ -130,21 +130,18 @@ class TestPerformance:
     @pytest.mark.benchmark(group="optimizer")
     def test_policy_optimizer(self, benchmark, sample_document):
         """Benchmark policy optimization."""
-        optimizer = PolicyOptimizer(sample_document)
-        def reward_fn(doc):
-            return len(doc.get_structure())
-        benchmark(optimizer.optimize_with_func, reward_fn)
+        state_space = StateSpace(sample_document)
+        optimizer = PolicyOptimizer(state_space=state_space)
+        # Benchmark value iteration instead since optimize_with_func requires file I/O
+        benchmark(optimizer.value_iteration, max_iterations=10)
 
     @pytest.mark.benchmark(group="belief_updater")
     def test_belief_updater(self, benchmark, sample_document):
         """Benchmark belief updating."""
-        state_space = StateSpace(sample_document)
-        updater = BeliefUpdater(state_space)
-        if not state_space.graph.nodes:
-             pytest.skip("Cannot run belief updater benchmark with an empty state space.")
-        initial_belief = {node: 1.0 / len(state_space.graph.nodes) for node in state_space.graph.nodes}
-        observation = "document" # Simple observation
-        benchmark(updater.update_belief, initial_belief, observation)
+        updater = BeliefUpdater()
+        # Benchmark the update_from_observation method
+        observation = {"instruction": 0.7, "example": 0.3}
+        benchmark(updater.update_from_observation, observation)
 
     @pytest.mark.benchmark(group="document_creation_scaling")
     def test_document_creation_scaling(self, benchmark, large_document_content):
@@ -288,18 +285,63 @@ class TestScalability(unittest.TestCase):
             print(f"Scaling factor: O(n^{slope:.2f})")
             self.assertLess(slope, 3.0, "StateSpace creation should scale reasonably")
 
-    def test_normalize_headings_performance(self, benchmark):
-        # benchmark(normalize_headings, self.large_doc) # normalize_headings not found
-        pass # Skipping test
+    def test_normalize_headings_performance(self):
+        """Test heading normalization performance."""
+        from mdp import normalize_headings
+        doc = Document(content=self.generate_markdown(100))
+        
+        start_time = timeit.default_timer()
+        result = normalize_headings(doc)
+        elapsed = timeit.default_timer() - start_time
+        
+        print(f"Normalize headings time: {elapsed:.4f}s")
+        self.assertIsNotNone(result)
+        self.assertLess(elapsed, 1.0, "Normalize headings should complete in under 1 second")
 
-    def test_complex_transformation_performance(self, benchmark):
-        # benchmark(complex_transformation, self.large_doc) # complex_transformation not found
-        pass # Skipping test
+    def test_complex_transformation_performance(self):
+        """Test complex transformation pipeline performance."""
+        from mdp import TransformationPipeline, HeadingLevelTransformation, ListFormatTransformation
+        import tempfile
+        
+        doc = Document(content=self.generate_markdown(100))
+        pipeline = TransformationPipeline([
+            HeadingLevelTransformation(1),
+            ListFormatTransformation("unordered")
+        ])
+        
+        # Create temporary output file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as tmp:
+            tmp_path = tmp.name
+        
+        try:
+            start_time = timeit.default_timer()
+            pipeline.apply(doc, tmp_path)
+            elapsed = timeit.default_timer() - start_time
+            
+            print(f"Complex transformation time: {elapsed:.4f}s")
+            self.assertLess(elapsed, 2.0, "Complex transformation should complete in under 2 seconds")
+        finally:
+            # Clean up
+            if os.path.exists(tmp_path):
+                os.unlink(tmp_path)
 
-    @pytest.mark.benchmark(group="transformations_scaling")
-    def test_normalize_headings_scaling(self, benchmark, large_document):
-        """Benchmark heading normalization on large document (placeholder)."""
-        pytest.skip("normalize_headings function not yet implemented or imported")
+    def test_normalize_headings_scaling(self):
+        """Test heading normalization scaling."""
+        from mdp import normalize_headings
+        sizes = [50, 100, 200]
+        times = []
+        
+        for size in sizes:
+            doc = Document(content=self.generate_markdown(size))
+            start_time = timeit.default_timer()
+            normalize_headings(doc)
+            elapsed = timeit.default_timer() - start_time
+            times.append(elapsed)
+            print(f"Size: {size}, Time: {elapsed:.4f}s")
+        
+        # Verify reasonable scaling
+        if len(times) > 1:
+            self.assertLess(times[-1] / times[0], 10.0, "Scaling should be reasonable")
 
 if __name__ == '__main__':
     unittest.main() 

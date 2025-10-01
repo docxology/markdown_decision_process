@@ -1,0 +1,88 @@
+{
+  "original_metrics": {
+    "avg_paragraph_length": 16.0,
+    "heading_density": 5.9405940594059405,
+    "structure_depth": 3,
+    "list_to_paragraph_ratio": 1.0,
+    "code_block_ratio": 0.0,
+    "complexity_score": 6.5
+  },
+  "optimization_results": {
+    "readability": {
+      "reward": 26.672608941709115,
+      "iterations": 5,
+      "reward_history": [
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115
+      ],
+      "metrics": {
+        "avg_paragraph_length": 14.4,
+        "heading_density": 5.9405940594059405,
+        "structure_depth": 3,
+        "list_to_paragraph_ratio": 0.2,
+        "code_block_ratio": 0.0,
+        "complexity_score": 4.9
+      }
+    },
+    "structure": {
+      "reward": 26.672608941709115,
+      "iterations": 5,
+      "reward_history": [
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115
+      ],
+      "metrics": {
+        "avg_paragraph_length": 14.4,
+        "heading_density": 5.9405940594059405,
+        "structure_depth": 3,
+        "list_to_paragraph_ratio": 0.2,
+        "code_block_ratio": 0.0,
+        "complexity_score": 4.9
+      }
+    },
+    "consistency": {
+      "reward": 26.672608941709115,
+      "iterations": 5,
+      "reward_history": [
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115
+      ],
+      "metrics": {
+        "avg_paragraph_length": 14.4,
+        "heading_density": 5.9405940594059405,
+        "structure_depth": 3,
+        "list_to_paragraph_ratio": 0.2,
+        "code_block_ratio": 0.0,
+        "complexity_score": 4.9
+      }
+    },
+    "combined": {
+      "reward": 26.672608941709115,
+      "iterations": 5,
+      "reward_history": [
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115,
+        26.672608941709115
+      ],
+      "metrics": {
+        "avg_paragraph_length": 14.4,
+        "heading_density": 5.9405940594059405,
+        "structure_depth": 3,
+        "list_to_paragraph_ratio": 0.2,
+        "code_block_ratio": 0.0,
+        "complexity_score": 4.9
+      }
+    }
+  }
+}
