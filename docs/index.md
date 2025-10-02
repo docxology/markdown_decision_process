@@ -61,26 +61,36 @@ print(f"Optimized content: {result['modified_content']}")
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Markdown Decision Process                     │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────┐  │
-│  │  Document   │  │  StateSpace │  │  MarkChain  │  │  Agent  │  │
-│  │             │  │             │  │             │  │         │  │
-│  │ • Structure │  │ • Graph     │  │ • Training  │  │ • POMDP │  │
-│  │ • Parsing   │  │ • Analysis  │  │ • Sampling  │  │ • RL    │  │
-│  │ • Updates   │  │ • Metrics   │  │ • Generation│  │ • Belief│  │
-│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────┐  │
-│  │Transformations│ │Visualization│ │  Animations │ │  Pandoc │  │
-│  │               │ │             │ │             │ │         │  │
-│  │ • Pipelines   │ │ • Plots     │ │ • Evolution │ │ • Export│  │
-│  │ • Headings    │ │ • Networks  │ │ • Generation│ │ • Import│  │
-│  │ • Lists       │ │ • Metrics   │ │ • State     │ │ • Convert│ │
-│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────┘  │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph MDP["Markdown Decision Process Framework"]
+        subgraph Core["Core Components"]
+            Document["Document<br/>• Structure<br/>• Parsing<br/>• Updates"]
+            StateSpace["StateSpace<br/>• Graph<br/>• Analysis<br/>• Metrics"]
+            MarkChain["MarkChain<br/>• Training<br/>• Sampling<br/>• Generation"]
+            Agent["Agent<br/>• POMDP<br/>• RL<br/>• Belief"]
+        end
+        
+        subgraph Tools["Supporting Tools"]
+            Transform["Transformations<br/>• Pipelines<br/>• Headings<br/>• Lists"]
+            Viz["Visualization<br/>• Plots<br/>• Networks<br/>• Metrics"]
+            Anim["Animations<br/>• Evolution<br/>• Generation<br/>• State"]
+            Pandoc["Pandoc<br/>• Export<br/>• Import<br/>• Convert"]
+        end
+    end
+    
+    Document --> StateSpace
+    StateSpace --> MarkChain
+    StateSpace --> Agent
+    Document --> Transform
+    StateSpace --> Viz
+    MarkChain --> Viz
+    Agent --> Anim
+    Document --> Pandoc
+    
+    style MDP fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style Core fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style Tools fill:#fff3e0,stroke:#f57c00,stroke-width:2px
 ```
 
 ## 🎯 Use Cases

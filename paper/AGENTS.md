@@ -15,10 +15,11 @@ paper/
 ├── 04_core_components.md   # Detailed component descriptions
 ├── 05_implementation.md    # Implementation details and algorithms
 ├── 06_evaluation.md        # Experimental design and setup
-├── 07_results_discussion.md # Results, analysis, and discussion
-├── 08_conclusion.md        # Summary and impact
-├── 09_future_work.md       # Research directions and extensions
-├── 10_references.md        # Bibliography and citations
+├── 07_results.md # Experimental results and findings
+├── 08_discussion.md        # Interpretation and implications
+├── 09_conclusion.md        # Summary and impact
+├── 10_future_work.md       # Research directions and extensions
+├── 11_references.md        # Bibliography and citations
 ├── assemble_paper.py       # Paper assembly script
 ├── outputs/                # Generated paper files
 │   ├── mdp_paper.md        # Complete markdown
@@ -85,28 +86,31 @@ paper/
 - Baseline comparisons
 - Statistical testing methodology
 
-**07_results_discussion.md** - Results and Analysis
+**07_results.md** - Experimental Results and Findings
 - Quantitative results with statistics
 - Qualitative analysis
 - Ablation studies
 - Limitations and threats to validity
 
-**08_conclusion.md** - Summary and Impact
+**08_discussion.md** - Discussion and Interpretation
 - Contribution summary
 - Theoretical significance
 - Practical implications
 - Final synthesis
 
-**09_future_work.md** - Future Directions
+**09_conclusion.md** - Summary and Impact
+- Contribution summary
+- Theoretical significance
+- Practical implications
+- Final synthesis
+
+**10_future_work.md** - Future Directions
 - Theoretical extensions
 - Algorithmic improvements
 - Application domains
 - Research opportunities
 
-**10_references.md** - Bibliography
-- Organized by category
-- Consistent formatting
-- Complete metadata
+**11_references.md** - Bibliography and Citations
 
 ## Writing Guidelines
 
@@ -479,7 +483,7 @@ $$
 # Generate BibTeX from references
 def generate_bibtex():
     """Convert references.md to BibTeX format."""
-    refs = parse_references('10_references.md')
+    refs = parse_references('12_references.md')
     
     bibtex_entries = []
     for ref in refs:
@@ -503,7 +507,7 @@ def verify_citations():
     citations = extract_citations('paper/')
     
     # Load references
-    references = load_references('10_references.md')
+    references = load_references('12_references.md')
     
     # Find missing
     missing = set(citations) - set(references.keys())

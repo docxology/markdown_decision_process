@@ -8,14 +8,35 @@ import networkx as nx
 from typing import Dict, Any, List, Tuple, Optional, Union, Callable
 import math
 from pathlib import Path
-import textstat
-from textstat import (
-    flesch_reading_ease, 
-    flesch_kincaid_grade, 
-    smog_index, 
-    coleman_liau_index
-)
-from wordcloud import WordCloud, STOPWORDS
+try:
+    import textstat
+    from textstat import (
+        flesch_reading_ease,
+        flesch_kincaid_grade,
+        smog_index,
+        coleman_liau_index
+    )
+    TEXTSTAT_AVAILABLE = True
+except ImportError:
+    TEXTSTAT_AVAILABLE = False
+    # Define fallback functions if textstat is not available
+    def flesch_reading_ease(text): return 50.0  # Neutral score
+    def flesch_kincaid_grade(text): return 8.0   # Grade 8 level
+    def smog_index(text): return 10.0            # Neutral SMOG score
+    def coleman_liau_index(text): return 12.0    # Grade 12 level
+try:
+    from wordcloud import WordCloud, STOPWORDS
+    WORDCLOUD_AVAILABLE = True
+except ImportError:
+    WORDCLOUD_AVAILABLE = False
+    # Define fallback if wordcloud is not available
+    class WordCloud:
+        def __init__(self, **kwargs):
+            pass
+        def generate(self, text):
+            return None
+        def to_image(self):
+            return None
 
 from .document import Document
 from .markchain import MarkChain

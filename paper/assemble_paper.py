@@ -39,89 +39,141 @@ class PaperAssembler:
         self.affiliation = "Active Inference Institute"
         self.email = "daniel@activeinference.institute"
         self.repository = "https://github.com/docxology/markdown_decision_process"
+        self.doi = "10.5281/zenodo.17244387"
+
+        # Initialize state tracking
+        self._validated = False
+        self._sections = []
+        self._errors = []
 
     def _sanitize_unicode_for_latex(self, text: str) -> str:
-        """Replace Unicode characters that cause LaTeX compilation errors."""
-        # Common problematic Unicode characters and their LaTeX equivalents
-        unicode_replacements = {
-            '↔': r'$\leftrightarrow$',
-            '↔︎': r'$\leftrightarrow$',
-            '→': r'\rightarrow',
-            '←': r'\leftarrow',
-            '⇒': r'\Rightarrow',
-            '⇐': r'\Leftarrow',
-            '⇔': r'\Leftrightarrow',
-            '≥': r'$\geq$',
-            '≤': r'$\leq$',
-            '≠': r'$\neq$',
-            '∞': r'$\infty$',
-            '∑': r'$\sum$',
-            '∫': r'$\int$',
-            '∂': r'$\partial$',
-            '∆': r'$\Delta$',
-            '∇': r'$\nabla$',
-            '∏': r'$\prod$',
-            '√': r'$\sqrt$',
-            '≈': r'$\approx$',
-            '≡': r'$\equiv$',
-            '∝': r'$\propto$',
-            '∪': r'$\cup$',
-            '∩': r'$\cap$',
-            '⊂': r'$\subset$',
-            '⊃': r'$\supset$',
-            '⊆': r'$\subseteq$',
-            '⊇': r'$\supseteq$',
-            '∈': r'$\in$',
-            '∉': r'$\notin$',
-            '∅': r'$\emptyset$',
-            '∧': r'$\wedge$',
-            '∨': r'$\vee$',
-            '¬': r'$\neg$',
-            '∀': r'$\forall$',
-            '∃': r'$\exists$',
-            '∄': r'$\nexists$',
-            '∴': r'$\therefore$',
-            '∵': r'$\because$',
-            '∶': r':',
-            '∷': r'::',
-            '∼': r'$\sim$',
-            '∽': r'$\backsim$',
-            '∾': r'$\thicksim$',
-            '≃': r'$\simeq$',
-            '≅': r'$\cong$',
-            '≪': r'$\ll$',
-            '≫': r'$\gg$',
-            '≶': r'$\lessgtr$',
-            '≷': r'$\gtrless$',
-            '≺': r'$\prec$',
-            '≻': r'$\succ$',
-            '‐': r'-',  # hyphen
-            '–': r'--',  # en dash
-            '—': r'---',  # em dash
-            '…': r'\ldots',  # ellipsis
-            '"': r"''",  # smart quotes
-            ''': r"`",  # backtick
-            ''': r"'",  # apostrophe
-            '′': r"'",  # prime
-            '″': r"''",  # double prime
-            ''': r'"',  # left double quote
-            ''': r'"',  # right double quote
-            ''': r"'",  # left single quote
-            ''': r"'",  # right single quote
+        """Replace problematic Unicode characters for LaTeX compatibility."""
+        # Replace characters that commonly cause LaTeX compilation issues
+        problematic_chars = {
+            # Zero-width characters
+            '\u200B': '',  # ZERO WIDTH SPACE
+            '\u200C': '',  # ZERO WIDTH NON-JOINER
+            '\u200D': '',  # ZERO WIDTH JOINER
+            '\uFEFF': '',  # ZERO WIDTH NO-BREAK SPACE (BOM)
+            '\u00A0': ' ',  # NO-BREAK SPACE -> regular space
+
+            # Mathematical symbols that need LaTeX equivalents
+            'α': r'$\alpha$',  # Greek alpha
+            'β': r'$\beta$',   # Greek beta
+            'γ': r'$\gamma$',  # Greek gamma
+            'δ': r'$\delta$',  # Greek delta
+            'ε': r'$\epsilon$', # Greek epsilon
+            'θ': r'$\theta$',  # Greek theta
+            'λ': r'$\lambda$', # Greek lambda
+            'μ': r'$\mu$',     # Greek mu
+            'π': r'$\pi$',     # Greek pi
+            'σ': r'$\sigma$',  # Greek sigma
+            'τ': r'$\tau$',    # Greek tau
+            'φ': r'$\phi$',    # Greek phi
+            'χ': r'$\chi$',    # Greek chi
+            'ψ': r'$\psi$',    # Greek psi
+            'ω': r'$\omega$',  # Greek omega
+
+            # Mathematical operators and symbols
+            '≤': r'$\leq$',    # Less than or equal
+            '≥': r'$\geq$',    # Greater than or equal
+            '≠': r'$\neq$',    # Not equal
+            '≈': r'$\approx$', # Approximately equal
+            '≡': r'$\equiv$',  # Identical to
+            '∝': r'$\propto$', # Proportional to
+            '∞': r'$\infty$',  # Infinity
+            '∑': r'$\sum$',    # Summation
+            '∏': r'$\prod$',   # Product
+            '∫': r'$\int$',    # Integral
+            '∂': r'$\partial$', # Partial derivative
+            '∇': r'$\nabla$',  # Nabla
+            '√': r'$\sqrt$',   # Square root
+            '∆': r'$\Delta$',  # Delta (increment)
+            '∪': r'$\cup$',    # Union
+            '∩': r'$\cap$',    # Intersection
+            '⊂': r'$\subset$', # Subset
+            '⊃': r'$\supset$', # Superset
+            '⊆': r'$\subseteq$', # Subset or equal
+            '⊇': r'$\supseteq$', # Superset or equal
+            '∈': r'$\in$',     # Element of
+            '∉': r'$\notin$',  # Not element of
+            '∅': r'$\emptyset$', # Empty set
+            '∧': r'$\wedge$',  # Logical and
+            '∨': r'$\vee$',   # Logical or
+            '¬': r'$\neg$',    # Logical not
+            '∀': r'$\forall$', # Universal quantifier
+            '∃': r'$\exists$', # Existential quantifier
+            '∴': r'$\therefore$', # Therefore
+            '∵': r'$\because$',  # Because
+            '∶': r':',         # Ratio
+            '∷': r'::',        # Proportion
+            '∼': r'$\sim$',    # Similar to
+            '∽': r'$\backsim$', # Reverse similar
+            '∾': r'$\thicksim$', # Thick similar
+            '≃': r'$\simeq$',  # Asymptotically equal
+            '≅': r'$\cong$',   # Approximately equal
+            '≪': r'$\ll$',     # Much less than
+            '≫': r'$\gg$',     # Much greater than
+            '≶': r'$\lessgtr$', # Less-greater
+            '≷': r'$\gtrless$', # Greater-less
+            '≺': r'$\prec$',   # Precedes
+            '≻': r'$\succ$',   # Succeeds
+
+            # Arrows
+            '←': r'$\leftarrow$',   # Left arrow
+            '→': r'$\rightarrow$',   # Right arrow
+            '↔': r'$\leftrightarrow$', # Left-right arrow
+            '⇒': r'$\Rightarrow$',   # Right double arrow
+            '⇐': r'$\Leftarrow$',   # Left double arrow
+            '⇔': r'$\Leftrightarrow$', # Left-right double arrow
+            '⇐': r'$\Leftarrow$',   # Left double arrow
+            '⇔': r'$\Leftrightarrow$', # Left-right double arrow
+
+            # Punctuation and typography
+            '"': r"''",         # Smart quotes
+            ''': r"`",          # Backtick
+            ''': r"'",          # Apostrophe
+            '‐': r'-',          # Hyphen
+            '–': r'--',         # En dash
+            '—': r'---',        # Em dash
+            '…': r'\ldots',     # Ellipsis
         }
 
         # Apply replacements
-        for unicode_char, latex_equiv in unicode_replacements.items():
-            text = text.replace(unicode_char, latex_equiv)
-
-        # Handle remaining problematic characters by removing them or replacing with safe alternatives
-        # Remove zero-width characters and other invisible Unicode
-        text = re.sub(r'[\u200B-\u200D\uFEFF]', '', text)
-
-        # Replace other potentially problematic Unicode characters with safe ASCII
-        text = re.sub(r'[^\x00-\x7F]', lambda m: f'[{ord(m.group(0)):04X}]', text)
+        for unicode_char, replacement in problematic_chars.items():
+            text = text.replace(unicode_char, replacement)
 
         return text
+
+    def _check_dependencies(self) -> bool:
+        """Check if all required dependencies are available."""
+        missing_deps = []
+
+        # Check Pandoc
+        try:
+            subprocess.run(['pandoc', '--version'],
+                         capture_output=True, check=True)
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            missing_deps.append("pandoc")
+
+        # Check LaTeX (for PDF generation)
+        try:
+            subprocess.run(['pdflatex', '--version'],
+                         capture_output=True, check=True)
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            missing_deps.append("pdflatex")
+
+        if missing_deps:
+            print(f"⚠ Missing dependencies: {', '.join(missing_deps)}")
+            print("  Install missing tools to enable all output formats:")
+            for dep in missing_deps:
+                if dep == "pandoc":
+                    print("    - Pandoc: https://pandoc.org/installing.html")
+                elif dep == "pdflatex":
+                    print("    - LaTeX: Install texlive or similar distribution")
+            return False
+
+        return True
 
     def _convert_mermaid_diagrams(self, content: str) -> str:
         """Convert Mermaid diagrams to SVG for proper PDF embedding."""
@@ -250,10 +302,11 @@ class PaperAssembler:
             "04_core_components": "Core Components",
             "05_implementation": "Implementation Details",
             "06_evaluation": "Evaluation and Experiments",
-            "07_results_discussion": "Results and Discussion",
-            "08_conclusion": "Conclusion",
-            "09_future_work": "Future Work",
-            "10_references": "References",
+            "07_results": "Results",
+            "08_discussion": "Discussion",
+            "09_conclusion": "Conclusion",
+            "10_future_work": "Future Work",
+            "12_references": "References",
             "11_code": "Code Supplement"
         }
 
@@ -314,6 +367,9 @@ class PaperAssembler:
 
         # Convert Mermaid diagrams to SVG for better PDF compatibility
         content = self._convert_mermaid_diagrams(content)
+        
+        # Convert citation markers to inline format
+        content = self._convert_citations_to_inline(content)
 
         # Sanitize Unicode characters for LaTeX compatibility (but not in YAML front matter)
         lines = content.split('\n')
@@ -343,6 +399,55 @@ class PaperAssembler:
 
         print(f"✓ LaTeX-compatible markdown created: {latex_md_file}")
         return str(latex_md_file)
+    
+    def _convert_citations_to_inline(self, content: str) -> str:
+        """Convert citation markers [@key] to inline (Author, Year) format."""
+        import re
+        
+        # Simple mapping of common citation keys to author-year format
+        # This is a simplified approach - in production you'd parse the .bib file
+        citation_map = {
+            'pandoc': '(MacFarlane, 2006)',
+            'markdownlint': '(Markdownlint Contributors, 2023)',
+            'doc2vec': '(Le & Mikolov, 2014)',
+            'bert': '(Devlin et al., 2018)',
+            'roberta': '(Liu et al., 2019)',
+            'layout_analysis': '(Mao et al., 2005)',
+            'visual_document_understanding': '(Mao et al., 2005)',
+            'readability_metrics': '(Collins-Thompson & Callan, 2014)',
+            'flesch_kincaid': '(Kincaid et al., 1975)',
+            'document_coherence': '(Lapata & Barzilay, 2015)',
+            'semantic_document_structure': '(Brin & Page, 1998)',
+            'neural_document_generation': '(Li et al., 2019)',
+            'multi_modal_documents': '(Yang et al., 2020)',
+            'ngram_models': '(Brown et al., 1992)',
+            'language_modeling': '(Jurafsky & Martin, 2023)',
+            'markov_text_gen': '(Shannon, 1951)',
+            'creative_text_generation': '(Radford et al., 2019)',
+            'document_structure_markov': '(Taskar et al., 2005)',
+            'mdp_theory': '(Puterman, 1994)',
+            'sutton_barto': '(Sutton & Barto, 2018)',
+            'pomdp_theory': '(Kaelbling et al., 1998)',
+            'pomdp_survey': '(Kurniawati & Yadav, 2021)',
+            'predictive_processing': '(Rao & Ballard, 1999)',
+        }
+        
+        # Replace citation markers with inline format
+        def replace_citation(match):
+            keys = match.group(1).split(';')
+            citations = []
+            for key in keys:
+                key = key.strip().lstrip('@')
+                if key in citation_map:
+                    citations.append(citation_map[key].strip('()'))
+                else:
+                    citations.append(key)  # Fallback to key if not in map
+            return '(' + '; '.join(citations) + ')'
+        
+        # Pattern: [@key] or [@key1; @key2]
+        content = re.sub(r'\[@([^\]]+)\]', replace_citation, content)
+        
+        return content
 
     def _create_front_matter(self) -> str:
         """Create the paper front matter."""
@@ -353,15 +458,16 @@ author:
 affiliation: "{self.affiliation}"
 email: "{self.email}"
 repository: "{self.repository}"
+doi: "{self.doi}"
 date: "{datetime.now().strftime('%B %Y')}"
 abstract: |
-  Markdown Decision Process (MDP) is a novel framework that reimagines Markdown documents as stochastic processes analogous to Markov Decision Processes. This package provides tools to analyze, generate, and optimize Markdown content through the lens of decision theory and probabilistic modeling.
-keywords: [Markov Decision Processes, Markdown Processing, Document Generation, Active Inference, Probabilistic Modeling, Content Optimization]
+  The Markdown Decision Process (MDP) framework revolutionizes document processing by modeling Markdown documents as stochastic decision processes analogous to Markov Decision Processes (MDPs) and Partially Observable Markov Decision Processes (POMDPs). This comprehensive framework bridges decision theory with practical document engineering, providing theoretically-grounded tools for intelligent document analysis, generation, and optimization that explicitly handle semantic uncertainty and enable interpretable, uncertainty-aware document processing.
+keywords: [Markov Decision Processes, Document AI, Content Optimization, Active Inference, Probabilistic Modeling, Automated Documentation, Natural Language Generation]
 ---
 
 # {self.title}
 
-**Authors:** {', '.join(self.authors)}  \n**Affiliation:** {self.affiliation}  \n**Email:** {self.email}  \n**Repository:** {self.repository}
+**Authors:** {', '.join(self.authors)}  \n**Affiliation:** {self.affiliation}  \n**Email:** {self.email}  \n**Repository:** {self.repository}  \n**DOI:** {self.doi}
 
 """
 
@@ -384,9 +490,8 @@ keywords: [Markov Decision Processes, Markdown Processing, Document Generation, 
         return "This paper presents the Markdown Decision Process framework for probabilistic document analysis and optimization."
 
     def create_pdf_paper(self, markdown_file: str = None) -> str:
-        """Create PDF version of the paper using Pandoc with improved LaTeX support."""
+        """Create PDF version of the paper using Pandoc with robust LaTeX generation."""
         if markdown_file is None:
-            # Use LaTeX-compatible markdown for PDF generation
             markdown_file = self.create_latex_compatible_markdown()
 
         # Check if pandoc is available
@@ -398,12 +503,13 @@ keywords: [Markov Decision Processes, Markdown Processing, Document Generation, 
             print("  Install Pandoc from: https://pandoc.org/")
             return None
 
-        # PDF generation options - comprehensive LaTeX setup
         pdf_file = self.output_dir / "mdp_paper.pdf"
         latex_template = self.paper_dir / "academic_template.tex"
 
-        # First try with custom LaTeX template for best quality
-        cmd_latex = [
+        # Primary PDF generation with custom template
+        # Note: Citations in format [@key] are converted to (Author, Year) format in text
+        # and the References section is manually formatted in the markdown
+        cmd = [
             'pandoc',
             markdown_file,
             '-o', str(pdf_file),
@@ -417,129 +523,23 @@ keywords: [Markov Decision Processes, Markdown Processing, Document Generation, 
             '--metadata', f'abstract={self._extract_abstract()}',
             '--variable', 'geometry:margin=1in',
             '--variable', 'fontfamily:libertine',
-            '--variable', 'fontsize:11pt',
+            '--variable', 'fontsize=11pt',
             '--variable', 'papersize:letter',
-            # Additional LaTeX packages for better support
             '--variable', 'documentclass:article',
             '--variable', 'mainfont:Linux Libertine O',
             '--variable', 'sansfont:Linux Biolinum O',
             '--variable', 'monofont:DejaVu Sans Mono',
-            # Enable listings for code blocks
             '--listings',
-            # Bibliography support with citeproc for proper citation processing
-            '--bibliography', str(self.paper_dir / 'references.bib'),
-            '--citeproc',
         ]
 
         try:
-            result = subprocess.run(cmd_latex, capture_output=True, text=True, check=True, timeout=120)
-            print(f"✓ PDF paper created with LaTeX template: {pdf_file}")
+            result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=180)
+            print(f"✓ PDF paper created successfully: {pdf_file}")
             return str(pdf_file)
         except subprocess.CalledProcessError as e:
-            print(f"⚠ LaTeX PDF generation with template failed: {e.stderr}")
-            print("  Trying with built-in LaTeX template...")
-
-            # Fallback: Use Pandoc's built-in LaTeX template
-            cmd_builtin_latex = [
-                'pandoc',
-                markdown_file,
-                '-o', str(pdf_file),
-                '--pdf-engine=pdflatex',
-                '--number-sections',
-                '--table-of-contents',
-                '--toc-depth=3',
-                '--metadata', f'author={", ".join(self.authors)}',
-                '--metadata', f'title={self.title}',
-                '--variable', 'geometry:margin=1in',
-                '--variable', 'fontfamily:libertine',
-                '--variable', 'fontsize:11pt',
-                '--listings',  # Enable code syntax highlighting
-                '--bibliography', str(self.paper_dir / 'references.bib'),
-                '--citeproc',  # Enable proper citation processing
-            ]
-
-            try:
-                result = subprocess.run(cmd_builtin_latex, capture_output=True, text=True, check=True, timeout=120)
-                print(f"✓ PDF paper created with built-in template: {pdf_file}")
-                return str(pdf_file)
-            except subprocess.CalledProcessError as e:
-                print(f"⚠ Built-in LaTeX PDF generation failed: {e.stderr}")
-                print("  Trying HTML-to-PDF conversion...")
-
-                # Fallback: HTML to PDF using wkhtmltopdf if available
-                try:
-                    # First create HTML
-                    html_file = self.output_dir / "temp_paper.html"
-                    html_cmd = [
-                        'pandoc',
-                        markdown_file,
-                        '-o', str(html_file),
-                        '--standalone',
-                        '--embed-resources',
-                        '--table-of-contents',
-                        '--number-sections',
-                        '--metadata', f'author={", ".join(self.authors)}',
-                        '--metadata', f'title={self.title}',
-                        '--css', str(self.paper_dir / 'academic.css'),  # Custom CSS if available
-                    ]
-                    subprocess.run(html_cmd, capture_output=True, check=True)
-
-                    # Check if wkhtmltopdf is available
-                    try:
-                        subprocess.run(['wkhtmltopdf', '--version'],
-                                     capture_output=True, check=True, timeout=10)
-                    except (subprocess.CalledProcessError, FileNotFoundError):
-                        print("  wkhtmltopdf not available, trying pandoc's HTML-to-PDF...")
-                        # Use pandoc's HTML-to-PDF engine as fallback
-                        pdf_cmd = [
-                            'pandoc',
-                            str(html_file),
-                            '-o', str(pdf_file),
-                            '--pdf-engine=wkhtmltopdf',
-                        ]
-                        subprocess.run(pdf_cmd, capture_output=True, check=True, timeout=60)
-                    else:
-                        # Use wkhtmltopdf directly
-                        pdf_cmd = [
-                            'wkhtmltopdf',
-                            '--page-size', 'Letter',
-                            '--margin-top', '1in',
-                            '--margin-bottom', '1in',
-                            '--margin-left', '1in',
-                            '--margin-right', '1in',
-                            '--encoding', 'UTF-8',
-                            str(html_file),
-                            str(pdf_file)
-                        ]
-                        subprocess.run(pdf_cmd, capture_output=True, check=True, timeout=60)
-
-                    # Clean up temp file
-                    if html_file.exists():
-                        html_file.unlink()
-
-                    print(f"✓ PDF created via HTML conversion: {pdf_file}")
-                    return str(pdf_file)
-
-                except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
-                    print("  HTML-to-PDF also failed. Trying minimal LaTeX PDF...")
-
-                    # Final fallback: very basic PDF with minimal LaTeX
-                    basic_cmd = [
-                        'pandoc',
-                        markdown_file,
-                        '-o', str(pdf_file),
-                        '--pdf-engine=pdflatex',
-                        '--variable', 'geometry:margin=1.5in',
-                        '--variable', 'fontsize:10pt',
-                    ]
-
-                    try:
-                        subprocess.run(basic_cmd, capture_output=True, check=True, timeout=60)
-                        print(f"✓ Basic PDF created: {pdf_file}")
-                        return str(pdf_file)
-                    except subprocess.CalledProcessError:
-                        print("✗ All PDF generation methods failed.")
-                        return None
+            print(f"⚠ PDF generation failed: {e.stderr}")
+            print("  Please check your LaTeX installation and ensure all required packages are available.")
+            return None
 
     def create_latex_paper(self, markdown_file: str = None) -> str:
         """Create LaTeX version for advanced formatting."""
@@ -663,6 +663,10 @@ keywords: [Markov Decision Processes, Markdown Processing, Document Generation, 
         if self.create_word_document(markdown_file):
             formats_created.append("Word")
 
+        # Validate outputs
+        if not self.validate_outputs():
+            print("⚠ Some output files may be invalid or missing")
+
         # Summary
         print("\n" + "=" * 50)
         print("✅ Paper assembly complete!")
@@ -670,11 +674,14 @@ keywords: [Markov Decision Processes, Markdown Processing, Document Generation, 
         print(f"📄 Formats created: {', '.join(formats_created)}")
         print(f"📖 Markdown file: {self.output_dir / 'mdp_paper.md'}")
         print(f"📑 LaTeX-compatible file: {self.output_dir / 'mdp_paper_latex.md'}")
+        print(f"📄 PDF file: {self.output_dir / 'mdp_paper.pdf'}")
+        print(f"🌐 HTML file: {self.output_dir / 'mdp_paper.html'}")
+        print(f"📝 Word file: {self.output_dir / 'mdp_paper.docx'}")
 
         return True
 
     def validate_sections(self) -> bool:
-        """Validate that all required sections exist."""
+        """Validate that all required sections exist and are readable."""
         required_sections = [
             "00_abstract.md",
             "01_introduction.md",
@@ -683,25 +690,90 @@ keywords: [Markov Decision Processes, Markdown Processing, Document Generation, 
             "04_core_components.md",
             "05_implementation.md",
             "06_evaluation.md",
-            "07_results_discussion.md",
-            "08_conclusion.md",
-            "09_future_work.md",
-            "10_references.md",
+            "07_results.md",
+            "08_discussion.md",
+            "09_conclusion.md",
+            "10_future_work.md",
+            "12_references.md",
             "11_code.md"
         ]
 
         missing_sections = []
+        empty_sections = []
+        unreadable_sections = []
 
         for section in required_sections:
             section_path = self.paper_dir / section
             if not section_path.exists():
                 missing_sections.append(section)
+            else:
+                try:
+                    with open(section_path, 'r', encoding='utf-8') as f:
+                        content = f.read().strip()
+                    if not content:
+                        empty_sections.append(section)
+                    else:
+                        # Basic content validation - check for section structure
+                        lines = content.split('\n')
+                        has_header = any(line.startswith('# ') for line in lines)
+                        if not has_header:
+                            print(f"⚠ Warning: {section} may not have proper section header")
+                except Exception as e:
+                    unreadable_sections.append(f"{section} ({e})")
 
+        # Report issues
+        issues = []
         if missing_sections:
-            print(f"⚠ Missing sections: {', '.join(missing_sections)}")
+            issues.append(f"Missing: {', '.join(missing_sections)}")
+        if empty_sections:
+            issues.append(f"Empty: {', '.join(empty_sections)}")
+        if unreadable_sections:
+            issues.append(f"Unreadable: {', '.join(unreadable_sections)}")
+
+        if issues:
+            print("⚠ Section validation issues:")
+            for issue in issues:
+                print(f"  {issue}")
             return False
 
-        print("✓ All required sections found")
+        print("✓ All required sections validated successfully")
+        self._validated = True
+        return True
+
+    def validate_outputs(self) -> bool:
+        """Validate that all output files were created successfully."""
+        expected_files = [
+            "mdp_paper.md",
+            "mdp_paper_latex.md",
+            "mdp_paper.pdf",
+            "mdp_paper.html",
+            "mdp_paper.docx"
+        ]
+
+        missing_files = []
+        invalid_files = []
+
+        for filename in expected_files:
+            file_path = self.output_dir / filename
+            if not file_path.exists():
+                missing_files.append(filename)
+            else:
+                try:
+                    # Basic validation - check file size is reasonable
+                    size = file_path.stat().st_size
+                    if size < 1000:  # Less than 1KB is likely invalid
+                        invalid_files.append(f"{filename} ({size} bytes)")
+                except Exception as e:
+                    invalid_files.append(f"{filename} (error: {e})")
+
+        if missing_files or invalid_files:
+            if missing_files:
+                print(f"⚠ Missing output files: {', '.join(missing_files)}")
+            if invalid_files:
+                print(f"⚠ Potentially invalid files: {', '.join(invalid_files)}")
+            return False
+
+        print("✓ All output files validated successfully")
         return True
 
 
@@ -731,12 +803,22 @@ def main():
         action="store_true",
         help="Only validate sections without assembling"
     )
+    parser.add_argument(
+        "--check-deps",
+        action="store_true",
+        help="Check dependencies without assembling"
+    )
 
     args = parser.parse_args()
 
     assembler = PaperAssembler(args.paper_dir, args.output_dir)
 
-    # Validate sections first
+    # Check dependencies first
+    if not assembler._check_dependencies():
+        print("❌ Missing dependencies. Install required tools and try again.")
+        return 1
+
+    # Validate sections
     if not assembler.validate_sections():
         print("❌ Validation failed. Cannot proceed with assembly.")
         return 1
@@ -745,19 +827,28 @@ def main():
         print("✅ All sections validated successfully!")
         return 0
 
+    if args.check_deps:
+        print("✅ All dependencies are available!")
+        return 0
+
     # Assemble based on format
-    if args.format == "all":
-        success = assembler.create_all_formats()
-    elif args.format == "markdown":
-        success = assembler.create_markdown_paper() is not None
-    elif args.format == "pdf":
-        success = assembler.create_pdf_paper() is not None
-    elif args.format == "html":
-        success = assembler.create_html_paper() is not None
-    elif args.format == "word":
-        success = assembler.create_word_document() is not None
-    elif args.format == "latex":
-        success = assembler.create_latex_paper() is not None
+    success = False
+    try:
+        if args.format == "all":
+            success = assembler.create_all_formats()
+        elif args.format == "markdown":
+            success = assembler.create_markdown_paper() is not None
+        elif args.format == "pdf":
+            success = assembler.create_pdf_paper() is not None
+        elif args.format == "html":
+            success = assembler.create_html_paper() is not None
+        elif args.format == "word":
+            success = assembler.create_word_document() is not None
+        elif args.format == "latex":
+            success = assembler.create_latex_paper() is not None
+    except Exception as e:
+        print(f"❌ Assembly failed with error: {e}")
+        return 1
 
     return 0 if success else 1
 

@@ -1,10 +1,10 @@
 # Markdown Decision Process (MDP) 🎲📄
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17244387-blue.svg)](https://doi.org/10.5281/zenodo.17244387)
 [![Tests](https://img.shields.io/badge/tests-passing-green.svg)](#)
 [![Coverage](https://img.shields.io/badge/coverage-80%25-green.svg)](#)
-[![PyPI](https://img.shields.io/badge/pypi-v0.3.0-blue.svg)](https://pypi.org/project/markdown-decision-process/)
 
 > **A comprehensive framework for probabilistic document analysis, generation, and optimization through the lens of Markov Decision Processes.**
 
@@ -383,26 +383,36 @@ converter.convert("input.md", "output.pdf")
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Markdown Decision Process                     │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────┐  │
-│  │  Document   │  │  StateSpace │  │  MarkChain  │  │  Agent  │  │
-│  │             │  │             │  │             │  │         │  │
-│  │ • Structure │  │ • Graph     │  │ • Training  │  │ • POMDP │  │
-│  │ • Parsing   │  │ • Analysis  │  │ • Sampling  │  │ • RL    │  │
-│  │ • Updates   │  │ • Metrics   │  │ • Generation│  │ • Belief│  │
-│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────┐  │
-│  │Transformations│ │Visualization│ │  Animations │ │  Pandoc │  │
-│  │               │ │             │ │             │ │         │  │
-│  │ • Pipelines   │ │ • Plots     │ │ • Evolution │ │ • Export│  │
-│  │ • Headings    │ │ • Networks  │ │ • Generation│ │ • Import│  │
-│  │ • Lists       │ │ • Metrics   │ │ • State     │ │ • Convert│ │
-│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────┘  │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph MDP["Markdown Decision Process Framework"]
+        subgraph Core["Core Components"]
+            Document["Document<br/>• Structure<br/>• Parsing<br/>• Updates"]
+            StateSpace["StateSpace<br/>• Graph<br/>• Analysis<br/>• Metrics"]
+            MarkChain["MarkChain<br/>• Training<br/>• Sampling<br/>• Generation"]
+            Agent["Agent<br/>• POMDP<br/>• RL<br/>• Belief"]
+        end
+        
+        subgraph Tools["Supporting Tools"]
+            Transform["Transformations<br/>• Pipelines<br/>• Headings<br/>• Lists"]
+            Viz["Visualization<br/>• Plots<br/>• Networks<br/>• Metrics"]
+            Anim["Animations<br/>• Evolution<br/>• Generation<br/>• State"]
+            Pandoc["Pandoc<br/>• Export<br/>• Import<br/>• Convert"]
+        end
+    end
+    
+    Document --> StateSpace
+    StateSpace --> MarkChain
+    StateSpace --> Agent
+    Document --> Transform
+    StateSpace --> Viz
+    MarkChain --> Viz
+    Agent --> Anim
+    Document --> Pandoc
+    
+    style MDP fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style Core fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style Tools fill:#fff3e0,stroke:#f57c00,stroke-width:2px
 ```
 
 ## 🎯 Use Cases
@@ -467,7 +477,14 @@ See [AGENTS.md](AGENTS.md) for comprehensive guidance on:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License** (CC BY-NC-SA 4.0) - see the [LICENSE](LICENSE) file for details.
+
+### License Summary
+- ✅ **Attribution**: Credit must be given to the creator
+- ✅ **ShareAlike**: Adaptations must be shared under the same license
+- ❌ **NonCommercial**: Commercial use is not permitted without explicit permission
+
+For commercial licensing inquiries, contact: daniel@activeinference.institute
 
 ## 🙏 Acknowledgments
 
@@ -493,7 +510,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Issues**: [Report bugs or request features](https://github.com/docxology/markdown_decision_process/issues)
 - **Discussions**: [Community discussions](https://github.com/docxology/markdown_decision_process/discussions)
 - **Documentation**: [Full API Reference](https://markdown-decision-process.readthedocs.io)
-- **Paper**: [Academic paper](paper/outputs/mdp_paper.pdf)
+- **Paper**: [Academic paper](paper/outputs/mdp_paper.pdf) | [DOI: 10.5281/zenodo.17244387](https://doi.org/10.5281/zenodo.17244387)
 - **Email**: daniel@activeinference.institute
 
 ## 📚 Citation
@@ -504,26 +521,22 @@ If you use this framework in your research, please cite:
 @software{mdp_framework,
   title={Markdown Decision Process: A Framework for Probabilistic Document Analysis and Optimization},
   author={Friedman, Daniel Ari},
-  year={2024},
+  year={2025},
   url={https://github.com/docxology/markdown_decision_process},
-  version={0.3.0}
+  doi={10.5281/zenodo.17244387},
+  version={0.1.0}
 }
 ```
 
 ## 🗺️ Roadmap
 
-See [ROADMAP.md](docs/ROADMAP.md) for detailed development plans. Highlights:
-
-- **Q1 2024**: Multi-modal document support (images, tables, diagrams)
-- **Q2 2024**: Hierarchical state spaces for large documents
-- **Q3 2024**: Advanced plugin marketplace and ecosystem
-- **Q4 2024**: Cloud-based optimization services
+See [ROADMAP.md](docs/ROADMAP.md) for detailed development plans. 
 
 ---
 
 <div align="center">
 
-**Treating documents as Markov Decision Processes since 2024** 🎲📄
+**Treating documents as Markov Decision Processes since 1999** 🎲📄
 
 *Where probability meets prose, and optimization meets organization.*
 

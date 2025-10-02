@@ -6,13 +6,13 @@ The Markdown Decision Process framework represents a paradigm shift in document 
 
 ### Core Innovations
 
-**1. Document-as-MDP Paradigm**: Established the first comprehensive framework treating Markdown documents as Markov Decision Processes, providing a mathematically rigorous foundation for document structure analysis and manipulation that outperforms traditional approaches by 15-22%.
+**1. Document-as-MDP Paradigm**: Established the first comprehensive framework treating Markdown documents as Markov Decision Processes, providing a mathematically rigorous foundation for document structure analysis and manipulation.
 
-**2. MarkChain Architecture**: Developed a sophisticated Markov chain implementation specifically designed for document structure modeling, incorporating higher-order dependencies (up to order 3), adaptive smoothing, and temperature-based sampling for robust, creative generation.
+**2. MarkChain Architecture**: Developed a sophisticated Markov chain implementation specifically designed for document structure modeling, incorporating higher-order dependencies, adaptive smoothing, and temperature-based sampling for robust generation.
 
-**3. Policy-Based Document Optimization**: Introduced the first comprehensive application of reinforcement learning to document improvement, enabling users to specify multi-dimensional reward functions that capture readability, structural clarity, semantic coherence, and domain-specific criteria with 15-28% improvements in multi-objective scenarios.
+**3. Policy-Based Document Optimization**: Introduced the first comprehensive application of reinforcement learning to document improvement, enabling users to specify multi-dimensional reward functions that capture readability, structural clarity, semantic coherence, and domain-specific criteria.
 
-**4. Probabilistic Semantic Inference**: Implemented a POMDP-inspired belief updating system that explicitly models semantic uncertainty, achieving 83% accuracy with superior calibration (ECE = 0.04) compared to rule-based (ECE = 0.18) and neural approaches.
+**4. Probabilistic Semantic Inference**: Implemented a POMDP-inspired belief updating system that explicitly models semantic uncertainty with well-calibrated confidence estimates.
 
 **5. Interactive Visualization Framework**: Created comprehensive tools for exploring document state spaces, transition dynamics, and optimization processes, enabling users to understand and control document evolution through intuitive visual interfaces.
 
@@ -22,19 +22,19 @@ The Markdown Decision Process framework represents a paradigm shift in document 
 
 Rigorous experimental evaluation across diverse corpora (technical documentation, academic papers, blog content) demonstrates:
 
-- **Generation Excellence**: 15-22% improvement in structural coherence over baselines, 5.2x faster than neural approaches, with robust cross-domain generalization
-- **Optimization Effectiveness**: 15-28% gains in multi-objective optimization, reliable convergence within 50-100 iterations, flexible adaptation to user-specified quality criteria
-- **Semantic Analysis Quality**: 83% accuracy with 87% calibrated confidence intervals, enabling uncertainty-aware decision making in production systems
-- **Scalability**: Linear scaling for practical document sizes (1,000-5,000 states), 94% success rate across diverse document types
+- **Generation Excellence**: Measured improvements in structural coherence and document quality, with robust cross-domain generalization
+- **Optimization Effectiveness**: Effective multi-objective optimization with reliable convergence, flexible adaptation to user-specified quality criteria
+- **Semantic Analysis Quality**: Well-calibrated uncertainty quantification enabling reliable decision making in production systems
+- **Scalability**: Efficient processing for practical document sizes with consistent performance across diverse document types
 
 ### Practical and Theoretical Impact
 
 The framework delivers immediate value while establishing new theoretical foundations:
 
 **Software Engineering Transformation**:
-- **60-80% reduction** in manual documentation review overhead through automated quality assessment
-- **Real-time generation** in IDEs with 5.2x performance advantage over neural alternatives
-- **Knowledge base optimization** for large organizations, improving discoverability and maintenance
+- Automated quality assessment reducing manual documentation review overhead
+- Real-time generation capabilities suitable for IDE integration
+- Knowledge base optimization for large organizations, improving discoverability and maintenance
 
 **Research Innovation**:
 - **Novel document evolution studies** revealing patterns in technical communication across domains and cultures
@@ -94,6 +94,10 @@ MDP distinguishes itself from modern large language models through several funda
 
 **Acknowledgments**: This research was conducted as part of ongoing work in probabilistic modeling and document processing. The framework builds upon foundations in reinforcement learning, probabilistic inference, and human-computer interaction.
 
-**Availability**: The Markdown Decision Process framework is available as an open-source Python package at [https://github.com/docxology/markdown_decision_process](https://github.com/docxology/markdown_decision_process).
+## Correspondence
 
-**Correspondence**: Daniel Ari Friedman, Active Inference Institute (daniel@activeinference.institute)
+**Daniel Ari Friedman**  
+Active Inference Institute  
+Email: daniel@activeinference.institute  
+ORCID: [0000-0001-6232-9096](https://orcid.org/0000-0001-6232-9096)  
+DOI: [10.5281/zenodo.17244387](https://doi.org/10.5281/zenodo.17244387)

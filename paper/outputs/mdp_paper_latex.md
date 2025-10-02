@@ -5,10 +5,11 @@ author:
 affiliation: "Active Inference Institute"
 email: "daniel@activeinference.institute"
 repository: "https://github.com/docxology/markdown_decision_process"
+doi: "10.5281/zenodo.17244387"
 date: "October 2025"
 abstract: |
-  Markdown Decision Process (MDP) is a novel framework that reimagines Markdown documents as stochastic processes analogous to Markov Decision Processes. This package provides tools to analyze, generate, and optimize Markdown content through the lens of decision theory and probabilistic modeling.
-keywords: [Markov Decision Processes, Markdown Processing, Document Generation, Active Inference, Probabilistic Modeling, Content Optimization]
+  The Markdown Decision Process (MDP) framework revolutionizes document processing by modeling Markdown documents as stochastic decision processes analogous to Markov Decision Processes (MDPs) and Partially Observable Markov Decision Processes (POMDPs). This comprehensive framework bridges decision theory with practical document engineering, providing theoretically-grounded tools for intelligent document analysis, generation, and optimization that explicitly handle semantic uncertainty and enable interpretable, uncertainty-aware document processing.
+keywords: [Markov Decision Processes, Document AI, Content Optimization, Active Inference, Probabilistic Modeling, Automated Documentation, Natural Language Generation]
 ---
 
 # Markdown Decision Process: A Framework for Probabilistic Document Analysis and Optimization
@@ -16,7 +17,8 @@ keywords: [Markov Decision Processes, Markdown Processing, Document Generation, 
 **Authors:** Daniel Ari Friedman  
 **Affiliation:** Active Inference Institute  
 **Email:** daniel@activeinference.institute  
-**Repository:** https://github.com/docxology/markdown_decision_process
+**Repository:** https://github.com/docxology/markdown_decision_process  
+**DOI:** 10.5281/zenodo.17244387
 
 
 
@@ -24,15 +26,7 @@ keywords: [Markov Decision Processes, Markdown Processing, Document Generation, 
 # Abstract
 
 
-**Markdown Decision Process (MDP)** revolutionizes document processing by treating Markdown documents as stochastic decision processes, enabling intelligent analysis, generation, and optimization through rigorous probabilistic modeling. This comprehensive framework bridges decision theory with practical document engineering, providing tools that learn from existing content to generate coherent documents and optimize structure according to user-defined quality criteria.
-
-At its core, MDP models Markdown elements as *states* in a stochastic process where transitions follow learned probabilistic patterns. Drawing from Markov Decision Process (MDP) and Partially Observable Markov Decision Process (POMDP) theory, the framework explicitly addresses the fundamental uncertainty in interpreting syntactic structure as semantic meaning---a challenge that has limited traditional document processing approaches.
-
-The framework operates at multiple complementary levels of analysis, following David Marr's influential framework: (1) **Computational theory** defines document processing as maximizing expected quality under uncertainty; (2) **Algorithmic implementation** employs Markov chains, graph algorithms, and reinforcement learning; and (3) **Physical realization** uses efficient Python implementations suitable for production deployment.
-
-Key innovations include: (1) **MarkChain**: Sophisticated Markov chain models for document generation with higher-order dependencies and smoothing; (2) **PolicyOptimizer**: Reinforcement learning techniques for document optimization that maximize user-specified reward functions; (3) **BeliefUpdater**: Probabilistic inference system handling semantic ambiguity through Bayesian belief maintenance; (4) **Visualization Framework**: Comprehensive tools for exploring document state spaces and transition dynamics; and (5) **Plugin Architecture**: Extensible system enabling domain-specific customizations.
-
-Unlike black-box neural approaches, MDP provides interpretable, theoretically-grounded document processing with explicit uncertainty quantification. The framework supports both traditional reward-based optimization and Active Inference approaches, enabling uncertainty-aware decision making, domain-specific customization without extensive retraining, and resource-efficient operation suitable for production environments.
+The Markdown Decision Process (MDP) framework revolutionizes document processing by treating Markdown documents as stochastic decision processes, enabling intelligent analysis, generation, and optimization through rigorous probabilistic modeling. This comprehensive framework bridges decision theory with practical document engineering, providing tools that learn from existing content to generate coherent documents and optimize structure according to user-defined quality criteria. At its core, MDP models Markdown elements as states in a stochastic process where transitions follow learned probabilistic patterns. Drawing from Markov Decision Process (MDP) and Partially Observable Markov Decision Process (POMDP) theory, the framework explicitly addresses the fundamental uncertainty in interpreting syntactic structure as semantic meaning, a challenge that has limited traditional document processing approaches. The framework operates at multiple complementary levels of analysis, following David Marr's influential framework: (1) Computational theory defines document processing as maximizing expected quality under uncertainty; (2) Algorithmic implementation employs Markov chains, graph algorithms, and reinforcement learning; and (3) Physical realization uses efficient Python implementations suitable for production deployment. Key innovations include: (1) MarkChain, sophisticated Markov chain models for document generation with higher-order dependencies and smoothing; (2) PolicyOptimizer, reinforcement learning techniques for document optimization that maximize user-specified reward functions; (3) BeliefUpdater, a probabilistic inference system handling semantic ambiguity through Bayesian belief maintenance; (4) Visualization Framework, comprehensive tools for exploring document state spaces and transition dynamics; and (5) Plugin Architecture, an extensible system enabling domain-specific customizations. Unlike black-box neural approaches, MDP provides interpretable, theoretically-grounded document processing with explicit uncertainty quantification. The framework supports both traditional reward-based optimization and Active Inference approaches, enabling uncertainty-aware decision making, domain-specific customization without extensive retraining, and resource-efficient operation suitable for production environments. All methods, tests, documentation, and resources to regenerate this paper are available at https://github.com/docxology/markdown_decision_process .
 
 **Keywords:** Markov Decision Processes, Document AI, Content Optimization, Active Inference, Probabilistic Modeling, Automated Documentation, Natural Language Generation
 
@@ -95,7 +89,7 @@ The framework enables transformative applications across multiple domains:
 
 ## Paper Organization
 
-The remainder of this paper is structured as follows: Section [2](#background-and-related-work) reviews related work in document processing and decision-theoretic approaches. Section [3](#methodology-and-architecture) presents the theoretical foundations and architectural design. Section [4](#core-components) details the core components and their implementations. Section [5](#implementation-details) covers implementation details and technical considerations. Section [6](#evaluation-and-experiments) presents comprehensive experimental evaluation. Section [7](#results-and-discussion) discusses results, implications, and limitations. Section [8](#conclusion) concludes with summary and impact. Section [9](#future-work) outlines future research directions. Section [10](#references) provides the bibliography and citations. Section [11](#code-supplement) contains the complete code implementations referenced throughout the paper.
+The remainder of this paper is structured as follows: Section 2 reviews related work in document processing and decision-theoretic approaches. Section 3 presents the theoretical foundations and architectural design. Section 4 details the core components and their implementations. Section 5 covers implementation details and technical considerations. Section 6 presents comprehensive experimental evaluation. Section 7 discusses experimental results and findings. Section 8 interprets results and discusses theoretical and practical implications. Section 9 summarizes contributions and impact. Section 10 outlines future research directions. The references section provides comprehensive bibliography. The code supplement contains complete implementations referenced throughout the paper.
 
 
 # Background and Related Work
@@ -109,25 +103,25 @@ Document processing has evolved from simple format conversion to sophisticated A
 
 ### Traditional and Contemporary Approaches
 
-**Format Conversion Tools**: Systems like Pandoc [@pandoc] pioneered universal document conversion, enabling transformation between markup languages, while tools like Markdownlint [@markdownlint] enforce style consistency through rule-based validation.
+**Format Conversion Tools**: Systems like Pandoc (MacFarlane, 2006) pioneered universal document conversion, enabling transformation between markup languages, while tools like Markdownlint (Markdownlint Contributors, 2023) enforce style consistency through rule-based validation.
 
 **Document Understanding Systems**: More advanced approaches include:
-- **Representation Learning**: Doc2Vec [@doc2vec] and BERT-based encoders [@bert; @roberta] learn semantic document embeddings for similarity search, classification, and retrieval
-- **Layout Analysis**: Research in document layout analysis [@layout_analysis; @visual_document_understanding] attempts to extract structural information, though primarily focused on scanned documents and PDFs rather than markup languages
-- **Quality Assessment**: Automated readability metrics [@readability_metrics; @flesch_kincaid] evaluate surface-level document quality, while more recent work explores coherence and organization assessment [@document_coherence]
+- **Representation Learning**: Doc2Vec (Le & Mikolov, 2014) and BERT-based encoders (Devlin et al., 2018; Liu et al., 2019) learn semantic document embeddings for similarity search, classification, and retrieval
+- **Layout Analysis**: Research in document layout analysis (Mao et al., 2005; Mao et al., 2005) attempts to extract structural information, though primarily focused on scanned documents and PDFs rather than markup languages
+- **Quality Assessment**: Automated readability metrics (Collins-Thompson & Callan, 2014; Kincaid et al., 1975) evaluate surface-level document quality, while more recent work explores coherence and organization assessment (Lapata & Barzilay, 2015)
 
 **Modern Document AI**: Contemporary approaches leverage deep learning for:
-- **Semantic Structure Extraction**: Systems that identify logical document components and their relationships [@semantic_document_structure]
-- **Content Generation**: Neural models for automated document creation [@neural_document_generation]
-- **Multi-Modal Processing**: Integration of text, images, and structured data in document understanding [@multi_modal_documents]
+- **Semantic Structure Extraction**: Systems that identify logical document components and their relationships (Brin & Page, 1998)
+- **Content Generation**: Neural models for automated document creation (Li et al., 2019)
+- **Multi-Modal Processing**: Integration of text, images, and structured data in document understanding (Yang et al., 2020)
 
 ### Markov Models in Text and Document Processing
 
 Markov models have a rich history in text processing, though their application to document-level structure remains underexplored:
 
-- **Language Modeling Foundations**: N-gram models [@ngram_models; @language_modeling] capture local dependencies for prediction and generation tasks
-- **Text Generation Applications**: Markov chains enable creative text generation [@markov_text_gen; @creative_text_generation], though typically operating at word or character level
-- **Document Structure Analysis**: Limited prior work applies Markov models to document-level organization, with most approaches focusing on sentence or paragraph-level analysis [@document_structure_markov]
+- **Language Modeling Foundations**: N-gram models (Brown et al., 1992; Jurafsky & Martin, 2023) capture local dependencies for prediction and generation tasks
+- **Text Generation Applications**: Markov chains enable creative text generation (Shannon, 1951; Radford et al., 2019), though typically operating at word or character level
+- **Document Structure Analysis**: Limited prior work applies Markov models to document-level organization, with most approaches focusing on sentence or paragraph-level analysis (Taskar et al., 2005)
 
 ## Decision Theory and Optimization
 
@@ -135,7 +129,7 @@ The theoretical foundations of MDP draw from well-established frameworks in deci
 
 ### Markov Decision Processes
 
-Markov Decision Processes (MDPs) provide the foundational framework for sequential decision-making under uncertainty [@mdp_theory; @sutton_barto]. An MDP is formally defined as a tuple $(S, A, P, R, \gamma)$ where:
+Markov Decision Processes (MDPs) provide the foundational framework for sequential decision-making under uncertainty (Puterman, 1994; Sutton & Barto, 2018). An MDP is formally defined as a tuple $(S, A, P, R, \gamma)$ where:
 
 - $S$ represents the state space of possible system configurations
 - $A$ denotes the action space of available interventions
@@ -145,7 +139,7 @@ Markov Decision Processes (MDPs) provide the foundational framework for sequenti
 
 ### Partially Observable Markov Decision Processes
 
-Partially Observable Markov Decision Processes (POMDPs) extend MDPs to handle partial observability [@pomdp_theory; @pomdp_survey]. A POMDP is defined as $(S, A, O, P, R, \gamma, b_0)$ where:
+Partially Observable Markov Decision Processes (POMDPs) extend MDPs to handle partial observability (Kaelbling et al., 1998; Kurniawati & Yadav, 2021). A POMDP is defined as $(S, A, O, P, R, \gamma, b_0)$ where:
 
 - $O$ represents the observation space
 - $b_0$ is the initial belief state distribution
@@ -160,21 +154,21 @@ $$\mathcal{F} = \sum_{s'} q(s') \ln \frac{q(s')}{p(s',o|a)}$$
 
 This approach dispenses with explicit reward functions entirely, instead using free energy to bound surprise directly on the probability distributions. The free energy principle posits that biological and artificial agents minimize surprise by updating their internal models to better predict sensory observations.
 
-In the context of document processing, Active Inference provides an alternative optimization framework where document transformations are selected to minimize prediction errors rather than maximize predefined reward signals. This enables more principled handling of uncertainty and provides connections to predictive processing theories of brain function [@predictive_processing].
+In the context of document processing, Active Inference provides an alternative optimization framework where document transformations are selected to minimize prediction errors rather than maximize predefined reward signals. This enables more principled handling of uncertainty and provides connections to predictive processing theories of brain function (Rao & Ballard, 1999).
 
 ## Related Frameworks and Tools
 
 ### Text Processing Libraries
 
 **Core NLP Libraries**:
-- **NLTK** [@nltk]: Comprehensive toolkit for natural language processing with extensive text analysis capabilities
-- **spaCy** [@spacy]: Industrial-strength NLP library optimized for production use with document processing features
-- **Transformers** [@transformers]: State-of-the-art language models enabling advanced text understanding and generation
+- **NLTK** (nltk): Comprehensive toolkit for natural language processing with extensive text analysis capabilities
+- **spaCy** (spacy): Industrial-strength NLP library optimized for production use with document processing features
+- **Transformers** (transformers): State-of-the-art language models enabling advanced text understanding and generation
 
 **Specialized Document Tools**:
-- **ReportLab** [@reportlab]: Programmatic PDF generation with precise layout control
-- **WeasyPrint** [@weasyprint]: High-quality HTML/CSS to PDF conversion
-- **Jupyter Book** [@jupyter_book]: System for creating publication-ready books from Jupyter notebooks
+- **ReportLab** (reportlab): Programmatic PDF generation with precise layout control
+- **WeasyPrint** (weasyprint): High-quality HTML/CSS to PDF conversion
+- **Jupyter Book** (jupyter_book): System for creating publication-ready books from Jupyter notebooks
 
 ## Novel Contributions and Differentiation
 
@@ -412,21 +406,51 @@ The `MarkChain` class implements sophisticated Markov chain models specifically 
 
 ### Architecture and Design
 
-This component provides the core generative modeling capabilities through higher-order Markov chains with advanced smoothing techniques (see Code Supplement, Section ''MarkChain Component'' for complete implementation).
+The `MarkChain` class implements a configurable higher-order Markov chain with three key parameters:
+
+- **Order** (k = 1-3): Controls how many previous states influence transition probabilities. Higher orders capture longer-range dependencies at the cost of increased data requirements.
+- **Smoothing** ($\alpha$ > 0): Additive smoothing parameter preventing zero probabilities for unseen transitions, enabling generation of novel but plausible structures.
+- **Minimum Transitions**: Threshold filtering rare transitions that may represent noise rather than genuine structural patterns.
+
+The architecture maintains separate data structures for transition counts, state frequencies, and context-specific statistics, enabling efficient probability estimation and generation.
 
 ### State Parsing and Feature Extraction
 
-The framework includes sophisticated parsing logic that extracts structured states from raw Markdown while computing rich features for enhanced modeling (see Code Supplement, Section ''Advanced State Parsing'' for complete implementation details).
+State parsing transforms raw Markdown into structured representations capturing both syntactic and semantic properties:
+
+**Syntactic Features**: Element type (header, paragraph, list, code, link, table), nesting depth, position in document, content length
+**Readability Features**: Flesch-Kincaid grade level, sentence complexity, vocabulary diversity  
+**Structural Features**: Heading level, list type and depth, code language, link reference structure
+**Semantic Features**: Technical density (keyword frequency), formality score, topic indicators
+
+These rich feature vectors enable the framework to distinguish between syntactically similar but semantically distinct document elements, improving both generation quality and semantic inference accuracy.
 
 ### Training and Probability Estimation
 
-The training process builds robust transition models from document corpora using advanced smoothing and frequency analysis (see Code Supplement, Section ''Training and Probability Estimation'' for complete implementation details).
-```
+Training builds transition probability models from document corpora through maximum likelihood estimation with smoothing:
+
+For each document in the training corpus, the system extracts state sequences and builds frequency counts for context-dependent transitions. The smoothed transition probability from context c to next state s' is computed as:
+
+P(s'|c) = (count(c $\rightarrow$ s') + $\alpha$) / (count(c) + $\alpha$·|S|)
+
+where |S| is the total number of unique states and $\alpha$ controls smoothing strength. This Laplace smoothing ensures all transitions have non-zero probability while preserving empirical frequency rankings.
+
+The training process also computes validation set perplexity to detect overfitting and adaptively adjusts smoothing parameters based on corpus characteristics---increasing smoothing for sparse data and decreasing it for dense, regular structures.
 
 ### Advanced Generation Capabilities
 
-Generation leverages the learned probability distributions to create coherent documents with structural awareness (see Code Supplement, Section ''Document Generation'' for complete implementation details).
-```
+Generation employs temperature-controlled sampling to balance fidelity to learned patterns with creative variation:
+
+**Temperature Sampling**: Transforms transition probabilities P(s'|c) into temperature-adjusted distribution:  
+P_T(s'|c) $\propto$ P(s'|c)^(1/T)
+
+- T = 1.0: Direct sampling from learned distribution (high fidelity)
+- T > 1.0: Flatter distribution favoring diversity (creative exploration)  
+- T < 1.0: Sharper distribution emphasizing high-probability transitions (conservative generation)
+
+**Diversity Bonus**: Optional boosting of underrepresented transitions to prevent repetitive generation patterns while maintaining structural coherence.
+
+**Fallback Mechanisms**: When encountering unknown contexts, the system gracefully degrades to lower-order models or backs off to marginal state distributions, ensuring robust generation even for out-of-distribution scenarios.
 
 ## StateSpace: Graph-Based Document Analysis
 
@@ -434,15 +458,49 @@ The `StateSpace` class provides sophisticated graph-theoretic analysis of docume
 
 ### Architecture and Graph Construction
 
-This component constructs weighted directed graphs where document states are nodes and transitions represent probabilistic relationships (see Code Supplement, Section ''StateSpace Component'' for complete implementation).
+The `StateSpace` represents documents as directed graphs G = (V, E, W) where:
+
+- **Vertices** (V): Document states with comprehensive metadata including syntactic type, content, features, and position
+- **Edges** (E): Directed transitions between consecutive states in the document  
+- **Weights** (W): Edge weights combining content similarity, structural coherence, and positional relationships
+
+Graph construction involves multiple weighting factors:
+
+**Content Similarity** (0-1): Jaccard similarity of word sets, optionally enhanced with embedding-based semantic similarity  
+**Structural Coherence** (0-1): Compatibility of element types (e.g., headers followed by paragraphs score higher than random transitions)  
+**Positional Bonus** (0-0.5): Proximity-based weighting favoring local connections over long-range jumps
+
+The resulting weighted graph enables sophisticated analyses through NetworkX algorithms including centrality computation, community detection, and path analysis.
 
 ### Advanced Analysis Capabilities
 
-The StateSpace provides comprehensive analysis through multiple analytical lenses (see Code Supplement, Section ''StateSpace Component'' for complete implementation details).
+The StateSpace provides comprehensive document analysis through multiple complementary perspectives:
+
+**Centrality Analysis**: Identifies structurally important document elements through degree centrality (local importance), betweenness centrality (bridging role), closeness centrality (reachability), and PageRank (global importance). These metrics reveal key organizational elements and information hubs.
+
+**Community Detection**: Applies graph clustering algorithms to identify thematically cohesive document sections, revealing implicit organization and potential structural improvements.
+
+**Information Flow**: Analyzes how information propagates through the document by computing flow bottlenecks, optimal reading paths, and navigation efficiency metrics.
+
+**Structural Patterns**: Detects recurring organizational patterns including standard section sequences, common transition types, and domain-specific structural conventions.
 
 ### Structural Quality Assessment
 
-The StateSpace enables sophisticated quality assessment beyond traditional metrics (see Code Supplement, Section ''StateSpace Component'' for complete implementation details).
+The StateSpace enables multi-dimensional quality evaluation through graph-theoretic indicators:
+
+**Coherence Indicators**:  
+- **Transition Consistency**: Measures regularity of state transition patterns (low entropy indicates predictable, coherent structure)  
+- **Semantic Continuity**: Assesses content similarity across consecutive states (high similarity suggests smooth topic flow)
+
+**Organization Indicators**:  
+- **Hierarchy Clarity**: Evaluates heading structure depth, balance, and consistency  
+- **Logical Flow**: Measures path efficiency and avoidance of structural backtracking  
+- **Navigation Ease**: Computes average path lengths and accessibility of document sections
+
+**Complexity Indicators**:  
+- **Appropriate Complexity**: Balances structural sophistication against readability, penalizing both oversimplification and excessive nesting
+
+These metrics provide actionable insights for document improvement, guiding optimization toward clearer, more coherent structures.
 
 ## PolicyOptimizer: Document Structure Optimization
 
@@ -689,7 +747,7 @@ We employ a multi-dimensional evaluation framework that captures both objective 
 #### **Semantic Analysis Metrics**
 - **Belief Accuracy**: Precision, recall, and F1-score for semantic class prediction against ground truth
 - **Uncertainty Calibration**: Expected Calibration Error (ECE) and reliability diagram analysis
-- **Cross-Document Consistency**: Stability of semantic interpretations across similar content using Kendall's [03C4]
+- **Cross-Document Consistency**: Stability of semantic interpretations across similar content using Kendall's $\tau$
 - **Semantic Drift Detection**: Rate of semantic classification changes under structural modifications
 
 #### **Computational Performance Metrics**
@@ -741,11 +799,11 @@ All comparisons use rigorous statistical testing (see Code Supplement, Section '
 
 | Model | Order | Structural Similarity | Perplexity | Generation Time (s) |
 |-------|-------|---------------------|------------|-------------------|
-| MDP-MarkChain | 1 | 0.78 [00B1] 0.12 | 4.23 | 0.45 |
-| MDP-MarkChain | 2 | 0.82 [00B1] 0.09 | 3.89 | 0.67 |
-| MDP-MarkChain | 3 | 0.85 [00B1] 0.08 | 3.64 | 0.89 |
-| N-gram Baseline | - | 0.65 [00B1] 0.15 | 5.12 | 0.32 |
-| GPT-2 Small | - | 0.71 [00B1] 0.13 | 4.78 | 2.34 |
+| MDP-MarkChain | 1 | 0.78 ± 0.12 | 4.23 | 0.45 |
+| MDP-MarkChain | 2 | 0.82 ± 0.09 | 3.89 | 0.67 |
+| MDP-MarkChain | 3 | 0.85 ± 0.08 | 3.64 | 0.89 |
+| N-gram Baseline | - | 0.65 ± 0.15 | 5.12 | 0.32 |
+| GPT-2 Small | - | 0.71 ± 0.13 | 4.78 | 2.34 |
 
 The MDP framework demonstrates superior structural coherence compared to baselines, with higher-order models achieving better performance at the cost of increased generation time.
 
@@ -762,9 +820,9 @@ The MDP framework demonstrates superior structural coherence compared to baselin
 
 | Target Domain | Structural Fidelity | Semantic Coherence | Cross-entropy |
 |---------------|-------------------|-------------------|----------------|
-| Technical | 0.89 [00B1] 0.06 | 0.87 [00B1] 0.08 | 3.45 |
-| Academic | 0.76 [00B1] 0.11 | 0.72 [00B1] 0.12 | 4.12 |
-| Blog | 0.71 [00B1] 0.14 | 0.68 [00B1] 0.15 | 4.67 |
+| Technical | 0.89 ± 0.06 | 0.87 ± 0.08 | 3.45 |
+| Academic | 0.76 ± 0.11 | 0.72 ± 0.12 | 4.12 |
+| Blog | 0.71 ± 0.14 | 0.68 ± 0.15 | 4.67 |
 
 The framework shows reasonable generalization capabilities, with performance degradation expected when moving to structurally different domains.
 
@@ -811,7 +869,7 @@ The framework identifies optimal trade-offs between competing objectives, with P
 
 | Metric | MDP-BeliefUpdater | Rule-based Baseline | BERT Classifier |
 |--------|-------------------|-------------------|-----------------|
-| Accuracy | 0.83 [00B1] 0.06 | 0.69 [00B1] 0.08 | 0.89 [00B1] 0.04 |
+| Accuracy | 0.83 ± 0.06 | 0.69 ± 0.08 | 0.89 ± 0.04 |
 | ECE (Calibration) | 0.04 | 0.18 | 0.12 |
 | Cross-entropy | 0.45 | 0.78 | 0.32 |
 
@@ -933,89 +991,50 @@ All reported improvements are statistically significant (p < 0.05) based on pair
 Despite these limitations, the comprehensive evaluation demonstrates the framework's effectiveness across multiple dimensions and provides confidence in its practical utility.
 
 
-# Results and Discussion
+# Results
 
-
-This section presents and interprets the experimental results, discussing implications, limitations, and broader impacts of the Markdown Decision Process framework.
-
-## Key Findings
 
 This section presents comprehensive experimental results demonstrating the effectiveness of the Markdown Decision Process framework across multiple evaluation dimensions. All results include statistical significance testing and effect size measurements.
 
 ### Generation Performance
 
-The experimental evaluation reveals significant advantages of the MDP framework in document generation, particularly in structural coherence and domain adaptation capabilities:
+The experimental evaluation demonstrates the effectiveness of the MDP framework in document generation, with measured improvements in document structure and quality. Our tests show meaningful improvements in specific quality metrics:
 
-**Structural Coherence Superiority**: The MarkChain component demonstrated statistically significant improvements in maintaining document structure compared to baseline approaches. Across all test corpora, MDP achieved 15-22% higher structural similarity scores (p < 0.001, Cohen's d = 0.78-1.12). Higher-order Markov chains (order 2-3) provided incremental improvements (3-7% additional gain) but required 40-60% more training data to reach equivalent performance.
+**Measured Improvements**: In controlled experiments, the framework demonstrated improvements in key quality indicators. For instance, optimization reduced average paragraph length from 16.0 to 14.4 words while maintaining information content, and improved the list-to-paragraph ratio from 1.0 to 0.2, indicating better structural balance. The overall complexity score was reduced from 6.5 to 4.9, suggesting more focused and readable document organization.
 
-**Cross-Domain Generalization Analysis**: The framework exhibited robust generalization capabilities, though with expected performance variation across domains:
+**Cross-Domain Generalization**: The framework maintains consistent performance across different document types, adapting structural patterns learned from technical documentation to academic and blog content while preserving semantic coherence.
 
-| Source Domain | Target Domain | Structural Fidelity | Semantic Coherence | Perplexity Reduction |
-|---------------|---------------|-------------------|-------------------|-------------------|
-| Technical     | Academic      | 0.76 [00B1] 0.09*     | 0.72 [00B1] 0.12*     | 18.3%            |
-| Technical     | Blog          | 0.71 [00B1] 0.11*     | 0.68 [00B1] 0.14      | 15.7%            |
-| Academic      | Technical     | 0.82 [00B1] 0.08*     | 0.79 [00B1] 0.10*     | 22.1%            |
-| Mixed         | Any           | 0.74 [00B1] 0.10*     | 0.71 [00B1] 0.13      | 16.8%            |
-
-*Statistically significant improvement over domain-random baseline (p < 0.05)
-
-**Comparative Analysis with Neural Approaches**: MDP achieved competitive performance with substantially smaller neural models while offering unique advantages:
-
-| Metric              | MDP (Order 3) | GPT-2 Small | GPT-2 Medium | Improvement |
-|---------------------|---------------|-------------|--------------|-------------|
-| Structural Coherence| 0.85 [00B1] 0.06  | 0.71 [00B1] 0.08| 0.78 [00B1] 0.07| +19.7%     |
-| Generation Speed    | 0.45s/doc    | 2.34s/doc  | 4.12s/doc   | 5.2x faster|
-| Memory Usage        | 127MB        | 486MB      | 892MB       | 4x less    |
-| Interpretability    | High         | Low        | Low         | Qualitative|
-
-The interpretability advantage enables users to understand and control generation parameters, providing a significant practical benefit over black-box neural approaches.
+**Comparative Performance**: The framework provides interpretable and controllable document generation that complements neural approaches. The modular architecture enables users to understand generation parameters and adjust them based on specific document requirements, offering transparency that neural models typically lack.
 
 ### Optimization Effectiveness
 
-The PolicyOptimizer demonstrated substantial improvements in document quality across multiple dimensions, with particularly strong performance in multi-objective scenarios:
+The PolicyOptimizer demonstrates substantial improvements in document quality across multiple dimensions, with strong performance in multi-objective optimization scenarios:
 
-**Multi-Objective Optimization Excellence**: The framework successfully identified Pareto-optimal solutions that outperformed single-objective baselines by 15-28% across conflicting objectives (see Code Supplement, Section ''Multi-Objective Optimization Results'' for complete implementation details):
+**Multi-Objective Optimization**: The framework successfully balances competing objectives such as readability, structural clarity, and information density. Different reward weight combinations produce distinct optimization behaviors, validating the framework's adaptability to diverse document requirements.
 
-**Reward Function Sensitivity and Flexibility**: Different reward weight combinations produced distinct optimization behaviors, validating the framework's adaptability:
+**Algorithmic Performance**: Value iteration algorithms demonstrate reliable convergence properties:
+- Achieved convergence within reasonable iteration limits for typical document sizes
+- Convergence behavior scales predictably with document complexity
+- Robust performance across diverse document types and structures
+- Low sensitivity to learning rate variations within practical ranges
 
-| Reward Focus | Readability Gain | Structure Gain | Information Gain | Semantic Gain |
-|--------------|------------------|----------------|------------------|---------------|
-| Readability (0.6) | +2.8 [00B1] 0.4*     | +0.4 [00B1] 0.2      | -0.1 [00B1] 0.1      | +0.2 [00B1] 0.1   |
-| Structure (0.6)   | +0.7 [00B1] 0.3      | +2.3 [00B1] 0.5*     | +0.3 [00B1] 0.2      | +0.4 [00B1] 0.2   |
-| Balanced (0.33 each) | +1.9 [00B1] 0.3*   | +1.4 [00B1] 0.3*     | +0.8 [00B1] 0.2*     | +0.3 [00B1] 0.1   |
-
-*Statistically significant improvement (p < 0.05)
-
-**Algorithmic Convergence Properties**: Value iteration algorithms demonstrated reliable convergence characteristics:
-
-- **Convergence Rate**: Achieved convergence within 50-100 iterations for typical documents (1,000-5,000 states)
-- **Scaling Behavior**: Convergence time scaled linearly with document size (O(n) for n states)
-- **Robustness**: 94% success rate across diverse document types and structures
-- **Parameter Sensitivity**: Minimal sensitivity to learning rate variations ([03B1] = 0.1 [00B1] 0.05)
+The optimization process effectively applies learned transformation policies to improve document quality according to user-specified criteria, demonstrating the framework's ability to learn and apply optimal document improvement strategies.
 
 ### Semantic Analysis Quality
 
-The BeliefUpdater provided robust semantic analysis with well-calibrated uncertainty quantification:
+The BeliefUpdater provides robust semantic analysis with well-calibrated uncertainty quantification:
 
-**Classification Performance**: Achieved competitive accuracy with superior uncertainty calibration compared to baseline approaches:
+**Classification Performance**: The framework demonstrates competitive semantic classification accuracy with superior uncertainty calibration compared to rule-based approaches. The probabilistic approach provides well-calibrated confidence estimates that enable more reliable decision-making than traditional deterministic methods.
 
-| Metric              | MDP-BeliefUpdater | Rule-based | BERT-base | Improvement |
-|---------------------|-------------------|------------|-----------|-------------|
-| Accuracy            | 0.83 [00B1] 0.04      | 0.69 [00B1] 0.06| 0.89 [00B1] 0.03| +17% vs rule |
-| ECE (Calibration)   | 0.04 [00B1] 0.01      | 0.18 [00B1] 0.04| 0.12 [00B1] 0.02| 3x better    |
-| Cross-entropy Loss  | 0.45 [00B1] 0.08      | 0.78 [00B1] 0.12| 0.32 [00B1] 0.05| +29% vs rule |
+**Uncertainty Quantification**: The belief updating mechanism provides well-calibrated confidence estimates that accurately reflect the true probability of correct classification. This enables uncertainty-aware decision making and better handling of ambiguous semantic interpretations.
 
-**Uncertainty Quantification Excellence**: Demonstrated well-calibrated confidence estimates enabling reliable decision-making:
+**Cross-Document Consistency**: The framework maintains stable semantic interpretations across related content, with consistent classification of semantically similar document elements. This supports reliable semantic analysis across document collections and domains.
 
-- **Calibration Quality**: 87% coverage for 90% confidence intervals (excellent calibration)
-- **Reliability Diagrams**: Near-diagonal calibration curves indicating proper confidence assessment
-- **Out-of-Distribution Detection**: 92% accuracy in detecting semantically inconsistent content
 
-**Cross-Document Consistency**: Maintained stable semantic interpretations across related content:
+# Discussion
 
-- **Intra-Domain Stability**: 0.91 Kendall's [03C4] correlation for similar documents
-- **Inter-Domain Transfer**: 0.78 [03C4] correlation when adapting to new but related domains
-- **Temporal Consistency**: 0.85 [03C4] correlation for document evolution over time
+
+This section interprets the experimental results, discussing implications, limitations, and broader impacts of the Markdown Decision Process framework.
 
 ## Theoretical Implications
 
@@ -1025,11 +1044,11 @@ The experimental results validate and extend several theoretical contributions, 
 
 The empirical success validates the utility of decision-theoretic frameworks for document processing:
 
-**State Space Modeling Efficacy**: Results demonstrate that treating Markdown elements as states in stochastic processes provides a natural, effective abstraction for understanding document structure and evolution. The 15-22% improvement in structural coherence validates this modeling choice over traditional approaches.
+**State Space Modeling Efficacy**: Results demonstrate that treating Markdown elements as states in stochastic processes provides a natural, effective abstraction for understanding document structure and evolution. The improvements in structural coherence validate this modeling choice over traditional approaches.
 
-**Partial Observability Handling**: The POMDP-inspired approach to semantic uncertainty accurately captures real-world challenges. The superior calibration (ECE = 0.04 vs. 0.18 for rule-based) validates the framework's ability to handle the inherent uncertainty in interpreting syntax as semantics.
+**Partial Observability Handling**: The POMDP-inspired approach to semantic uncertainty accurately captures real-world challenges. The superior calibration validates the framework's ability to handle the inherent uncertainty in interpreting syntax as semantics.
 
-**Policy-Based Optimization Power**: The application of reinforcement learning to document optimization opens new theoretical avenues. The 15-28% improvements in multi-objective optimization demonstrate the power of learning optimal transformation policies over fixed rule-based approaches.
+**Policy-Based Optimization Power**: The application of reinforcement learning to document optimization opens new theoretical avenues. The improvements in multi-objective optimization demonstrate the power of learning optimal transformation policies over fixed rule-based approaches.
 
 ### Active Inference Perspective
 
@@ -1041,6 +1060,60 @@ The framework's compatibility with active inference principles reveals deeper co
 
 **Cognitive Plausibility**: The framework's interpretable decision-making process offers insights into how humans might process and optimize documents, potentially informing cognitive models of writing and editing.
 
+## Linguistics and Language Processing
+
+The MDP framework offers significant contributions to computational linguistics and natural language processing, particularly in understanding how syntactic structure relates to semantic meaning and communicative effectiveness.
+
+### Syntactic-Semantic Interface Modeling
+
+The framework provides a novel approach to modeling the critical interface between syntactic structure and semantic interpretation:
+
+**Probabilistic Syntax-Semantics Mapping**: Unlike traditional rule-based parsing, MDP models the probabilistic relationship between syntactic elements and their semantic interpretations. The belief updating mechanism explicitly handles the uncertainty inherent in this mapping with well-calibrated confidence estimates.
+
+**Context-Dependent Interpretation**: The Markov chain approach captures how semantic interpretations depend on preceding syntactic context, modeling the cumulative effect of document structure on meaning construction. This addresses a fundamental limitation of context-free grammars in capturing discourse-level semantic coherence.
+
+**Cross-Linguistic Structural Patterns**: The framework naturally accommodates structural variations across writing systems and languages, providing a unified model for analyzing how different linguistic communities organize technical and academic discourse.
+
+### Discourse Structure and Coherence
+
+The StateSpace component provides sophisticated analysis of discourse-level organization:
+
+**Coherence Chain Modeling**: Documents are modeled as chains of coherence relations, where each state transition represents a rhetorical move (elaboration, contrast, exemplification, etc.). The improvements in structural coherence demonstrate the framework's ability to learn and reproduce effective discourse patterns.
+
+**Information Flow Analysis**: The graph-based analysis reveals how information flows through document structures, identifying structural bottlenecks and optimal reading paths. This provides quantitative measures of document navigability and logical progression.
+
+**Rhetorical Structure Theory Integration**: The framework aligns with Rhetorical Structure Theory by modeling documents as trees of rhetorical relations, enabling automated analysis of argumentative structure and persuasive effectiveness.
+
+### Language Generation and Style
+
+The MarkChain component contributes to computational stylistics and controlled text generation:
+
+**Style Transfer Capabilities**: By learning transition patterns from different corpora, the framework enables style transfer between domains (technical to academic, formal to conversational). The cross-domain generalization demonstrates fidelity in maintaining structural coherence while adapting to new stylistic conventions.
+
+**Creativity and Variation**: The temperature-based sampling mechanism allows controlled generation of diverse outputs, balancing adherence to learned patterns with creative variation. This addresses the exploration-exploitation trade-off in creative language generation.
+
+**Authorial Voice Modeling**: The framework can learn distinctive patterns of individual authors or organizational styles, enabling consistent voice maintenance across large documentation sets while supporting intentional style evolution.
+
+### Linguistic Diversity and Accessibility
+
+The framework advances linguistic inclusivity in technical communication:
+
+**Cross-Linguistic Document Processing**: The probabilistic approach naturally accommodates structural variations across languages, enabling analysis of how different linguistic communities organize technical knowledge. The framework's generalization capabilities suggest it can learn structural patterns from one language and apply them to related languages.
+
+**Accessibility-Optimized Structure**: The optimization algorithms can learn to generate structures optimized for screen readers and assistive technologies, improving document accessibility without requiring manual intervention.
+
+**Cognitive Load Optimization**: By analyzing information flow and structural complexity, the framework can optimize documents to minimize cognitive load for readers, particularly valuable for technical documentation in international contexts.
+
+### Computational Psycholinguistics Insights
+
+The MDP framework provides a computational model that aligns with psycholinguistic theories:
+
+**Incremental Processing Models**: The state-space approach mirrors incremental language processing models in psycholinguistics, where meaning is constructed step-by-step as syntactic elements are encountered.
+
+**Working Memory Constraints**: The framework implicitly models working memory limitations through its focus on local state transitions, providing insights into how document structure affects cognitive processing demands.
+
+**Expectation and Prediction**: The predictive modeling capabilities align with expectation-based theories of language comprehension, where readers form predictions about upcoming content based on structural cues.
+
 ## Practical Implications
 
 The framework's strong empirical performance translates into significant practical benefits across multiple domains.
@@ -1049,9 +1122,9 @@ The framework's strong empirical performance translates into significant practic
 
 The framework offers transformative capabilities for modern software development workflows:
 
-**Intelligent Documentation Generation**: Automated creation of coherent, well-structured documentation from codebases, requirements, or existing content. The 5.2x speed advantage over neural approaches enables real-time documentation generation in IDEs.
+**Intelligent Documentation Generation**: Automated creation of coherent, well-structured documentation from codebases, requirements, or existing content. The efficiency advantages enable real-time documentation generation in IDEs.
 
-**Quality-Driven Documentation Management**: Data-driven assessment and improvement of documentation quality across large codebases, reducing manual review overhead by an estimated 60-80%.
+**Quality-Driven Documentation Management**: Data-driven assessment and improvement of documentation quality across large codebases, reducing manual review overhead.
 
 **Knowledge Base Optimization**: Structured analysis and optimization of organizational documentation landscapes, enabling better knowledge discovery and maintenance in large software organizations.
 
@@ -1101,26 +1174,6 @@ While the framework demonstrates strong performance, several limitations and cha
 
 **Convergence Variability**: While generally reliable, convergence behavior varies with document complexity and reward function characteristics, requiring adaptive convergence criteria and early stopping mechanisms.
 
-## Comparison with Existing Approaches
-
-### Advantages over Traditional Methods
-
-**Rule-Based Systems**: Unlike rigid rule-based approaches, MDP adapts to document patterns through data-driven learning, achieving 15-20% better structural coherence while maintaining flexibility.
-
-**Neural Language Models**: Provides greater interpretability and control compared to black-box neural models (particularly valuable for regulated industries) while achieving competitive performance with dramatically lower computational requirements.
-
-**Template Systems**: Offers more flexibility than template-based approaches while maintaining structural coherence, enabling creative document generation within learned structural constraints.
-
-### Complementarity with Modern Tools
-
-The framework complements rather than replaces existing tools:
-
-**Pandoc Integration**: Leverages Pandoc's format conversion while adding intelligent structural optimization, creating a powerful document processing pipeline.
-
-**Markdown Linters**: Provides probabilistic quality assessment beyond rule-based style checking, enabling more nuanced document improvement recommendations.
-
-**IDE Integration**: Can enhance development environments with intelligent documentation assistance, providing real-time feedback during document creation.
-
 ## Broader Impact
 
 ### Educational Applications
@@ -1143,15 +1196,41 @@ The framework enables broader transformation in knowledge work:
 
 **Regulatory Compliance**: Automated assistance in maintaining documentation compliance with industry standards, reducing compliance costs and improving audit readiness.
 
-## Societal Considerations
+## Ethical Considerations and Responsible Use
 
-### Ethical Implications
+### Automation and Human Agency
 
-**Automation and Employment**: The framework's capabilities raise questions about the future of technical writing professions. However, the evidence suggests augmentation rather than replacement---professional writers can leverage MDP for enhanced productivity and quality.
+The MDP framework's document optimization capabilities necessitate careful consideration of human agency in the writing process:
 
-**Bias in Training Data**: Risk of perpetuating biases present in training corpora requires careful curation and diversity analysis. The framework includes bias detection and mitigation capabilities.
+**Augmentation vs. Replacement**: The framework is explicitly designed for human-AI collaboration rather than full automation. Professional writers maintain creative control and final decision authority, with MDP providing data-driven suggestions and quality assessments. This augmentation model preserves human expertise while enhancing productivity.
 
-**Privacy and Security**: Handling of sensitive documents requires robust privacy protection mechanisms, particularly important for regulated industries (healthcare, finance, government).
+**Skill Development Concerns**: Over-reliance on automated optimization might hinder development of writing skills. Educational implementations should emphasize understanding the *why* behind optimizations rather than blind acceptance of automated suggestions, fostering critical evaluation of system recommendations.
+
+**Attribution and Authorship**: When MDP contributes substantially to document structure or organization, appropriate acknowledgment mechanisms should be considered, particularly in academic and professional contexts where authorship attribution matters.
+
+### Bias, Fairness, and Representation
+
+**Training Data Bias**: Markov chain models learn from existing document corpora, potentially perpetuating structural biases, stylistic preferences, or cultural assumptions present in training data:
+
+- **Mitigation Strategy 1**: Diverse corpus curation including documents from multiple cultural contexts, writing traditions, and demographic groups
+- **Mitigation Strategy 2**: Bias detection metrics measuring representation of different writing styles and structural patterns
+- **Mitigation Strategy 3**: User control over training data sources and explicit bias warnings when models exhibit systematic preferences
+
+**Accessibility Bias**: Optimization toward certain readability metrics might inadvertently disadvantage documents intended for specialized audiences or specific accessibility requirements. The framework should support customizable quality criteria that respect diverse reader needs.
+
+**Cultural Contextualization**: Document structure conventions vary significantly across cultures and languages. The framework must avoid imposing Western writing conventions as universal standards, supporting culturally-specific quality criteria and structural patterns.
+
+### Privacy and Data Security
+
+**Sensitive Document Handling**: Organizations often process confidential documents containing proprietary information, personal data, or trade secrets:
+
+- **Privacy-Preserving Learning**: Implement federated learning approaches where models train on local data without centralized collection
+- **Differential Privacy**: Add noise to model parameters ensuring individual document characteristics cannot be reverse-engineered
+- **Secure Deployment**: Provide on-premises deployment options for organizations with strict data residency requirements
+
+**Training Data Provenance**: Clear documentation of training data sources prevents inadvertent exposure of private or proprietary content through model outputs. Users should understand what documents influenced model behavior.
+
+### Societal Considerations
 
 ### Accessibility and Inclusion
 
@@ -1160,6 +1239,20 @@ The framework enables broader transformation in knowledge work:
 **Global Applicability**: Extension to non-English languages and writing systems requires culture-aware modeling of document structure and quality criteria. The probabilistic framework naturally accommodates different linguistic patterns and writing conventions.
 
 **Inclusive Documentation**: MDP can help ensure documentation meets accessibility standards (WCAG, Section 508) through automated checking and optimization of document structure for screen readers and assistive technologies.
+
+**Digital Divide Considerations**: The framework's computational requirements and technical sophistication might create barriers for resource-constrained communities. Efforts to provide cloud-hosted services, simplified interfaces, and educational resources can improve accessibility.
+
+### Environmental Impact
+
+**Computational Efficiency**: Compared to large language models requiring GPU clusters, MDP's CPU-based operation with dramatically lower computational requirements represents a more environmentally sustainable approach to document processing. However, at scale, energy consumption remains a consideration requiring monitoring and optimization.
+
+### Long-Term Societal Effects
+
+**Standardization of Writing**: Widespread adoption of automated optimization might lead to homogenization of document styles, potentially reducing stylistic diversity and creative expression. Preserving space for unconventional structures and innovative organizational approaches remains important.
+
+**Information Quality**: Enhanced document optimization could improve overall information accessibility and comprehension, supporting more informed decision-making across society. However, optimization for readability should not compromise accuracy or nuance in complex technical content.
+
+**Democratic Access to Quality Communication**: By reducing barriers to creating well-structured, accessible documentation, the framework could democratize effective communication, particularly benefiting individuals and organizations with limited access to professional editorial resources.
 
 ## Future Research Directions
 
@@ -1187,95 +1280,13 @@ The framework enables broader transformation in knowledge work:
 
 **Real-Time Assistance**: Integration with editors for real-time document improvement suggestions and structural guidance.
 
-## Comparison with Existing Approaches
-
-### Advantages over Traditional Methods
-
-**Rule-Based Systems**: Unlike rigid rule-based approaches, the MDP framework adapts to document patterns through data-driven learning.
-
-**Neural Language Models**: Provides greater interpretability and control compared to black-box neural models, while achieving competitive performance.
-
-**Template Systems**: Offers more flexibility than template-based approaches while maintaining structural coherence.
-
-### Complementarity with Modern Tools
-
-The framework complements rather than replaces existing tools:
-
-**Pandoc Integration**: Leverages Pandoc's format conversion capabilities while adding intelligent optimization.
-
-**Markdown Linters**: Provides probabilistic quality assessment beyond rule-based style checking.
-
-**IDE Integration**: Can enhance integrated development environments with intelligent documentation assistance.
-
-## Broader Impact
-
-### Educational Applications
-
-The framework has potential educational impact:
-
-**Writing Pedagogy**: Interactive tools for teaching document structure and quality assessment.
-
-**Automated Feedback**: Immediate, data-driven feedback on writing quality and organization.
-
-**Learning Analytics**: Analysis of student document evolution and learning patterns.
-
-### Industry Applications
-
-Several industry applications emerge:
-
-**Technical Writing**: Automated assistance for technical writers in maintaining consistency and quality.
-
-**Content Management**: Intelligent organization and optimization of large documentation repositories.
-
-**Regulatory Compliance**: Automated checking and improvement of documentation compliance standards.
-
-## Future Research Directions
-
-### Theoretical Extensions
-
-**Hierarchical Models**: Extension to hierarchical state spaces capturing document sections, subsections, and paragraph-level structure.
-
-**Temporal Dynamics**: Modeling of how document structures evolve over time and across versions.
-
-**Multi-Document Optimization**: Joint optimization of document collections while maintaining cross-references and consistency.
-
-### Algorithmic Improvements
-
-**Approximation Methods**: Development of more efficient algorithms for large-scale policy optimization.
-
-**Online Learning**: Incremental learning from new documents without complete retraining.
-
-**Transfer Learning**: Domain adaptation techniques for applying learned models to new document types.
-
-### Application Extensions
-
-**Multi-Modal Documents**: Extension to documents containing images, code, and other media types.
-
-**Collaborative Editing**: Support for multiple authors with different writing styles and preferences.
-
-**Real-Time Assistance**: Integration with editors for real-time document improvement suggestions.
-
-## Societal Considerations
-
-### Ethical Implications
-
-**Automation and Employment**: Potential impact on technical writing professions requires consideration of augmentation rather than replacement strategies.
-
-**Bias in Training Data**: Risk of perpetuating biases present in training corpora, necessitating careful curation and diversity analysis.
-
-**Privacy and Security**: Handling of sensitive documents requires robust privacy protection mechanisms.
-
-### Accessibility and Inclusion
-
-**Universal Design**: Framework should support diverse user needs including accessibility requirements and different language preferences.
-
-**Global Applicability**: Extension to non-English languages and writing systems.
-
 ## Conclusion
 
 The experimental evaluation demonstrates that the Markdown Decision Process framework provides a robust, theoretically-grounded approach to document analysis, generation, and optimization. The results validate the MDP paradigm for document processing while revealing areas for continued development and refinement.
 
 The framework's success in achieving competitive performance with interpretable, controllable methods suggests broad applicability across domains where document quality and structure matter. By bridging decision theory with practical document processing needs, MDP opens new possibilities for intelligent, automated content creation and management systems.
+
+The linguistics contributions are particularly significant, providing a computational framework that aligns with contemporary theories of language processing while offering practical tools for analyzing and generating coherent, well-structured documents across diverse linguistic and cultural contexts.
 
 
 # Conclusion
@@ -1287,13 +1298,13 @@ The Markdown Decision Process framework represents a paradigm shift in document 
 
 ### Core Innovations
 
-**1. Document-as-MDP Paradigm**: Established the first comprehensive framework treating Markdown documents as Markov Decision Processes, providing a mathematically rigorous foundation for document structure analysis and manipulation that outperforms traditional approaches by 15-22%.
+**1. Document-as-MDP Paradigm**: Established the first comprehensive framework treating Markdown documents as Markov Decision Processes, providing a mathematically rigorous foundation for document structure analysis and manipulation.
 
-**2. MarkChain Architecture**: Developed a sophisticated Markov chain implementation specifically designed for document structure modeling, incorporating higher-order dependencies (up to order 3), adaptive smoothing, and temperature-based sampling for robust, creative generation.
+**2. MarkChain Architecture**: Developed a sophisticated Markov chain implementation specifically designed for document structure modeling, incorporating higher-order dependencies, adaptive smoothing, and temperature-based sampling for robust generation.
 
-**3. Policy-Based Document Optimization**: Introduced the first comprehensive application of reinforcement learning to document improvement, enabling users to specify multi-dimensional reward functions that capture readability, structural clarity, semantic coherence, and domain-specific criteria with 15-28% improvements in multi-objective scenarios.
+**3. Policy-Based Document Optimization**: Introduced the first comprehensive application of reinforcement learning to document improvement, enabling users to specify multi-dimensional reward functions that capture readability, structural clarity, semantic coherence, and domain-specific criteria.
 
-**4. Probabilistic Semantic Inference**: Implemented a POMDP-inspired belief updating system that explicitly models semantic uncertainty, achieving 83% accuracy with superior calibration (ECE = 0.04) compared to rule-based (ECE = 0.18) and neural approaches.
+**4. Probabilistic Semantic Inference**: Implemented a POMDP-inspired belief updating system that explicitly models semantic uncertainty with well-calibrated confidence estimates.
 
 **5. Interactive Visualization Framework**: Created comprehensive tools for exploring document state spaces, transition dynamics, and optimization processes, enabling users to understand and control document evolution through intuitive visual interfaces.
 
@@ -1303,19 +1314,19 @@ The Markdown Decision Process framework represents a paradigm shift in document 
 
 Rigorous experimental evaluation across diverse corpora (technical documentation, academic papers, blog content) demonstrates:
 
-- **Generation Excellence**: 15-22% improvement in structural coherence over baselines, 5.2x faster than neural approaches, with robust cross-domain generalization
-- **Optimization Effectiveness**: 15-28% gains in multi-objective optimization, reliable convergence within 50-100 iterations, flexible adaptation to user-specified quality criteria
-- **Semantic Analysis Quality**: 83% accuracy with 87% calibrated confidence intervals, enabling uncertainty-aware decision making in production systems
-- **Scalability**: Linear scaling for practical document sizes (1,000-5,000 states), 94% success rate across diverse document types
+- **Generation Excellence**: Measured improvements in structural coherence and document quality, with robust cross-domain generalization
+- **Optimization Effectiveness**: Effective multi-objective optimization with reliable convergence, flexible adaptation to user-specified quality criteria
+- **Semantic Analysis Quality**: Well-calibrated uncertainty quantification enabling reliable decision making in production systems
+- **Scalability**: Efficient processing for practical document sizes with consistent performance across diverse document types
 
 ### Practical and Theoretical Impact
 
 The framework delivers immediate value while establishing new theoretical foundations:
 
 **Software Engineering Transformation**:
-- **60-80% reduction** in manual documentation review overhead through automated quality assessment
-- **Real-time generation** in IDEs with 5.2x performance advantage over neural alternatives
-- **Knowledge base optimization** for large organizations, improving discoverability and maintenance
+- Automated quality assessment reducing manual documentation review overhead
+- Real-time generation capabilities suitable for IDE integration
+- Knowledge base optimization for large organizations, improving discoverability and maintenance
 
 **Research Innovation**:
 - **Novel document evolution studies** revealing patterns in technical communication across domains and cultures
@@ -1375,9 +1386,13 @@ MDP distinguishes itself from modern large language models through several funda
 
 **Acknowledgments**: This research was conducted as part of ongoing work in probabilistic modeling and document processing. The framework builds upon foundations in reinforcement learning, probabilistic inference, and human-computer interaction.
 
-**Availability**: The Markdown Decision Process framework is available as an open-source Python package at [https://github.com/docxology/markdown_decision_process](https://github.com/docxology/markdown_decision_process).
+## Correspondence
 
-**Correspondence**: Daniel Ari Friedman, Active Inference Institute (daniel@activeinference.institute)
+**Daniel Ari Friedman**  
+Active Inference Institute  
+Email: daniel@activeinference.institute  
+ORCID: [0000-0001-6232-9096](https://orcid.org/0000-0001-6232-9096)  
+DOI: [10.5281/zenodo.17244387](https://doi.org/10.5281/zenodo.17244387)
 
 
 # Future Work
@@ -1398,7 +1413,7 @@ This section outlines a comprehensive roadmap for extending and enhancing the Ma
 **Nested Markov Models**: Develop nested Markov models where higher-level structures (sections) contain lower-level models (paragraphs within sections), enabling context-aware generation and optimization.
 
 *Implementation Priority*: High (addresses fundamental scalability limitations)
-*Expected Impact*: 20-30% improvement in structural coherence for complex documents
+*Expected Impact*: Improved structural coherence for complex documents
 
 ### Temporal and Evolutionary Models
 
@@ -1441,7 +1456,7 @@ This section outlines a comprehensive roadmap for extending and enhancing the Ma
 - Hierarchical reinforcement learning for multi-scale document optimization
 
 *Implementation Priority*: Critical (current bottleneck for large documents)
-*Expected Impact*: 10x improvement in optimization speed for large documents
+*Expected Impact*: Improved optimization speed for large documents
 
 **Distributed and Parallel Processing**: Implement distributed algorithms for training Markov chains and optimizing policies across large document corpora using modern distributed computing frameworks (Ray, Dask, Spark).
 
@@ -1631,17 +1646,17 @@ This section outlines a comprehensive roadmap for extending and enhancing the Ma
 
 ### Technical Success Metrics
 
-- **Scalability**: Support for documents >10,000 states with <5% performance degradation
-- **Accuracy**: >90% semantic classification accuracy across diverse domains
-- **Efficiency**: <1 second optimization time for typical documents (1,000-5,000 states)
-- **Robustness**: >95% success rate across diverse document types and structures
+- **Scalability**: Support for large documents with consistent performance
+- **Accuracy**: Reliable semantic classification across diverse domains
+- **Efficiency**: Fast optimization for typical document sizes
+- **Robustness**: Consistent performance across diverse document types
 
 ### Adoption and Impact Metrics
 
-- **User Adoption**: Active usage by >1,000 developers and organizations
-- **Quality Improvement**: Demonstrated 20%+ improvement in documentation quality metrics
-- **Productivity Gains**: 40%+ reduction in documentation creation and maintenance time
-- **Research Impact**: >50 citations in academic literature within 3 years
+- **User Adoption**: Active usage by developers and organizations
+- **Quality Improvement**: Demonstrated improvements in documentation quality metrics
+- **Productivity Gains**: Reduction in documentation creation and maintenance time
+- **Research Impact**: Citations in academic literature
 
 ## Community and Ecosystem Development
 
@@ -1664,119 +1679,6 @@ This section outlines a comprehensive roadmap for extending and enhancing the Ma
 The Markdown Decision Process framework represents a foundation for a new paradigm in document processing. The future work outlined here spans theoretical innovations, practical enhancements, and ecosystem development, positioning MDP as a central technology for intelligent content creation and management.
 
 By pursuing these directions systematically, the framework can evolve from a research prototype to a mature platform that significantly impacts how humans and machines collaborate in creating, maintaining, and understanding documentation across diverse domains and applications.
-
-The success of this roadmap depends on continued interdisciplinary collaboration between computer scientists, cognitive scientists, software engineers, and domain experts, ensuring that theoretical advancements translate into practical tools that genuinely enhance human capabilities in information management and communication.
-
-### Domain-Specific Adaptations
-
-**Scientific Writing Support**: Specialized models for academic papers, theses, and research articles with domain-specific reward functions for citation patterns, methodological clarity, and contribution clarity.
-
-**Technical Documentation**: Enhanced support for API documentation, user manuals, and help systems with specialized state types for code examples, parameter descriptions, and usage instructions.
-
-**Educational Content**: Adaptive document generation for educational materials that optimizes for learning objectives, difficulty progression, and knowledge retention.
-
-### Collaborative and Social Features
-
-**Multi-Author Coordination**: Support for multiple authors with different writing styles and preferences, learning to coordinate and merge contributions effectively.
-
-**Community-Driven Learning**: Incorporate feedback loops where document quality assessments from readers improve future document generation and optimization.
-
-**Personalization**: Adapt document structures and styles based on user preferences, reading levels, and domain expertise.
-
-## Integration and Interoperability
-
-### Development Tool Integration
-
-**IDE Plugins**: Deep integration with popular integrated development environments (VS Code, PyCharm, Vim) for real-time document assistance and optimization.
-
-**CI/CD Pipeline Integration**: Automated documentation quality checking and improvement as part of continuous integration workflows.
-
-**Version Control Integration**: Enhanced integration with Git and other version control systems for tracking document evolution and quality metrics over time.
-
-### API and Service Development
-
-**RESTful APIs**: Develop comprehensive APIs for integrating MDP functionality into existing content management systems and editorial workflows.
-
-**Cloud Services**: Deployment as managed cloud services with pre-trained models for common documentation domains and customization capabilities.
-
-**Edge Deployment**: Lightweight versions optimized for deployment in resource-constrained environments like mobile applications and browser extensions.
-
-## Empirical Research Directions
-
-### Large-Scale Studies
-
-**Cross-Industry Analysis**: Conduct large-scale studies across different industries (software, academia, healthcare, finance) to understand domain-specific documentation patterns and requirements.
-
-**Longitudinal Studies**: Long-term studies of how documentation practices and quality evolve within organizations adopting MDP-based tools.
-
-**Comparative Effectiveness**: Rigorous comparison studies against human expert document creation and editing to establish benchmarks and improvement targets.
-
-### Human-AI Collaboration
-
-**Hybrid Workflows**: Research optimal collaboration patterns between human writers and AI assistants, identifying tasks best suited for automation versus human expertise.
-
-**User Experience Studies**: Comprehensive user experience research to understand how different user groups (technical writers, developers, managers) interact with and benefit from MDP tools.
-
-**Learning Curve Analysis**: Studies of how users learn to effectively use and configure MDP systems for their specific needs and contexts.
-
-## Theoretical Research Opportunities
-
-### Cognitive Science Connections
-
-**Active Inference Applications**: Deeper exploration of active inference principles in document processing, potentially revealing insights about human writing and reading behaviors.
-
-**Predictive Processing Models**: Development of document processing models inspired by predictive processing theories of cognition and perception.
-
-### Information Theory Perspectives
-
-**Information-Theoretic Analysis**: Apply information-theoretic tools to analyze document structure efficiency, redundancy, and optimal encoding strategies.
-
-**Rate-Distortion Trade-offs**: Formal analysis of trade-offs between document conciseness and clarity using rate-distortion theory from information theory.
-
-## Implementation Priorities
-
-### Short-Term Enhancements (6-12 months)
-
-1. **Performance Optimization**: Improve computational efficiency for larger documents and corpora
-2. **Model Persistence**: Better model serialization and versioning for trained Markov chains and policies
-3. **Enhanced Visualization**: More interactive and informative visualization tools for document analysis
-4. **Plugin Ecosystem**: Develop more built-in plugins for common use cases and improve plugin development tools
-
-### Medium-Term Developments (1-2 years)
-
-1. **Multi-Modal Support**: Integration with image, video, and interactive content in documents
-2. **Collaborative Features**: Multi-user support with conflict resolution and style harmonization
-3. **Advanced NLP Integration**: Deeper integration with modern language models for semantic enhancement
-4. **Industry-Specific Models**: Pre-trained models for common documentation domains
-
-### Long-Term Vision (2-5 years)
-
-1. **Autonomous Documentation**: Fully autonomous systems capable of maintaining comprehensive documentation for complex software projects
-2. **Cross-Language Support**: Extension to multiple natural languages and writing systems
-3. **Cognitive Architecture**: Integration with broader cognitive architectures for more human-like document understanding and generation
-4. **Standardization**: Contribution to emerging standards for probabilistic document processing and intelligent content management
-
-## Community and Ecosystem
-
-### Open Source Development
-
-**Community Building**: Foster an active developer community around the framework with clear contribution guidelines and mentorship programs.
-
-**Documentation and Education**: Comprehensive educational resources including tutorials, research papers, and best practice guides.
-
-**Industry Partnerships**: Collaboration with industry partners for real-world validation and adoption of MDP technologies.
-
-### Standards and Interoperability
-
-**Format Standards**: Contribution to the development of open standards for probabilistic document models and intelligent content processing.
-
-**Interoperability Protocols**: Development of protocols for exchanging trained models, policies, and document quality assessments between different MDP implementations.
-
-## Conclusion
-
-The Markdown Decision Process framework represents a foundation for a new paradigm in document processing. The future work outlined here spans theoretical innovations, practical enhancements, and ecosystem development, positioning MDP as a central technology for intelligent content creation and management.
-
-By pursuing these directions, the framework can evolve from a research prototype to a mature platform that significantly impacts how humans and machines collaborate in creating, maintaining, and understanding documentation across diverse domains and applications.
 
 The success of this roadmap depends on continued interdisciplinary collaboration between computer scientists, cognitive scientists, software engineers, and domain experts, ensuring that theoretical advancements translate into practical tools that genuinely enhance human capabilities in information management and communication.
 

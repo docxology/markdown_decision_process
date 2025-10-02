@@ -477,8 +477,9 @@ When using this framework in research:
 @software{mdp_framework,
   title={Markdown Decision Process: A Framework for Probabilistic Document Analysis and Optimization},
   author={Friedman, Daniel Ari},
-  year={2023},
-  url={https://github.com/docxology/markdown_decision_process}
+  year={2024},
+  url={https://github.com/docxology/markdown_decision_process},
+  doi={10.5281/zenodo.17244387}
 }
 ```
 

@@ -6,8 +6,6 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{mathtools}
-% Configure itemize for better spacing
-\setlist{itemsep=0.5em, topsep=0.5em}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
@@ -15,7 +13,6 @@
 \usepackage{xcolor}
 \usepackage{algorithm}
 \usepackage{algorithmic}
-\usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{longtable}
@@ -23,6 +20,9 @@
 \usepackage{multirow}
 \usepackage{url}
 \usepackage{breakurl}
+\usepackage{etoolbox}
+\usepackage{bookmark}
+\usepackage{natbib}
 
 % Page setup
 \pagestyle{fancy}
@@ -34,10 +34,34 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
+% Define missing commands that Pandoc uses
+\providecommand{\tightlist}{\itemsep0pt\topsep0pt}
+
+% CSL References environment for citeproc
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1 \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces\fi
+  % set entry spacing
+  \ifnum #2 > 0
+  \setlength{\parskip}{#2\baselineskip}
+  \fi
+ }%
+ {}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
 % Equation numbering
 \numberwithin{equation}{section}
 
-% Code listing setup
+% Code listing setup - improved for Pandoc compatibility
 \lstset{
     basicstyle=\ttfamily\footnotesize,
     breaklines=true,
@@ -50,15 +74,20 @@
     commentstyle=\color{gray},
     stringstyle=\color{red},
     showstringspaces=false,
-    tabsize=2
+    tabsize=2,
+    extendedchars=true,
+    inputencoding=utf8
 }
+
+% Additional commands for Pandoc compatibility
+\providecommand{\passthrough}[1]{#1}
 
 % Hyperlink setup
 \hypersetup{
     colorlinks=true,
-    linkcolor=blue,
+    linkcolor=red,
     citecolor=blue,
-    urlcolor=blue,
+    urlcolor=red,
     pdftitle={$title$},
     pdfauthor={$author$},
     pdfkeywords={$keywords$},
@@ -69,9 +98,21 @@
 
 % Title page setup
 \title{$title$}
-\author{$author$ \\ \texttt{$email$} \\ $affiliation$}
+\author{
+    $author$ \\
+    \texttt{$email$} \\
+    ORCID: \href{https://orcid.org/0000-0001-6232-9096}{0000-0001-6232-9096} \\
+    $affiliation$ \\
+    \vspace{0.5em}
+    DOI: \href{https://doi.org/10.5281/zenodo.17244387}{10.5281/zenodo.17244387}
+}
+\date{October 2, 2025}
 
 \begin{document}
+
+% Title page
+\maketitle
+\thispagestyle{empty}
 
 % Abstract
 \begin{abstract}
@@ -79,17 +120,16 @@ $abstract$
 \end{abstract}
 
 % Keywords
-\textbf{Keywords:} $keywords$
+\noindent\textbf{Keywords:} $keywords$
+
+\vspace{1em}
 
 % Table of contents
+\newpage
 \tableofcontents
 \newpage
 
 % Main content will be inserted here
 $body$
-
-% Bibliography
-\bibliographystyle{ieee}
-\bibliography{$bibliography$}
 
 \end{document}

@@ -10,10 +10,19 @@ Markdown Decision Process (MDP) is a humorous yet functional framework that reim
 
 In MDP, each Markdown element (headers, paragraphs, lists, code blocks) represents a *state* in a stochastic process. The transitions between these states follow probability distributions that can be learned from existing documents.
 
-```
-Header → Paragraph → List → Code Block
-   ↑          ↓         ↓        ↓
-   └──────────┴─────────┴────────┘
+```mermaid
+graph LR
+    H[Header] --> P[Paragraph]
+    P --> L[List]
+    L --> C[Code Block]
+    C --> P
+    C --> L
+    C --> H
+    
+    style H fill:#e3f2fd,stroke:#1976d2
+    style P fill:#f3e5f5,stroke:#7b1fa2
+    style L fill:#fff3e0,stroke:#f57c00
+    style C fill:#e8f5e9,stroke:#388e3c
 ```
 
 ### Partial Observability

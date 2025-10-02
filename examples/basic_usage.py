@@ -8,8 +8,8 @@ import sys
 import argparse
 from pathlib import Path
 
-# Add parent directory to path so we can import the package
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add src directory to path so we can import the package
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from mdp import MarkChain, PolicyOptimizer, StateSpace, BeliefUpdater
 

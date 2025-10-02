@@ -13,10 +13,11 @@ The paper is organized into modular sections that can be assembled into a comple
 - **04_core_components.md**: Detailed component descriptions
 - **05_implementation.md**: Implementation details and technical considerations
 - **06_evaluation.md**: Experimental evaluation and results
-- **07_results_discussion.md**: Interpretation and implications
-- **08_conclusion.md**: Summary and final remarks
-- **09_future_work.md**: Future research directions
-- **10_references.md**: Bibliography and citations
+- **07_results.md**: Experimental results and findings
+- **08_discussion.md**: Interpretation and implications
+- **09_conclusion.md**: Summary and final remarks
+- **10_future_work.md**: Future research directions
+- **12_references.md**: Bibliography and citations
 
 ## Repository Information
 
@@ -117,10 +118,11 @@ The paper follows a standard academic structure:
 5. **Core Components**: Detailed description of main components
 6. **Implementation**: Technical implementation details
 7. **Evaluation**: Experimental design and results
-8. **Results & Discussion**: Interpretation and implications
-9. **Conclusion**: Summary and impact
-10. **Future Work**: Research directions and extensions
-11. **References**: Bibliography and citations
+8. **Results**: Experimental results and findings
+9. **Discussion**: Interpretation and implications
+10. **Conclusion**: Summary and impact
+11. **Future Work**: Research directions and extensions
+12. **References**: Bibliography and citations
 
 ## Contributing
 
