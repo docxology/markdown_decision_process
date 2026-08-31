@@ -43,10 +43,10 @@ print(f"Optimized content: {result['modified_content']}")
 - **[MarkdownAgent](api/markdown_agent.md)** - Autonomous document processing
 
 #### Advanced Features
-- **[Transformations](api/transformations.md)** - Document transformation pipelines
-- **[Visualization](api/visualization.md)** - Plotting and animation tools
-- **[Animations](api/animations.md)** - Dynamic document evolution
-- **[Pandoc Integration](api/pandoc.md)** - Multi-format conversion
+- **Transformations (`src/mdp/transformations.py`)** - Document transformation pipelines
+- **Visualization (`src/mdp/visualization.py`)** - Plotting and animation tools
+- **Animations (`src/mdp/animations.py`)** - Dynamic document evolution
+- **Pandoc Integration (`src/mdp/pandoc.py`)** - Multi-format conversion
 
 ### 💡 Usage Examples
 
@@ -55,9 +55,9 @@ print(f"Optimized content: {result['modified_content']}")
 - **[Advanced Examples](examples/advanced_usage.py)** - Sophisticated applications
 
 #### Specialized Guides
-- **[Custom Reward Functions](guides/custom_rewards.md)** - Design effective rewards
-- **[Performance Optimization](guides/performance.md)** - Scale efficiently
-- **[Integration Patterns](guides/integration.md)** - Work with external tools
+- **Custom reward functions — see `src/mdp/quality.py`** - Design effective rewards
+- **Performance optimization — see [API_COMPLETE.md](API_COMPLETE.md)** - Scale efficiently
+- **Integration patterns — see [DEVELOPMENT_PROCESS.md](DEVELOPMENT_PROCESS.md)** - Work with external tools
 
 ## 🏗️ Architecture
 
@@ -156,7 +156,7 @@ python -m pytest tests/test_performance.py # Performance benchmarks
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! See our [Contributing Guide](../CONTRIBUTING.md) for details.
 
 ### Development Workflow
 1. Fork the repository
@@ -174,7 +174,7 @@ We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for deta
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](../LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

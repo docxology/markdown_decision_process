@@ -71,3 +71,8 @@ temp_interact.md
 models/
 value_function.npy
 experiences.npy 
+# Test artifacts and scratch files
+tests/reports/
+tests/outputs/
+*.backup*
+.venv/

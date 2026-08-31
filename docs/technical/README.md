@@ -6,21 +6,21 @@ This directory contains detailed technical documentation for implemented feature
 
 - [MarkChain](markchain.md) - Implementation of Markov models for markdown state transitions
 - [Policy Optimization](policy_optimization.md) - Techniques for optimizing document transformations
-- [State Space Analysis](state_space.md) - Graph-based analysis of markdown structure
-- [Belief Update Mechanisms](belief_updates.md) - Semantic understanding and uncertainty quantification
-- [Agent Architecture](agent_architecture.md) - Decision-making framework and learning mechanisms
+- [State Space Analysis](../api/state_space.md) - Graph-based analysis of markdown structure
+- [Belief Update Mechanisms](belief_updater.md) - Semantic understanding and uncertainty quantification
+- Agent Architecture - Decision-making framework and learning mechanisms
 
 ## Integration Technologies
 
-- [Language Model Integration](language_models.md) - Integration with LLMs and embedding models
-- [Document Processing](document_processing.md) - Parser implementations and conversions
-- [Content Enrichment](content_enrichment.md) - Media and data integration capabilities
+- Language Model Integration - Integration with LLMs and embedding models
+- Document Processing - Parser implementations and conversions
+- Content Enrichment - Media and data integration capabilities
 
 ## Transformations
 
-- [Document Structure](transformations/structure.md) - Organizational and navigation transformations
-- [Content Intelligence](transformations/intelligence.md) - Summarization and expansion capabilities
-- [Style Transformations](transformations/style.md) - Tone, readability, and formatting adjustments
+- Document Structure - Organizational and navigation transformations
+- Content Intelligence - Summarization and expansion capabilities
+- Style Transformations - Tone, readability, and formatting adjustments
 
 ## Implementation Process
 

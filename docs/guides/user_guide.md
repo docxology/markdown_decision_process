@@ -454,24 +454,24 @@ for state, value in list(policy_values.items())[:5]:
 ## 📚 Learning Resources
 
 ### API Documentation
-- [Document API](api/document.md)
-- [StateSpace API](api/state_space.md)
-- [MarkChain API](api/markchain.md)
-- [PolicyOptimizer API](api/policy_optimizer.md)
-- [MarkdownAgent API](api/markdown_agent.md)
+- [Document API](../api/document.md)
+- [StateSpace API](../api/state_space.md)
+- [MarkChain API](../api/markchain.md)
+- [PolicyOptimizer API](../api/policy_optimizer.md)
+- [MarkdownAgent API](../api/markdown_agent.md)
 
 ### Examples
-- [Basic Usage](examples/basic_usage.py)
-- [Advanced Usage](examples/advanced_usage.py)
+- [Basic Usage](../examples/basic_usage.py)
+- [Advanced Usage](../examples/advanced_usage.py)
 
 ### Tutorials
-- [Getting Started Tutorial](guides/getting_started.md)
-- [Custom Reward Functions](guides/custom_rewards.md)
-- [Performance Optimization](guides/performance.md)
+- Getting Started Tutorial
+- Custom Reward Functions
+- Performance Optimization
 
 ## 🤝 Contributing
 
-Found a bug or want to add features? See our [Contributing Guide](CONTRIBUTING.md).
+Found a bug or want to add features? See our [Contributing Guide](../../CONTRIBUTING.md).
 
 ## 📞 Support
 

@@ -3,10 +3,20 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17244387-blue.svg)](https://doi.org/10.5281/zenodo.17244387)
-[![Tests](https://img.shields.io/badge/tests-passing-green.svg)](#)
-[![Coverage](https://img.shields.io/badge/coverage-80%25-green.svg)](#)
 
 > **A comprehensive framework for probabilistic document analysis, generation, and optimization through the lens of Markov Decision Processes.**
+
+## 🤖 Agent orientation (start here)
+
+- **What this is:** a Python library treating Markdown documents as
+  Markov Decision Processes (v0.3.0 — see `pyproject.toml`).
+- **Current status:** no dated status surface is maintained; verify live
+  with `python3 run_all_tests.py` (known-failing files are skipped and
+  listed in that script). Open work lives in [TODO.md](TODO.md).
+- **Next actions:** the single backlog is [TODO.md](TODO.md) (Minor /
+  Medium / Major). Feature roadmap: [docs/ROADMAP.md](docs/ROADMAP.md).
+- **Agent conventions:** [AGENTS.md](AGENTS.md) — architecture, code
+  style, testing strategy, MDP terminology rules.
 
 The Markdown Decision Process framework treats Markdown documents as **stochastic decision processes**, enabling:
 
@@ -269,6 +279,7 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install in development mode with all dependencies
+# (dev extras include pytest, pytest-benchmark, hypothesis, textstat, wordcloud)
 pip install -e ".[dev,docs,pandoc,ml]"
 
 # Run tests to verify installation
@@ -281,8 +292,10 @@ pytest tests/ -v
 # Run all tests
 python -m pytest tests/
 
-# Run specific test categories
-python -m pytest tests/test_core.py        # Core functionality
+# Resilient runner (handles known-failing skips; see tests/README.md)
+python3 run_all_tests.py
+
+# Direct pytest on real test files
 python -m pytest tests/test_integration.py # Integration tests
 python -m pytest tests/test_performance.py # Performance benchmarks
 
@@ -290,7 +303,7 @@ python -m pytest tests/test_performance.py # Performance benchmarks
 python -m pytest --cov=src tests/
 ```
 
-**Test Results:** ✅ 238/243 tests passing (98% coverage)
+**Test status:** not tracked as a prose number — see [TODO.md](TODO.md) for the verification protocol; run `python3 run_all_tests.py` to check current state.
 
 ## 📖 API Reference
 
@@ -510,7 +523,7 @@ For commercial licensing inquiries, contact: daniel@activeinference.institute
 - **Issues**: [Report bugs or request features](https://github.com/docxology/markdown_decision_process/issues)
 - **Discussions**: [Community discussions](https://github.com/docxology/markdown_decision_process/discussions)
 - **Documentation**: [Full API Reference](https://markdown-decision-process.readthedocs.io)
-- **Paper**: [Academic paper](paper/outputs/mdp_paper.pdf) | [DOI: 10.5281/zenodo.17244387](https://doi.org/10.5281/zenodo.17244387)
+- **Paper**: [Academic paper](paper/outputs/MarkdownDecisionProcess_DAF_10-02-2025.pdf) | [DOI: 10.5281/zenodo.17244387](https://doi.org/10.5281/zenodo.17244387)
 - **Email**: daniel@activeinference.institute
 
 ## 📚 Citation

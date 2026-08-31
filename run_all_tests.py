@@ -14,11 +14,10 @@ KNOWN_FAILING_TESTS = [
     "test_snapshot.py",
     "test_documentation.py",
     "test_notebook_converter.py",
-    "test_search_config.py",
     "test_versioning.py",
     "test_markchain.py",
     "test_manual.py",
-    "tests/test_policy_optimizer.py"
+    "test_policy_optimizer.py"
 ]
 
 # Ensure test_property_based.py is definitely in the list for this run.

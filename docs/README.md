@@ -147,7 +147,13 @@ For detailed API reference, see:
 - [MarkChain API](api/markchain.md)
 - [PolicyOptimizer API](api/policy_optimizer.md)
 - [StateSpace API](api/state_space.md)
-- [BeliefUpdater API](api/belief_updater.md)
+- [BeliefUpdater API](api/belief_updater.rst)
+
+Note (2026-08-31): per-module API pages exist only for the modules above.
+The remaining modules (Document, transformations, visualization, animations,
+pandoc, plugins) are documented in [API_COMPLETE.md](API_COMPLETE.md) and
+their source docstrings under `src/mdp/`; the full Sphinx build
+(`cd docs && python build_docs.py`) generates the rest on demand.
 
 ## Examples
 

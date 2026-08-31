@@ -499,9 +499,18 @@ The `paper/` directory contains modular academic paper sections:
 
 ## Version History
 
-- **v0.1.0** (2023): Initial release with core MDP functionality
-- **v0.2.0** (2024): Added POMDP belief updating and plugin system
-- **v0.3.0** (2024): Enhanced visualization and multi-objective optimization
+(No CHANGELOG exists in-tree; the dates below are UNVERIFIED. The only
+version-controlled truth is `version` in `pyproject.toml`.)
+
+- **v0.3.0** (current, per pyproject.toml): Enhanced visualization and
+  multi-objective optimization
+- **v0.2.0** (unverified): Added POMDP belief updating and plugin system
+- **v0.1.0** (unverified): Initial release with core MDP functionality
+
+## Backlog
+
+Open work and known doc-debt live in [TODO.md](TODO.md) — the single
+canonical backlog. Do not duplicate status numbers here; link instead.
 
 ---
 
