@@ -2,6 +2,10 @@
 
 This directory contains the modular sections of an academic paper describing the Markdown Decision Process framework.
 
+## Evaluation evidence status
+
+The current source marks numerical experiments, the participant study and statistical claims as unverified. GPT-2 variant identity is unresolved. See [Evaluation evidence review](EVALUATION_EVIDENCE.md). Previously generated files in `outputs/` are historical artifacts and do not contain this correction; regenerate from the modular sources for review.
+
 ## Overview
 
 The paper is organized into modular sections that can be assembled into a complete academic paper. Each section focuses on a specific aspect of the framework:
