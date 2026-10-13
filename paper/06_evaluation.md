@@ -1,6 +1,6 @@
 # Evaluation and Experiments
 
-This section presents a comprehensive evaluation of the Markdown Decision Process framework through empirical experiments and comparative analysis.
+This section preserves the manuscript's reported evaluation design and numerical claims for review. The repository does not currently contain a traceable corpus manifest, baseline checkpoint/run identifiers, raw experiment outputs, participant protocol or responses, or per-comparison statistical analysis. The numbers below are **unverified manuscript claims**, not independently reproduced measurements; implementation tests do not establish these empirical results. See [Evaluation evidence review](EVALUATION_EVIDENCE.md) for the required evidence.
 
 ## Experimental Setup
 
@@ -77,7 +77,7 @@ We compare MDP against state-of-the-art baselines across multiple dimensions:
 - **POS-tag N-grams**: Part-of-speech aware models for structural prediction
 
 #### **Neural Language Models**
-- **GPT-2 Medium**: Fine-tuned on document corpora with domain adaptation
+- **GPT-2 (checkpoint unverified)**: The original baseline description named Medium, while the generation table named Small. No checkpoint or run artifact establishes which variant produced the reported values; fine-tuning and domain adaptation are also unverified.
 - **BERT-base**: Used for document embedding and similarity assessment
 - **T5-base**: Applied for conditional document generation tasks
 
@@ -92,7 +92,7 @@ We compare MDP against state-of-the-art baselines across multiple dimensions:
 - **Rule + Learning**: Rule-based systems with learned parameter optimization
 
 #### **Statistical Significance Testing**
-All comparisons use rigorous statistical testing (see Code Supplement, Section "Statistical Analysis" for complete implementation details).
+The code supplement describes statistical procedures, but no per-comparison inputs or executed analysis outputs are supplied. Statistical significance is unverified.
 
 ## Generation Experiments
 
@@ -113,7 +113,7 @@ All comparisons use rigorous statistical testing (see Code Supplement, Section "
 | MDP-MarkChain | 2 | 0.82 ± 0.09 | 3.89 | 0.67 |
 | MDP-MarkChain | 3 | 0.85 ± 0.08 | 3.64 | 0.89 |
 | N-gram Baseline | - | 0.65 ± 0.15 | 5.12 | 0.32 |
-| GPT-2 Small | - | 0.71 ± 0.13 | 4.78 | 2.34 |
+| GPT-2 (variant unverified) | - | 0.71 ± 0.13 | 4.78 | 2.34 |
 
 The MDP framework demonstrates superior structural coherence compared to baselines, with higher-order models achieving better performance at the cost of increased generation time.
 
@@ -268,7 +268,7 @@ All components contribute significantly to overall performance, with PolicyOptim
 
 ### User Study Results
 
-A user study with 25 participants (graduate students and researchers) provided qualitative feedback:
+The original manuscript reports a study of 25 participants (graduate students and researchers) and the following feedback. Without a study protocol, recruitment/consent record and appropriately de-identified responses, the participant count and ratings remain unverified:
 
 - **Ease of Use**: 4.2/5 average rating for framework adoption
 - **Documentation Quality**: 4.1/5 for clarity and completeness
@@ -282,7 +282,7 @@ Common feedback themes:
 
 ## Statistical Significance
 
-All reported improvements are statistically significant (p < 0.05) based on paired t-tests and Wilcoxon signed-rank tests. Effect sizes range from medium (Cohen's d = 0.5) to large (Cohen's d = 0.8) across different metrics.
+The original manuscript reports p < 0.05 from paired t-tests and Wilcoxon signed-rank tests and Cohen's d between 0.5 and 0.8. No raw paired observations, sample sizes per comparison, test statistics, multiplicity treatment or executed outputs substantiate those claims. Significance and effect sizes remain unverified and should not support conclusions until a reproducible analysis is supplied.
 
 ## Threats to Validity
 
@@ -298,4 +298,4 @@ All reported improvements are statistically significant (p < 0.05) based on pair
 - Metric selection may not capture all aspects of document quality
 - Subjective elements in qualitative evaluation
 
-Despite these limitations, the comprehensive evaluation demonstrates the framework's effectiveness across multiple dimensions and provides confidence in its practical utility.
+The absent experiment and study provenance prevents confirmation of the reported effectiveness. The listed validity threats are additional considerations for a future reproducible evaluation.

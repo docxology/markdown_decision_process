@@ -34,3 +34,8 @@ Created 2026-08-31 by the agent-ergonomics deep pass
 - [ ] No lockfile; environment reproducibility depends on loose pyproject
   extras. Add a uv/requirements lock or document the pinned dev install.
   (pyproject.toml)
+
+- [ ] Resolve the manuscript evaluation evidence gaps in
+  [paper/EVALUATION_EVIDENCE.md](paper/EVALUATION_EVIDENCE.md): baseline
+  checkpoint identity, traceable experiment outputs, participant-study evidence
+  and reproducible per-comparison statistics. Numerical claims remain unverified.

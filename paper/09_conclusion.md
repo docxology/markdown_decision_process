@@ -1,6 +1,6 @@
 # Conclusion
 
-The Markdown Decision Process framework represents a paradigm shift in document processing, establishing a theoretically-grounded, empirically-validated approach that bridges decision theory, probabilistic modeling, and practical document engineering. This work demonstrates that documents can be understood not as static artifacts, but as stochastic processes amenable to rigorous mathematical analysis and intelligent optimization.
+The Markdown Decision Process framework connects decision theory, probabilistic modeling and practical document engineering. Its empirical validation remains unverified. This work demonstrates that documents can be understood not as static artifacts, but as stochastic processes amenable to rigorous mathematical analysis and intelligent optimization.
 
 ## Summary of Contributions
 
@@ -20,7 +20,7 @@ The Markdown Decision Process framework represents a paradigm shift in document 
 
 ### Empirical Validation
 
-Rigorous experimental evaluation across diverse corpora (technical documentation, academic papers, blog content) demonstrates:
+The manuscript reports the following findings across diverse corpora. They remain unverified pending the experiment and study evidence described in [Evaluation evidence review](EVALUATION_EVIDENCE.md):
 
 - **Generation Excellence**: Measured improvements in structural coherence and document quality, with robust cross-domain generalization
 - **Optimization Effectiveness**: Effective multi-objective optimization with reliable convergence, flexible adaptation to user-specified quality criteria

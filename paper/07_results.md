@@ -1,6 +1,6 @@
 # Results
 
-This section presents comprehensive experimental results demonstrating the effectiveness of the Markdown Decision Process framework across multiple evaluation dimensions. All results include statistical significance testing and effect size measurements.
+This section preserves reported performance interpretations pending verification. The evaluation evidence gaps in [Evaluation evidence review](EVALUATION_EVIDENCE.md) apply to every empirical claim below, including improvements, generalization, calibration and convergence. These claims must not be treated as demonstrated results without the underlying run artifacts and analysis.
 
 ### Generation Performance
 
