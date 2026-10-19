@@ -1,5 +1,8 @@
 # Markdown Decision Process Documentation
 
+For the qualified build, downloadable HTML artifact and opt-in site deployment,
+see [Documentation build and publication](PUBLISHING.md).
+
 ## Introduction
 
 Markdown Decision Process (MDP) is a humorous yet functional framework that reimagines Markdown documents as stochastic processes. It draws parallels between Markov Decision Processes and the creation, analysis, and transformation of Markdown content.
