@@ -115,7 +115,7 @@ class TestDocumentationBuild(unittest.TestCase):
         build_docs.copy_markdown_files(self.docs_dir, self.docs_dir)
         
         # Assertions
-        self.assertEqual(mock_copy.call_count, 5)  # Number of files to copy
+        self.assertEqual(mock_copy.call_count, 3)  # Two technical guides are already in place
 
     @patch('build_docs.run_command')
     @patch('build_docs.generate_api_docs')

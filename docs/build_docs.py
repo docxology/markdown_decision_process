@@ -75,6 +75,9 @@ def copy_markdown_files(docs_dir, output_dir):
         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
         
         if os.path.exists(src_path):
+            # Technical guides already live at their build-source destination.
+            if Path(src_path).resolve() == Path(dest_path).resolve():
+                continue
             shutil.copy2(src_path, dest_path)
             print(f"Copied {src_path} to {dest_path}")
         else:
