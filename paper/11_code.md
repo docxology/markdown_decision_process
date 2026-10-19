@@ -1,5 +1,8 @@
 # Code Supplement
 
+This supplement contains illustrative procedural material. It is not an executed experiment record, participant study, baseline checkpoint, or an exact substitute for the installed modules under `src/mdp/`. Its statistical sketches do not supply measured results.
+
+
 This supplement contains all the code examples and implementation details referenced in the main paper. The code is organized by component and provides complete, runnable examples of the Markdown Decision Process framework.
 
 ## Core Data Structures

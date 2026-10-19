@@ -10,16 +10,7 @@ import json
 from pathlib import Path
 from unittest.mock import patch, MagicMock, mock_open
 
-# Add the docs directory to the path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../docs')))
-
-# Mock nbformat and nbconvert modules
-sys.modules['nbformat'] = MagicMock()
-sys.modules['nbconvert'] = MagicMock()
-sys.modules['nbconvert.preprocessors'] = MagicMock()
-
-# Import the notebook_converter module
-import notebook_converter
+from docs import notebook_converter
 
 # Create a sample notebook in JSON format
 SAMPLE_NOTEBOOK = {
@@ -158,7 +149,7 @@ class TestNotebookConverter(unittest.TestCase):
         )
         
         # Assertions
-        mock_read.assert_called_once()
+        mock_nbformat.read.assert_called_once()
         mock_exporter_instance.from_notebook_node.assert_called_once_with(mock_nb)
         self.assertTrue(os.path.exists(result))
 
@@ -175,7 +166,7 @@ class TestNotebookConverter(unittest.TestCase):
         result = notebook_converter.create_index_page(str(self.output_dir), notebooks)
         
         # Assertions
-        mock_file.assert_called_with(os.path.join(str(self.output_dir), "index.md"), 'w')
+        mock_file.assert_called_with(os.path.join(str(self.output_dir), "index.md"), 'w', encoding='utf-8')
         write_calls = mock_file().write.call_args_list
         written_data = ''.join(call[0][0] for call in write_calls)
         self.assertIn("Example Notebooks", written_data)
@@ -199,9 +190,9 @@ class TestNotebookConverter(unittest.TestCase):
         self.assertIn("nbsphinx", written_data)
         self.assertIn("extensions.append", written_data)
 
-    @patch('notebook_converter.convert_notebook')
-    @patch('notebook_converter.find_notebooks')
-    @patch('notebook_converter.create_index_page')
+    @patch('docs.notebook_converter.convert_notebook')
+    @patch('docs.notebook_converter.find_notebooks')
+    @patch('docs.notebook_converter.create_index_page')
     def test_process_notebooks(self, mock_index, mock_find, mock_convert):
         """Test process_notebooks function."""
         # Setup mocks
@@ -247,10 +238,10 @@ class TestNotebookConverter(unittest.TestCase):
         self.assertTrue(args.execute)
         self.assertEqual(args.timeout, 300)
 
-    @patch('notebook_converter.update_sphinx_config')
-    @patch('notebook_converter.process_notebooks')
-    @patch('notebook_converter.ensure_directory')
-    @patch('notebook_converter.parse_args')
+    @patch('docs.notebook_converter.update_sphinx_config')
+    @patch('docs.notebook_converter.process_notebooks')
+    @patch('docs.notebook_converter.ensure_directory')
+    @patch('docs.notebook_converter.parse_args')
     def test_main(self, mock_parse_args, mock_ensure, mock_process, mock_update):
         """Test main function."""
         # Setup mock

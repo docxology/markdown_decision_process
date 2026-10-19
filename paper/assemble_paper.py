@@ -18,6 +18,7 @@ from datetime import datetime
 import subprocess
 import argparse
 import re
+import json
 
 class PaperAssembler:
     """Assembles modular paper sections into a complete academic paper."""
@@ -39,7 +40,8 @@ class PaperAssembler:
         self.affiliation = "Active Inference Institute"
         self.email = "daniel@activeinference.institute"
         self.repository = "https://github.com/docxology/markdown_decision_process"
-        self.doi = "10.5281/zenodo.17244387"
+        self.prior_doi = "10.5281/zenodo.17244387"
+        self.doi = ""  # A corrected source draft has no newly asserted version DOI.
 
         # Initialize state tracking
         self._validated = False
@@ -145,8 +147,10 @@ class PaperAssembler:
 
         return text
 
-    def _check_dependencies(self) -> bool:
+    def _check_dependencies(self, output_format: str = "all") -> bool:
         """Check if all required dependencies are available."""
+        if output_format in {"markdown", "validate"}:
+            return True
         missing_deps = []
 
         # Check Pandoc
@@ -156,12 +160,12 @@ class PaperAssembler:
         except (subprocess.CalledProcessError, FileNotFoundError):
             missing_deps.append("pandoc")
 
-        # Check LaTeX (for PDF generation)
-        try:
-            subprocess.run(['pdflatex', '--version'],
-                         capture_output=True, check=True)
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            missing_deps.append("pdflatex")
+        # Only selected PDF/all output needs a PDF engine.
+        if output_format in {"pdf", "all"}:
+            try:
+                subprocess.run(['pdflatex', '--version'], capture_output=True, check=True)
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                missing_deps.append("pdflatex")
 
         if missing_deps:
             print(f"⚠ Missing dependencies: {', '.join(missing_deps)}")
@@ -301,8 +305,8 @@ class PaperAssembler:
             "03_methodology": "Methodology and Architecture",
             "04_core_components": "Core Components",
             "05_implementation": "Implementation Details",
-            "06_evaluation": "Evaluation and Experiments",
-            "07_results": "Results",
+            "06_evaluation": "Evaluation Protocol and Evidence",
+            "07_results": "Implementation Evidence and Results Boundary",
             "08_discussion": "Discussion",
             "09_conclusion": "Conclusion",
             "10_future_work": "Future Work",
@@ -451,6 +455,13 @@ class PaperAssembler:
 
     def _create_front_matter(self) -> str:
         """Create the paper front matter."""
+        source = (self.paper_dir / "00_abstract.md").read_text(encoding="utf-8")
+        body, separator, keyword_text = source.partition("**Keywords:**")
+        body = re.sub(r"^# Abstract\s*", "", body, count=1).strip()
+        if not body or not separator:
+            raise ValueError("The abstract section must supply its body and keywords")
+        abstract = "\n".join("  " + line for line in body.splitlines())
+        keywords = json.dumps([part.strip() for part in keyword_text.split(",") if part.strip()])
         front_matter = f"""---
 title: "{self.title}"
 author:
@@ -458,16 +469,19 @@ author:
 affiliation: "{self.affiliation}"
 email: "{self.email}"
 repository: "{self.repository}"
-doi: "{self.doi}"
+status: "corrected source draft; not a new deposit"
+related-publication-doi: "{self.prior_doi}"
 date: "{datetime.now().strftime('%B %Y')}"
 abstract: |
-  The Markdown Decision Process (MDP) framework revolutionizes document processing by modeling Markdown documents as stochastic decision processes analogous to Markov Decision Processes (MDPs) and Partially Observable Markov Decision Processes (POMDPs). This comprehensive framework bridges decision theory with practical document engineering, providing theoretically-grounded tools for intelligent document analysis, generation, and optimization that explicitly handle semantic uncertainty and enable interpretable, uncertainty-aware document processing.
-keywords: [Markov Decision Processes, Document AI, Content Optimization, Active Inference, Probabilistic Modeling, Automated Documentation, Natural Language Generation]
+{abstract}
+keywords: {keywords}
 ---
 
 # {self.title}
 
-**Authors:** {', '.join(self.authors)}  \n**Affiliation:** {self.affiliation}  \n**Email:** {self.email}  \n**Repository:** {self.repository}  \n**DOI:** {self.doi}
+**Authors:** {', '.join(self.authors)}  \n**Affiliation:** {self.affiliation}  \n**Email:** {self.email}  \n**Repository:** {self.repository}  \n**Historical publication DOI:** {self.prior_doi}
+
+**Status:** Corrected source draft; no new version DOI or deposit is asserted.
 
 """
 
@@ -814,7 +828,7 @@ def main():
     assembler = PaperAssembler(args.paper_dir, args.output_dir)
 
     # Check dependencies first
-    if not assembler._check_dependencies():
+    if not assembler._check_dependencies("validate" if args.validate_only else args.format):
         print("❌ Missing dependencies. Install required tools and try again.")
         return 1
 

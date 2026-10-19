@@ -25,8 +25,15 @@ study was never performed.
   multiplicity treatment, confidence intervals and executable analysis outputs.
   The supplement's statistical code is a procedural sketch, not a run receipt.
 
-The source retains original numerical claims with an explicit unverified
-status to preserve review context. No experiment, participant study or
-statistical result was manufactured during this correction. The dated outputs
-and deposit are historical releases, not revised publications; any new deposit
-requires regeneration and editorial review.
+## Corrected source revision (2026-10-19)
+
+Unsupported numerical tables and study/model comparisons have been withdrawn
+from the active manuscript, together with affirmative performance/calibration
+interpretations in the abstract, introduction, implementation, discussion and
+conclusion. Section 06 is now a prospective protocol and Section 07 states the
+current results boundary. No new experiment or participant study was invented.
+
+The original claim context is preserved at immutable source revision
+`ec902bb5661b3741b2b802ab37ee4469d8369318` and in the dated published assets.
+Neither historical provenance nor broad scientific validity is marked resolved.
+Reintroducing a measured result requires the acceptance evidence listed above.

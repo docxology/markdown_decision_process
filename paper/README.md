@@ -4,7 +4,7 @@ This directory contains the modular sections of an academic paper describing the
 
 ## Evaluation evidence status
 
-The current source marks numerical experiments, the participant study and statistical claims as unverified. GPT-2 variant identity is unresolved. See [Evaluation evidence review](EVALUATION_EVIDENCE.md). Previously generated files in `outputs/` are historical artifacts and do not contain this correction; regenerate from the modular sources for review.
+The corrected active source withdraws unsupported numerical tables, participant-study results and model/statistical comparisons. Section 06 is a prospective evaluation protocol; Section 07 reports the implementation/evidence boundary. Historical GPT-2 identity remains unresolved. See [Evaluation evidence review](EVALUATION_EVIDENCE.md). Previously generated files in `outputs/` are historical artifacts and do not contain this correction; regenerate from the modular sources for review.
 
 ## Overview
 
@@ -16,8 +16,8 @@ The paper is organized into modular sections that can be assembled into a comple
 - **03_methodology.md**: Theoretical foundations and architecture
 - **04_core_components.md**: Detailed component descriptions
 - **05_implementation.md**: Implementation details and technical considerations
-- **06_evaluation.md**: Experimental evaluation and results
-- **07_results.md**: Experimental results and findings
+- **06_evaluation.md**: Prospective evaluation protocol and evidence requirements
+- **07_results.md**: Implementation evidence and limits on results
 - **08_discussion.md**: Interpretation and implications
 - **09_conclusion.md**: Summary and final remarks
 - **10_future_work.md**: Future research directions
@@ -121,8 +121,8 @@ The paper follows a standard academic structure:
 4. **Methodology**: Theoretical foundations and system architecture
 5. **Core Components**: Detailed description of main components
 6. **Implementation**: Technical implementation details
-7. **Evaluation**: Experimental design and results
-8. **Results**: Experimental results and findings
+7. **Evaluation**: Prospective experimental design and evidence requirements
+8. **Results**: Implementation evidence and results boundary
 9. **Discussion**: Interpretation and implications
 10. **Conclusion**: Summary and impact
 11. **Future Work**: Research directions and extensions
@@ -148,16 +148,10 @@ Each section is tracked separately in version control, allowing for:
 
 ## Citation
 
-If you reference this work, please cite as:
-
-```bibtex
-@software{mdp_framework,
-  title={Markdown Decision Process (MDP): A Framework for Probabilistic Document Analysis and Optimization},
-  author={Friedman, Daniel Ari},
-  year={2023},
-  url={https://github.com/docxology/markdown_decision_process}
-}
-```
+The corrected source is a review draft, not a new deposited edition. Cite the
+specific Git commit when discussing this correction. The [historical 2025
+publication](https://doi.org/10.5281/zenodo.17244387) retains its original DOI;
+its deposited files do not include the corrected source revision.
 
 ## Support
 

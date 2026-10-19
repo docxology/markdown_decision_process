@@ -31,10 +31,16 @@ class Document:
         if file_path:
             # Check if it's a valid file path (reasonable length and looks like a path)
             file_path_str = str(file_path)
-            if (len(file_path_str) < 100 and  # Much shorter limit
-                ('/' in file_path_str or '\\' in file_path_str or  # Contains path separators
-                 file_path_str.endswith(('.md', '.txt', '.markdown')) or  # Common file extensions
-                 (Path(file_path_str).exists() and len(file_path_str) < 255))):  # Actually exists as a file
+            # Real files and explicit Path objects remain paths regardless of
+            # checkout depth. Preserve the legacy positional-content shorthand.
+            try:
+                exists = Path(file_path_str).is_file()
+            except (OSError, ValueError):
+                exists = False
+            if (isinstance(file_path, Path) or exists or
+                (len(file_path_str) < 100 and
+                 ('/' in file_path_str or '\\' in file_path_str or
+                  file_path_str.endswith(('.md', '.txt', '.markdown'))))):
                 self.file_path = Path(file_path)
                 if not self.file_path.exists():
                     raise FileNotFoundError(f"File not found: {file_path}")
