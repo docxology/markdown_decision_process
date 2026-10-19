@@ -21,6 +21,7 @@ The paper is organized into modular sections that can be assembled into a comple
 - **08_discussion.md**: Interpretation and implications
 - **09_conclusion.md**: Summary and final remarks
 - **10_future_work.md**: Future research directions
+- **11_code.md**: Implemented source pointers and a minimal structural example
 - **12_references.md**: Bibliography and citations
 
 ## Repository Information
