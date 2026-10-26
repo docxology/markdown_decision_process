@@ -357,17 +357,12 @@ visualizer.plot_optimization_trajectory(
 ### Profiling
 
 ```python
-# Use built-in profiling
-from mdp.utils.performance import profile_function
+# Profile with the standard library (the package ships no profiling helper)
+import cProfile
+import pstats
 
-@profile_function
-def expensive_operation():
-    # Your code here
-    pass
-
-# Check performance metrics
-metrics = expensive_operation.get_metrics()
-print(f"Time: {metrics['time']:.2f}s, Memory: {metrics['memory']:.2f}MB")
+cProfile.run("expensive_operation()", "profile.out")
+pstats.Stats("profile.out").sort_stats("cumulative").print_stats(10)
 ```
 
 ### Optimization Checklist
