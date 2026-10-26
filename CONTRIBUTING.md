@@ -19,7 +19,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/your-username/markdown-decision-process.git`
+2. Clone your fork: `git clone https://github.com/your-username/markdown_decision_process.git`
 3. Create a branch for your work: `git checkout -b feature/your-feature-name`
 
 ## Development Setup
@@ -33,11 +33,6 @@ By participating in this project, you agree to maintain a respectful and inclusi
 2. Install development dependencies:
    ```bash
    pip install -e ".[dev]"
-   ```
-
-3. Install pre-commit hooks:
-   ```bash
-   pre-commit install
    ```
 
 ## Coding Standards

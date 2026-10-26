@@ -13,11 +13,8 @@ uv venv
 # Activate the environment
 source .venv/bin/activate
 
-# Install the package in editable mode with all dependencies
-uv pip install -e .
-
-# Install additional dependencies
-uv pip install textstat wordcloud pytest pytest-benchmark hypothesis
+# Install the package in editable mode with the declared dev tooling
+uv pip install -e ".[dev]"
 ```
 
 ## Basic Usage
@@ -135,14 +132,9 @@ pipeline.apply(doc, "output.md")
 ```python
 from mdp import PolicyOptimizer
 
-# Create optimizer with custom reward weights
-optimizer = PolicyOptimizer(
-    reward_weights={
-        "readability": 0.6,
-        "information_density": 0.3,
-        "structure_clarity": 0.1
-    }
-)
+# Create an optimizer (reward weights are fixed internally; supply your own
+# scoring callable with optimizer.set_reward_function(fn) if needed)
+optimizer = PolicyOptimizer(learning_rate=0.1, max_iterations=20)
 
 # Optimize a document
 optimized_content = optimizer.transform("document.md")
@@ -212,8 +204,8 @@ If you get import errors for specific packages:
 # Install missing package
 uv pip install <package-name>
 
-# Or install all at once
-uv pip install textstat wordcloud nltk numpy matplotlib networkx tqdm
+# Or reinstall every declared dependency at once
+uv pip install -e ".[dev]"
 ```
 
 ### Test Failures
@@ -250,7 +242,7 @@ markdown_decision_process/
 
 1. Explore the `examples/` directory for more detailed usage patterns
 2. Read the technical documentation in `docs/technical/`
-3. Check `STATUS_REPORT.md` for current project status
+3. Check [TODO.md](TODO.md) — the single canonical backlog — for current work
 4. Contribute improvements or report issues
 
 ## Getting Help

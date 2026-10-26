@@ -53,10 +53,7 @@ The Markdown Decision Process framework treats Markdown documents as **stochasti
 ### Installation
 
 ```bash
-# Via pip
-pip install markdown-decision-process
-
-# Or from source
+# From source (the package is not published on PyPI)
 git clone https://github.com/docxology/markdown_decision_process.git
 cd markdown_decision_process
 pip install -e .
@@ -78,50 +75,50 @@ This framework treats documents as Markov Decision Processes.
 - Semantic inference
 """)
 
-# 2. Build state space representation
+# 2. Build state space representation (analyzed on construction)
 state_space = StateSpace(doc)
-analysis = state_space.analyze_structure()
 print(f"States: {len(state_space.states)}")
-print(f"Transition density: {analysis['graph_density']:.3f}")
+print(f"Transitions: {state_space.graph.number_of_edges()}")
 
 # 3. Train Markov chain for generation
 chain = MarkChain(order=2, smoothing=0.01)
-chain.train([doc.content])
+chain.train(doc.content)
 generated = chain.generate(length=100)
 print(f"Generated:\n{generated}")
 
 # 4. Optimize document with RL
 optimizer = PolicyOptimizer(state_space)
-result = optimizer.optimize()
-print(f"Quality improvement: {result.quality_improvement:.2%}")
+result = optimizer.optimize(doc)
+print(f"Final reward: {result['final_reward']:.3f}")
 ```
 
 ### Advanced Example
 
 ```python
-from mdp import BeliefUpdater, CompositeReward
-from mdp.quality import ReadabilityReward, StructureReward
+from mdp import BeliefUpdater, DocumentQuality
 
 # Semantic analysis with belief updating
 belief_updater = BeliefUpdater(
     semantic_classes=['instruction', 'explanation', 'example']
 )
-
-for state in state_space.states:
-    belief_updater.update_beliefs_from_state(state)
-    semantic_class = belief_updater.get_most_likely_class()
-    confidence = belief_updater.get_confidence()
-    print(f"{state.state_type}: {semantic_class} ({confidence:.1%})")
-
-# Multi-objective optimization
-reward = CompositeReward({
-    'readability': ReadabilityReward(weight=0.4),
-    'structure': StructureReward(weight=0.3),
-    'coherence': SemanticCoherenceReward(weight=0.3)
+belief_updater.update_from_observation({
+    'instruction': 0.7,
+    'explanation': 0.2,
+    'example': 0.1
 })
 
-optimizer = PolicyOptimizer(state_space, reward_function=reward)
-result = optimizer.optimize()
+semantic_class, probability = belief_updater.get_most_likely_semantics()
+print(f"Most likely: {semantic_class} ({probability:.1%}), "
+      f"confidence {belief_updater.confidence:.2f}")
+
+# Weighted document quality metrics (readability/density/structure)
+quality = DocumentQuality(
+    readability_weight=0.4,
+    information_density_weight=0.3,
+    structural_balance_weight=0.3
+)
+metrics = quality.analyze_document(doc)
+print(f"Overall quality: {metrics['overall_score']:.3f}")
 ```
 
 ## 📚 Documentation
@@ -231,8 +228,7 @@ from mdp import create_comprehensive_animation
 # Create animated visualizations
 outputs = create_comprehensive_animation(
     "document.md",
-    "animations/",
-    formats=["gif", "mp4"]
+    "animations/"
 )
 ```
 
@@ -245,10 +241,7 @@ outputs = create_comprehensive_animation(
 ### Basic Installation
 
 ```bash
-# Install from PyPI
-pip install markdown-decision-process
-
-# Or install from source
+# Install from source
 git clone https://github.com/docxology/markdown_decision_process.git
 cd markdown_decision_process
 pip install -e .
@@ -257,14 +250,11 @@ pip install -e .
 ### Optional Dependencies
 
 ```bash
-# Install with all optional features
-pip install markdown-decision-process[all]
-
-# Or install specific features:
-pip install markdown-decision-process[pandoc]  # Format conversion
-pip install markdown-decision-process[ml]      # Advanced semantic analysis
-pip install markdown-decision-process[dev]     # Development tools
-pip install markdown-decision-process[docs]    # Documentation building
+# "dev" is the only extra declared in pyproject.toml (there is no
+# "all", "pandoc", "ml" or "docs" extra):
+pip install -e ".[dev]"                 # Development and test tooling
+pip install sphinx sphinx-rtd-theme myst-parser sphinx-markdown-tables  # Docs
+# Pandoc conversion needs the pandoc binary itself: https://pandoc.org/installing.html
 ```
 
 ### Development Setup
@@ -278,9 +268,10 @@ cd markdown_decision_process
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install in development mode with all dependencies
-# (dev extras include pytest, pytest-benchmark, hypothesis, textstat, wordcloud)
-pip install -e ".[dev,docs,pandoc,ml]"
+# Install in development mode
+# (dev extras: pytest, pytest-cov, pytest-xdist, pytest-benchmark, hypothesis,
+#  pandas, nbformat, nbconvert, textstat, wordcloud, black, isort, mypy, flake8)
+pip install -e ".[dev]"
 
 # Run tests to verify installation
 pytest tests/ -v
@@ -328,10 +319,11 @@ class StateSpace:
 ### MarkChain Class
 ```python
 class MarkChain:
-    def __init__(self, order: int = 1)
+    def __init__(self, order: int = 1, smoothing: float = 0.01)
     def train(self, markdown_text: str)
-    def sample(self, start_state: str, length: int) -> str
-    def generate(self, prompt: str, length: int) -> str
+    def sample(self, length: int = 10, start_state: Optional[str] = None) -> str
+    def generate(self, length: int = 10, prompt: Optional[str] = None,
+                 temperature: float = 1.0) -> str
 ```
 
 ### PolicyOptimizer Class
@@ -376,7 +368,7 @@ Generate contextually appropriate content:
 ```python
 chain = MarkChain()
 chain.train(corpus)
-new_section = chain.sample("header", length=200)
+new_section = chain.sample(length=200, start_state="header")
 ```
 
 ### 📊 Document Analysis
@@ -522,7 +514,7 @@ For commercial licensing inquiries, contact: daniel@activeinference.institute
 - **Repository**: [github.com/docxology/markdown_decision_process](https://github.com/docxology/markdown_decision_process)
 - **Issues**: [Report bugs or request features](https://github.com/docxology/markdown_decision_process/issues)
 - **Discussions**: [Community discussions](https://github.com/docxology/markdown_decision_process/discussions)
-- **Documentation**: [Full API Reference](https://markdown-decision-process.readthedocs.io)
+- **Documentation**: [In-repo API and guide docs](docs/index.md) (no hosted site is deployed)
 - **Paper**: [Academic paper](paper/outputs/MarkdownDecisionProcess_DAF_10-02-2025.pdf) | [DOI: 10.5281/zenodo.17244387](https://doi.org/10.5281/zenodo.17244387)
 - **Email**: daniel@activeinference.institute
 
@@ -537,7 +529,7 @@ If you use this framework in your research, please cite:
   year={2025},
   url={https://github.com/docxology/markdown_decision_process},
   doi={10.5281/zenodo.17244387},
-  version={0.1.0}
+  version={0.3.0}
 }
 ```
 
@@ -553,6 +545,6 @@ See [ROADMAP.md](docs/ROADMAP.md) for detailed development plans.
 
 *Where probability meets prose, and optimization meets organization.*
 
-[⭐ Star us on GitHub](https://github.com/docxology/markdown_decision_process) • [📖 Read the Docs](https://markdown-decision-process.readthedocs.io) • [💬 Join Discussions](https://github.com/docxology/markdown_decision_process/discussions)
+[⭐ Star us on GitHub](https://github.com/docxology/markdown_decision_process) • [📖 Docs](docs/index.md) • [💬 Join Discussions](https://github.com/docxology/markdown_decision_process/discussions)
 
 </div>

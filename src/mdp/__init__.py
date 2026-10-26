@@ -3,7 +3,7 @@ Markdown Decision Process (MDP): A framework for analyzing, generating, and opti
 Markdown documents through the lens of decision theory and probabilistic modeling.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"
 
 from .markchain import MarkChain
 from .policy_optimizer import PolicyOptimizer

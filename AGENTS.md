@@ -73,7 +73,7 @@ git clone https://github.com/docxology/markdown_decision_process.git
 cd markdown_decision_process
 
 # Install in development mode
-pip install -e ".[dev,docs,pandoc]"
+pip install -e ".[dev]"
 
 # Run tests
 pytest tests/ -v --cov=src/mdp --cov-report=html

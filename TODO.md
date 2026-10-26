@@ -9,12 +9,19 @@ Created 2026-08-31 by the agent-ergonomics deep pass
 
 ## Minor
 
-- [ ] README.md "Tests" badge and "Coverage 80%" badge link to `#` — point at
-  the real workflow run or remove. (README.md)
-- [ ] AGENTS.md "Version History" dates (2023/2024) are unverified; add a
-  CHANGELOG.md or drop the dates. (AGENTS.md)
-- [ ] tests/test_markchain.py.backup2 — stray backup file tracked in git;
-  delete or gitignore. (tests/)
+- [x] (verified 2026-10-25) README badges: only Python/License/DOI badges
+  remain — no `#` placeholder links. (README.md)
+- [x] (verified 2026-10-25) AGENTS.md "Version History" hedges its dates as
+  unverified and points at `version` in pyproject.toml. (AGENTS.md)
+- [x] (verified 2026-10-25) `tests/test_markchain.py.backup2` is not tracked;
+  `tests/reports/` junit output is not tracked either (.gitignore covers
+  `reports/`). (tests/)
+- [ ] Per-module API pages still show outdated call shapes:
+  `StateSpace.get_state_metadata`, `BeliefUpdater.get_confidence`,
+  `MarkChain.sample(start_state, length)` / `save`/`load`,
+  `DocumentQuality` result keys (`readability_score`). README.md examples were
+  corrected 2026-10-25; the deep pages were not touched.
+  (docs/api/*.md, docs/guides/user_guide.md)
 
 ## Medium
 

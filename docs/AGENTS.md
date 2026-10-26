@@ -224,7 +224,8 @@ self.transitions = {
 
 ```bash
 # Install documentation dependencies
-pip install -e ".[docs]"
+pip install -e ".[dev]"
+pip install sphinx sphinx-rtd-theme myst-parser sphinx-markdown-tables
 
 # Build HTML documentation
 cd docs
@@ -503,42 +504,30 @@ jobs:
           python-version: 3.9
       
       - name: Install dependencies
-        run: pip install -e ".[docs]"
+        run: |
+          pip install -e ".[dev]"
+          pip install sphinx sphinx-rtd-theme myst-parser sphinx-markdown-tables
       
       - name: Build documentation
         run: |
           cd docs
           python build_docs.py
       
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/_build/html
+          path: docs/_build/html
 ```
+
+Deployment is opt-in through the `DOCS_PAGES_ENABLED` repository variable; the
+authoritative description is [PUBLISHING.md](PUBLISHING.md).
 
 ### ReadTheDocs
 
-```yaml
-# .readthedocs.yml
-
-version: 2
-
-build:
-  os: ubuntu-22.04
-  tools:
-    python: "3.9"
-
-sphinx:
-  configuration: docs/conf.py
-
-python:
-  install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - docs
-```
+Not configured for this repository: there is no `.readthedocs.yml` and no
+hosted `markdown-decision-process.readthedocs.io` site. Build the HTML locally
+("Local build" in [PUBLISHING.md](PUBLISHING.md)) or use the GitHub Pages flow
+above.
 
 ## Contribution Guidelines
 

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -26,6 +26,7 @@ dependencies = [
     "numpy>=1.20.0",
     "markdown>=3.3.0",
     "networkx>=2.6.0",
+    "scipy>=1.10.0",  # networkx>=3 PageRank (StateSpace.calculate_pagerank) needs scipy
     "matplotlib>=3.4.0",
     "tqdm>=4.60.0",
 ]
@@ -33,25 +34,34 @@ requires-python = ">=3.8"
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=6.0",
-    "pytest-benchmark>=3.4",
-    "hypothesis>=6.0",
-    "textstat>=0.7",
-    "wordcloud>=1.8",
-    "black>=21.5b2",
-    "isort>=5.9.0",
-    "mypy>=0.812",
-    "flake8>=3.9.0",
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "pytest-xdist>=3.5",
+    "pytest-benchmark>=4.0",
+    "hypothesis>=6.90",
+    "pandas>=2.0",
+    "nbformat>=5.9",
+    "nbconvert>=7.0",
+    "textstat>=0.7.3",
+    "wordcloud>=1.9.2",
+    "black>=24.1.0",
+    "isort>=5.13.2",
+    "mypy>=1.8.0",
+    "flake8>=5.0.4",  # flake8 6+ requires Python>=3.8.1, which breaks ">=3.8" resolution
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/docxology/markdown_decision_process"
 "Bug Tracker" = "https://github.com/docxology/markdown_decision_process/issues"
-"Documentation" = "https://markdown-decision-process.readthedocs.io"
+"Documentation" = "https://github.com/docxology/markdown_decision_process/tree/main/docs"
 "Paper" = "https://doi.org/10.5281/zenodo.17244387"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+
+[tool.bandit]
+# The CI security job runs: bandit -r src -c pyproject.toml
+exclude_dirs = ["tests", "examples", "docs", "paper"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
