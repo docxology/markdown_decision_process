@@ -115,7 +115,7 @@ Welcome to the Markdown Decision Process framework...
 ### Installation
 
 ```bash
-pip install markdown-decision-process
+pip install -e ".[dev]"   # not on PyPI; install the checkout
 ```
 
 ### Your First Document Analysis
