@@ -280,73 +280,81 @@ def convert_with_transformations(
         return False
 
 
+def _metadata_text(value: Any) -> str:
+    """Read text from Pandoc inline/block nodes without leaking attributes."""
+    if isinstance(value, str):
+        return value
+    if isinstance(value, list):
+        return "".join(_metadata_text(item) for item in value)
+    if not isinstance(value, dict):
+        return ""
+    kind, content = value.get("t"), value.get("c")
+    if kind in {"Space", "SoftBreak", "LineBreak"}:
+        return " "
+    if kind in {"Code", "CodeBlock", "Math", "RawInline", "RawBlock"}:
+        return content[-1]
+    if kind in {"Link", "Image"}:
+        return _metadata_text(content[-2])
+    if kind in {"Span", "Div", "Header", "Quoted", "Cite"}:
+        return _metadata_text(content[-1])
+    return _metadata_text(content)
+
+
+def _metadata_value(value: Dict[str, Any]) -> Any:
+    """Convert the documented Pandoc Meta constructors to Python values."""
+    kind, content = value.get("t"), value.get("c")
+    if kind in {"MetaString", "MetaBool"}:
+        return content
+    if kind == "MetaList":
+        return [_metadata_value(item) for item in content]
+    if kind == "MetaMap":
+        return {key: _metadata_value(item) for key, item in content.items()}
+    if kind == "MetaInlines":
+        return _metadata_text(content)
+    if kind == "MetaBlocks":
+        return "\n\n".join(_metadata_text(block) for block in content)
+    return value  # Preserve an unknown constructor rather than discard its data.
+
+
 def extract_metadata(
     input_path: Union[str, Path],
     format: Optional[str] = None
 ) -> Dict[str, Any]:
-    """
-    Extract metadata from a markdown document using Pandoc.
-    
+    """Extract document metadata using Pandoc's JSON AST.
+
     Args:
-        input_path: Path to the input file
-        format: Input format (if None, inferred from file extension)
-        
+        input_path: Path to the input file.
+        format: Pandoc input format (defaults to Markdown).
+
     Returns:
-        Dictionary of metadata fields
-        
-    Raises:
-        PandocNotFoundError: If Pandoc is not installed
+        Metadata mapping with text, booleans, lists and nested mappings. Inline
+        formatting becomes text. Returns an empty mapping if Pandoc is absent,
+        conversion fails, or the output cannot be decoded as document metadata.
+
+    Pandoc's ``--metadata-file`` reads metadata; it is not an output option.
+    The JSON writer exposes the document's ``meta`` object without PyYAML or a
+    custom template. See https://pandoc.org/filters.html.
     """
     try:
         pandoc_path = check_pandoc_installed()
-        
-        # Build command to extract metadata as JSON
-        cmd = [
-            pandoc_path, 
-            "-s",  # Standalone document
-            "--template={}",  # Empty template to only get metadata
-            "-f", format or "markdown",  # Input format
-            "-t", "plain",  # Output format 
-            "--metadata-file=-"  # Output metadata to stdout
-        ]
-        
-        # Add input file
-        cmd.append(str(input_path))
-        
-        # Run the extraction
         result = subprocess.run(
-            cmd,
+            [
+                pandoc_path, "-s", "-f", format or "markdown", "-t", "json",
+                str(input_path),
+            ],
             capture_output=True,
             text=True,
-            check=True
+            check=True,
+            stdin=subprocess.DEVNULL,
+            timeout=30,
         )
-        
-        # Parse the metadata
-        try:
-            # Pandoc might output an empty document if no metadata
-            if result.stdout.strip():
-                # Try to locate the YAML metadata block
-                metadata_block = result.stdout
-                
-                # If it starts with ---, it's a YAML block
-                if metadata_block.startswith("---"):
-                    # Find the closing --- and extract the YAML
-                    end_marker = metadata_block.find("---", 3)
-                    if end_marker > 0:
-                        metadata_block = metadata_block[3:end_marker].strip()
-                
-                # Parse the YAML
-                import yaml
-                return yaml.safe_load(metadata_block) or {}
+        document = json.loads(result.stdout)
+        metadata = document.get("meta") if isinstance(document, dict) else None
+        if not isinstance(metadata, dict):
             return {}
-        except Exception as e:
-            print(f"Error parsing metadata: {e}")
-            return {}
-    except subprocess.CalledProcessError as e:
-        print(f"Pandoc metadata extraction failed: {e}")
-        return {}
-    except Exception as e:
-        print(f"Error during metadata extraction: {e}")
+        return {key: _metadata_value(value) for key, value in metadata.items()}
+    except Exception as error:
+        print(f"Error during metadata extraction: {error}")
         return {}
 
 

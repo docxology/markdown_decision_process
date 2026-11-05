@@ -201,9 +201,19 @@ class TestPandocModule:
         # Configure mock for metadata extraction
         mock_subprocess_run.return_value.stdout = """
         {
-            "title": "Test Document",
-            "author": "Test Author",
-            "date": "2023-01-01"
+            "pandoc-api-version": [1, 23, 1],
+            "meta": {
+                "title": {"t": "MetaInlines", "c": [
+                    {"t": "Str", "c": "Test"}, {"t": "Space"},
+                    {"t": "Str", "c": "Document"}
+                ]},
+                "author": {"t": "MetaInlines", "c": [
+                    {"t": "Str", "c": "Test"}, {"t": "Space"},
+                    {"t": "Str", "c": "Author"}
+                ]},
+                "date": {"t": "MetaInlines", "c": [{"t": "Str", "c": "2023-01-01"}]}
+            },
+            "blocks": []
         }
         """
         
@@ -215,6 +225,9 @@ class TestPandocModule:
         assert metadata.get("date") == "2023-01-01"
         
         mock_subprocess_run.assert_called_once()
+        command = mock_subprocess_run.call_args.args[0]
+        assert command[command.index("-t") + 1] == "json"
+        assert "--metadata-file=-" not in command
     
     def test_apply_template(self, mock_which, mock_subprocess_run, sample_md_file, tmp_path):
         """Test applying a template to a document."""

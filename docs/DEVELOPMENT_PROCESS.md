@@ -131,6 +131,34 @@ Here's an example of how the variable-order Markov models feature was implemente
 - Include both happy path and edge case tests
 - Add performance tests for critical components
 
+### Offline validation inputs
+
+Use a frozen `uv.lock` environment and record the actual interpreter, dependency
+inventory, native tools, command and source revision. The project pin remains
+Python 3.15; Python 3.11 is also supported by `requires-python`. The locked
+WordCloud 1.9.6 release has no CPython 3.15 wheel for macOS arm64, so a binary-only
+3.15 bootstrap cannot be reported as a full-suite pass. Record a supported
+interpreter explicitly rather than silently changing the pin.
+
+Readability tests additionally need NLTK's CMU dictionary. Prepare it before an
+offline run; do not rely on a test making a network download. The reviewed
+[current test resource](https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.zip)
+is 896,069 bytes with SHA-256
+`d07cca47fd72ad32ea9d8ad1219f85301eeaf4568f8b6b73747506a71fb5afd6`.
+Its immutable [index](https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/index.xml)
+and [license metadata](https://raw.githubusercontent.com/nltk/nltk_data/550b6625bcef1f2abff2ff770a5a0d272c9c6b2a/packages/corpora/cmudict.xml)
+identify CMU as the source and permit research/commercial use with requested
+acknowledgment. Verify size/hash, extract under a private
+`NLTK_DATA/corpora/cmudict/` directory and retain the data binding with the run.
+Do not commit this wordlist or treat it as recovered manuscript study data.
+
+Run `python -B -m pytest --benchmark-disable tests/` in an independent staging
+copy when repository writes are disallowed: existing tests create output files.
+Disabling benchmark calibration executes benchmark functions once; it supplies
+implementation checks, not paper performance evidence. Report every skipped or
+unavailable test. The real metadata tests require an actual local Pandoc;
+`extract_metadata` reads its JSON AST and does not require PyYAML.
+
 ### Documentation
 
 - Keep documentation in sync with code
