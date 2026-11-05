@@ -156,7 +156,17 @@ Run `python -B -m pytest --benchmark-disable tests/` in an independent staging
 copy when repository writes are disallowed: existing tests create output files.
 Disabling benchmark calibration executes benchmark functions once; it supplies
 implementation checks, not paper performance evidence. Report every skipped or
-unavailable test. The real metadata tests require an actual local Pandoc;
+unavailable test.
+
+The document-mutation, MarkChain-training and belief-update benchmarks prepare a
+fresh input object outside each timed invocation, with five pedantic rounds and
+one invocation per round. Assertions check the resulting objects remain single
+mutations/training sessions/observations rather than accumulated histories.
+Synthetic Markdown inputs are checked for actual heading and paragraph shape.
+Other benchmarks retain automatic calibration. Prior timings with literal
+backslash-newline input or growing shared state measure different workloads and
+are non-comparable. Current CI diagnostics do not establish a performance
+improvement or reconstruct an earlier experiment. The real metadata tests require an actual local Pandoc;
 `extract_metadata` reads its JSON AST and does not require PyYAML.
 
 The test workflow stages that exact dictionary with

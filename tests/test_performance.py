@@ -24,15 +24,37 @@ from mdp.belief_updater import BeliefUpdater
 
 # Helper function to generate markdown content
 def generate_markdown_content(num_sections=10, num_paragraphs_per_section=5, num_subsections=3):
-    content = [f"# Large Sample Document Generated for Benchmarking\\n\\n"]
+    content = [f"# Large Sample Document Generated for Benchmarking\n\n"]
     for i in range(1, num_sections + 1):
-        content.append(f"## Section {i}\\n\\n")
+        content.append(f"## Section {i}\n\n")
         for j in range(1, num_paragraphs_per_section + 1):
-            content.append(f"This is paragraph {j} in section {i}. {'Lorem ipsum dolor sit amet. ' * 10}\\n\\n")
+            content.append(f"This is paragraph {j} in section {i}. {'Lorem ipsum dolor sit amet. ' * 10}\n\n")
         for k in range(1, num_subsections + 1):
-            content.append(f"### Subsection {i}.{k}\\n\\n")
-            content.append(f"This is content in subsection {i}.{k}. {'Consectetur adipiscing elit. ' * 8}\\n\\n")
+            content.append(f"### Subsection {i}.{k}\n\n")
+            content.append(f"This is content in subsection {i}.{k}. {'Consectetur adipiscing elit. ' * 8}\n\n")
     return "".join(content)
+
+@pytest.mark.parametrize("sections,paragraphs,subsections", [(2, 2, 1), (3, 1, 2)])
+def test_synthetic_markdown_has_intended_heading_and_paragraph_shape(
+    sections, paragraphs, subsections
+):
+    content = generate_markdown_content(sections, paragraphs, subsections)
+    document = Document(content=content)
+    headings = document.get_headings()
+    assert headings[0] == {
+        "level": 1, "text": "Large Sample Document Generated for Benchmarking"
+    }
+    assert [h["text"] for h in headings if h["level"] == 2] == [
+        f"Section {i}" for i in range(1, sections + 1)
+    ]
+    assert [h["text"] for h in headings if h["level"] == 3] == [
+        f"Subsection {i}.{j}"
+        for i in range(1, sections + 1)
+        for j in range(1, subsections + 1)
+    ]
+    assert len(document.get_paragraphs()) == sections * (paragraphs + subsections)
+    assert "\\n" not in content
+
 
 @pytest.fixture(scope="session")
 def sample_document_content():
@@ -83,9 +105,25 @@ class TestPerformance:
 
     @pytest.mark.benchmark(group="markchain_training")
     def test_markchain_training(self, benchmark, sample_document):
-        """Benchmark MarkChain training."""
-        chain = MarkChain()
-        benchmark(chain.train, sample_document)
+        """Measure one training call from an empty model in each timed round."""
+        sampled_chains = []
+
+        def setup_training():
+            chain = MarkChain()
+            sampled_chains.append(chain)
+            return (chain, sample_document), {}
+
+        benchmark.pedantic(
+            MarkChain.train, setup=setup_training, rounds=5, iterations=1
+        )
+        assert sampled_chains and all(
+            sum(chain.start_states.values()) == 1 for chain in sampled_chains
+        )
+        assert len({id(chain) for chain in sampled_chains}) == len(sampled_chains)
+        assert all(
+            chain.transitions == sampled_chains[0].transitions
+            for chain in sampled_chains
+        )
 
     @pytest.mark.benchmark(group="markchain_generation")
     def test_markchain_generation(self, benchmark, sample_document):
@@ -112,11 +150,22 @@ class TestPerformance:
 
     @pytest.mark.benchmark(group="document_modification")
     def test_document_modification_performance(self, benchmark, sample_document):
-        """Test performance of document modification (e.g., adding an element)."""
-        doc_copy = Document(content=sample_document.content) # Use content from fixture
-        def modify_doc(doc):
-            doc.add_element("New paragraph for benchmark", "paragraph")
-        benchmark(modify_doc, doc_copy)
+        """Measure one real mutation with fresh, untimed document setup."""
+        sampled_documents = []
+        expected_content = sample_document.content + "\n\nNew paragraph for benchmark"
+
+        def setup_modification():
+            document = Document(content=sample_document.content)
+            sampled_documents.append(document)
+            return (document, "New paragraph for benchmark", "paragraph"), {}
+
+        benchmark.pedantic(
+            Document.add_element, setup=setup_modification, rounds=5, iterations=1
+        )
+        assert sampled_documents and all(
+            doc.content == expected_content for doc in sampled_documents
+        )
+        assert len({id(doc) for doc in sampled_documents}) == len(sampled_documents)
 
     @pytest.mark.benchmark(group="transformation_application")
     def test_transformation_application_performance(self, benchmark, sample_document):
@@ -137,11 +186,29 @@ class TestPerformance:
 
     @pytest.mark.benchmark(group="belief_updater")
     def test_belief_updater(self, benchmark, sample_document):
-        """Benchmark belief updating."""
-        updater = BeliefUpdater()
-        # Benchmark the update_from_observation method
+        """Measure one observation update from a fresh prior in each round."""
         observation = {"instruction": 0.7, "example": 0.3}
-        benchmark(updater.update_from_observation, observation)
+        sampled_updaters = []
+
+        def setup_observation():
+            updater = BeliefUpdater()
+            sampled_updaters.append(updater)
+            return (updater, observation), {}
+
+        benchmark.pedantic(
+            BeliefUpdater.update_from_observation,
+            setup=setup_observation, rounds=5, iterations=1,
+        )
+        assert sampled_updaters and all(
+            updater.observations == [observation] for updater in sampled_updaters
+        )
+        assert len({id(updater) for updater in sampled_updaters}) == len(
+            sampled_updaters
+        )
+        assert all(
+            updater.get_all_beliefs() == sampled_updaters[0].get_all_beliefs()
+            for updater in sampled_updaters
+        )
 
     @pytest.mark.benchmark(group="document_creation_scaling")
     def test_document_creation_scaling(self, benchmark, large_document_content):
