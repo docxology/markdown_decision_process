@@ -65,6 +65,8 @@ exclude_dirs = ["tests", "examples", "docs", "paper"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Source-only docs utilities must also resolve under the pytest console entry point.
+pythonpath = ["."]
 
 [tool.black]
 line-length = 88
