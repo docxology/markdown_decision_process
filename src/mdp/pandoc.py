@@ -3,7 +3,7 @@ Pandoc: A module for integrating Pandoc with the Markdown Decision Process.
 """
 
 import os
-import subprocess
+import subprocess  # nosec B404  # Explicit local Pandoc CLI integration; calls use argv without a shell.
 import shutil
 import tempfile
 import json
@@ -51,7 +51,7 @@ def get_pandoc_version() -> str:
     """
     try:
         pandoc_path = check_pandoc_installed()
-        result = subprocess.run(
+        result = subprocess.run(  # nosec B603  # Caller-requested local Pandoc argv; no shell.
             [pandoc_path, "--version"],
             capture_output=True,
             text=True,
@@ -78,7 +78,7 @@ def get_supported_formats() -> Dict[str, List[str]]:
         pandoc_path = check_pandoc_installed()
         
         # Get input formats
-        input_result = subprocess.run(
+        input_result = subprocess.run(  # nosec B603  # Caller-requested local Pandoc argv; no shell.
             [pandoc_path, "--list-input-formats"],
             capture_output=True,
             text=True,
@@ -87,7 +87,7 @@ def get_supported_formats() -> Dict[str, List[str]]:
         input_formats = [fmt.strip() for fmt in input_result.stdout.split("\n") if fmt.strip()]
         
         # Get output formats
-        output_result = subprocess.run(
+        output_result = subprocess.run(  # nosec B603  # Caller-requested local Pandoc argv; no shell.
             [pandoc_path, "--list-output-formats"],
             capture_output=True,
             text=True,
@@ -152,7 +152,7 @@ def convert_document(
         cmd.extend(["-o", str(output_path), str(input_path)])
         
         # Run the conversion
-        result = subprocess.run(
+        result = subprocess.run(  # nosec B603  # Caller-requested local Pandoc argv; no shell.
             cmd,
             capture_output=True,
             text=True,
@@ -341,7 +341,7 @@ def extract_metadata(
     """
     try:
         pandoc_path = check_pandoc_installed()
-        result = subprocess.run(
+        result = subprocess.run(  # nosec B603  # Caller-requested local Pandoc argv; no shell.
             [
                 pandoc_path, "-s", "-f", format or "markdown", "-t", "json",
                 str(input_path),
@@ -419,7 +419,7 @@ def apply_template(
         cmd.extend(["-o", str(output_path), str(input_path)])
         
         # Run the template application
-        result = subprocess.run(
+        result = subprocess.run(  # nosec B603  # Caller-requested local Pandoc argv; no shell.
             cmd,
             capture_output=True,
             text=True,

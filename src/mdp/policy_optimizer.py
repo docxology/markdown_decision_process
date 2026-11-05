@@ -215,7 +215,7 @@ class PolicyOptimizer:
             if not state_ids:
                 break
                 
-            current_state = random.choice(state_ids)
+            current_state = random.choice(state_ids)  # nosec B311  # Document-model sampling only; never a security token.
             
             for step in range(max_steps):
                 # Get possible actions
@@ -224,8 +224,8 @@ class PolicyOptimizer:
                     break
                 
                 # Epsilon-greedy action selection
-                if random.random() < self.exploration_factor:
-                    next_state = random.choice(successors)
+                if random.random() < self.exploration_factor:  # nosec B311  # Document-model sampling only; never a security token.
+                    next_state = random.choice(successors)  # nosec B311  # Document-model sampling only; never a security token.
                 else:
                     # Choose best action
                     next_state = max(
@@ -733,7 +733,7 @@ class PolicyOptimizer:
 
     def save(self, filepath: str) -> None:
         """Save the optimizer state."""
-        import pickle
+        import pickle  # nosec B403  # serialization only; reads use restricted loaders
         from pathlib import Path
 
         path = Path(filepath)
@@ -754,13 +754,13 @@ class PolicyOptimizer:
             pickle.dump(state, f)
 
     def load(self, filepath: str) -> None:
-        """Load the optimizer state."""
-        import pickle
+        """Load plain-data optimizer state; stored custom callables are refused."""
+        from .legacy_pickle import load_optimizer_pickle
         from pathlib import Path
 
         path = Path(filepath)
         with open(path, 'rb') as f:
-            state = pickle.load(f)
+            state = load_optimizer_pickle(f)
 
         self.q_table = defaultdict(float, state['q_table'])
         self.policy = defaultdict(dict, state['policy'])
@@ -929,7 +929,7 @@ class PolicyOptimizer:
 
         if start_state is None:
             # Choose a random start state
-            start_state = random.choice(list(self.state_space.states.keys()))
+            start_state = random.choice(list(self.state_space.states.keys()))  # nosec B311  # Document-model sampling only; never a security token.
 
         sequence = [start_state]
         current_state = start_state
@@ -948,7 +948,7 @@ class PolicyOptimizer:
             next_states = list(action_probs.keys())
             probabilities = list(action_probs.values())
 
-            next_state = random.choices(next_states, weights=probabilities, k=1)[0]
+            next_state = random.choices(next_states, weights=probabilities, k=1)[0]  # nosec B311  # Document-model sampling only; never a security token.
             sequence.append(next_state)
             current_state = next_state
 

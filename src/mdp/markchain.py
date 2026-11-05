@@ -134,9 +134,9 @@ class MarkChain:
             if self.start_states:
                 states_list = list(self.start_states.keys())
                 weights = [self.start_states[s] for s in states_list]
-                current = random.choices(states_list, weights=weights)[0]
+                current = random.choices(states_list, weights=weights)[0]  # nosec B311  # Document-model sampling only; never a security token.
             else:
-                current = random.choice(list(self.states))
+                current = random.choice(list(self.states))  # nosec B311  # Document-model sampling only; never a security token.
         else:
             current = start_state
             
@@ -146,12 +146,12 @@ class MarkChain:
         for _ in range(length - 1):
             if current not in self.transitions or not self.transitions[current]:
                 # No transitions from current state, pick random state
-                current = random.choice(list(self.states))
+                current = random.choice(list(self.states))  # nosec B311  # Document-model sampling only; never a security token.
             else:
                 # Sample next state
                 next_states = list(self.transitions[current].keys())
                 weights = [self.transitions[current][s] for s in next_states]
-                current = random.choices(next_states, weights=weights)[0]
+                current = random.choices(next_states, weights=weights)[0]  # nosec B311  # Document-model sampling only; never a security token.
             result.append(current)
             
         return '\n\n'.join(result)

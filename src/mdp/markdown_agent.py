@@ -130,7 +130,7 @@ class MarkdownAgent:
                 print(f"Training iteration {i}/{iterations}")
                 
             # Select a random document to learn from
-            doc_path = random.choice(md_files)
+            doc_path = random.choice(md_files)  # nosec B311  # Document-model sampling only; never a security token.
             with open(doc_path, 'r', encoding='utf-8') as f:
                 content = f.read()
             
@@ -152,7 +152,7 @@ class MarkdownAgent:
                 self.belief_updater.update_from_observation(observations[j])
                 
                 # Determine action (exploration vs exploitation)
-                if random.random() < self.exploration_rate:
+                if random.random() < self.exploration_rate:  # nosec B311  # Document-model sampling only; never a security token.
                     # Exploration: try a random action
                     action = "explore"
                     stats["exploration_actions"] += 1

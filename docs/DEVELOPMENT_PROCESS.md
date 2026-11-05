@@ -169,6 +169,25 @@ requires the real metadata integration tests. Other matrix entries retain
 optional native-tool behavior. Pushes to `codex/**` run the same path-filtered
 workflow before an ordinary promotion of the tested commit to `main`.
 
+Security scanning keeps all Bandit checks enabled. Narrow inline annotations
+identify document-model pseudo-random sampling (B311), explicit caller-requested
+local Pandoc commands passed as argument lists without a shell (B603/B404), and
+pickle serialization/restricted-reader imports (B403). These annotations do not
+permit unrestricted deserialization. Pandoc binary overrides, filters and extra
+options remain choices made by the calling local application.
+
+`PolicyOptimizer.load` and the `.gpickle` branch of `StateSpace.load` read at most
+32 MiB and accept exactly one complete legacy pickle. The optimizer accepts plain
+data; graphs accept the explicit ordinary `DiGraph` and cached-view classes.
+Unknown globals and custom reward callables/object classes are rejected.
+Extension-cache entries and persistent references are refused before object
+construction. Existing standard save/load formats remain supported and input
+files are never rewritten.
+Custom Python-object persistence needs a separate reviewed data migration.
+Tests exercise real round trips and malicious reducers that may only write a
+marker in their disposable test directory. These are implementation/security
+checks, not recovered historical experiment evidence.
+
 ### Documentation
 
 - Keep documentation in sync with code

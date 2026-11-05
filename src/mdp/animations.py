@@ -317,9 +317,9 @@ class MarkChainGenerationAnimator:
         if self.chain.start_states:
             states_list = list(self.chain.start_states.keys())
             weights = [self.chain.start_states[s] for s in states_list]
-            current = random.choices(states_list, weights=weights)[0]
+            current = random.choices(states_list, weights=weights)[0]  # nosec B311  # Document-model sampling only; never a security token.
         else:
-            current = random.choice(list(self.chain.states))
+            current = random.choice(list(self.chain.states))  # nosec B311  # Document-model sampling only; never a security token.
         
         current_states.append(current)
         generation_history.append({
@@ -331,11 +331,11 @@ class MarkChainGenerationAnimator:
         # Generate subsequent states
         for _ in range(steps - 1):
             if current not in self.chain.transitions or not self.chain.transitions[current]:
-                current = random.choice(list(self.chain.states))
+                current = random.choice(list(self.chain.states))  # nosec B311  # Document-model sampling only; never a security token.
             else:
                 next_states = list(self.chain.transitions[current].keys())
                 weights = [self.chain.transitions[current][s] for s in next_states]
-                current = random.choices(next_states, weights=weights)[0]
+                current = random.choices(next_states, weights=weights)[0]  # nosec B311  # Document-model sampling only; never a security token.
             
             current_states.append(current)
             generation_history.append({

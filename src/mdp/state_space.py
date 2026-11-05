@@ -280,7 +280,7 @@ class StateSpace:
     
     def save(self, filepath: Union[str, Path]) -> None:
         """Save state space to file (uses networkx for graph serialization)."""
-        import pickle
+        import pickle  # nosec B403  # serialization only; reads use restricted loaders
         from pathlib import Path
         
         filepath = Path(filepath)
@@ -299,8 +299,8 @@ class StateSpace:
                 json.dump(data, f)
     
     def load(self, filepath: Union[str, Path]) -> None:
-        """Load state space from file."""
-        import pickle
+        """Load state space; legacy graph pickles use a restricted class registry."""
+        from .legacy_pickle import load_digraph_pickle
         from pathlib import Path
         
         filepath = Path(filepath)
@@ -308,7 +308,7 @@ class StateSpace:
         # Load from pickle if .gpickle extension
         if filepath.suffix == '.gpickle':
             with open(filepath, 'rb') as f:
-                self.graph = pickle.load(f)
+                self.graph = load_digraph_pickle(f)
             # Reconstruct states and transitions from graph
             self.states = {}
             self.transitions = defaultdict(lambda: defaultdict(int))
