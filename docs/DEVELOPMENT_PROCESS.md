@@ -164,9 +164,14 @@ The test workflow stages that exact dictionary with
 SHA-256 before extraction, and keeps it under `runner.temp`. Its `--archive PATH`
 option validates a retained local copy without network access. Ordinary test
 runs use `--benchmark-disable`; the separate benchmark step retains calibration.
-Linux/Python 3.11 also installs the official Ubuntu 24.04 Pandoc package and
-requires the real metadata integration tests. Other matrix entries retain
-optional native-tool behavior. Pushes to `codex/**` run the same path-filtered
+Linux/Python 3.11 installs the official Ubuntu 24.04 Pandoc package and its
+[LaTeX engine](https://packages.ubuntu.com/noble/texlive-latex-base),
+[recommended packages](https://packages.ubuntu.com/noble/texlive-latex-recommended),
+[fonts](https://packages.ubuntu.com/noble/texlive-fonts-recommended) and
+[Latin Modern support](https://packages.ubuntu.com/noble/lmodern) at the workflow
+versions. It probes both Pandoc and `pdflatex`, then requires real metadata and
+PDF export integration tests. Other matrix entries retain optional native-tool
+behavior. Pushes to `codex/**` run the same path-filtered
 workflow before an ordinary promotion of the tested commit to `main`.
 
 Security scanning keeps all Bandit checks enabled. Narrow inline annotations

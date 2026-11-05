@@ -54,7 +54,8 @@ def test_quality_all_metrics_requires_input_then_matches_analysis():
 def test_failed_quality_replacement_clears_previous_selection(tmp_path):
     quality = DocumentQuality()
     quality.analyze_document(Document(content="# Selected\n\nA short sentence."))
-    with pytest.raises(IsADirectoryError):
+    # Opening a directory raises EISDIR on POSIX and EACCES on Windows.
+    with pytest.raises((IsADirectoryError, PermissionError)):
         quality.analyze_document(tmp_path)
     with pytest.raises(ValueError, match="document"):
         quality.get_all_metrics()
