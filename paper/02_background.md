@@ -22,11 +22,11 @@ Document processing has evolved from simple format conversion to sophisticated A
 
 ### Markov Models in Text and Document Processing
 
-Markov models have a rich history in text processing, though their application to document-level structure remains underexplored:
+Markov models provide context for the text-processing interfaces explored here:
 
 - **Language Modeling Foundations**: N-gram models [@ngram_models; @language_modeling] capture local dependencies for prediction and generation tasks
 - **Text Generation Applications**: Markov chains enable creative text generation [@markov_text_gen; @creative_text_generation], though typically operating at word or character level
-- **Document Structure Analysis**: Limited prior work applies Markov models to document-level organization, with most approaches focusing on sentence or paragraph-level analysis [@document_structure_markov]
+- **Document Structure Analysis**: Document organization is another possible modeling scale [@document_structure_markov]; this manuscript does not establish a comprehensive priority review.
 
 ## Decision Theory and Optimization
 
@@ -59,7 +59,7 @@ $$\mathcal{F} = \sum_{s'} q(s') \ln \frac{q(s')}{p(s',o|a)}$$
 
 This approach dispenses with explicit reward functions entirely, instead using free energy to bound surprise directly on the probability distributions. The free energy principle posits that biological and artificial agents minimize surprise by updating their internal models to better predict sensory observations.
 
-In the context of document processing, Active Inference provides an alternative optimization framework where document transformations are selected to minimize prediction errors rather than maximize predefined reward signals. This enables more principled handling of uncertainty and provides connections to predictive processing theories of brain function [@predictive_processing].
+Active inference and predictive processing provide theoretical context [@predictive_processing]. An implementation for document transformations would need an explicit generative model, objective and inference procedure. This prototype does not establish such a validated model for document meaning, and no empirical advantage follows from this conceptual connection alone.
 
 ## Related Frameworks and Tools
 
@@ -75,45 +75,37 @@ In the context of document processing, Active Inference provides an alternative 
 - **WeasyPrint** [@weasyprint]: High-quality HTML/CSS to PDF conversion
 - **Jupyter Book** [@jupyter_book]: System for creating publication-ready books from Jupyter notebooks
 
-## Novel Contributions and Differentiation
+## Implementation Scope and Research Positioning
 
-The Markdown Decision Process framework makes several distinctive contributions that differentiate it from existing approaches:
+The prototype brings document parsing, graph analysis, Markov sampling,
+configurable transformations and heuristic belief updates into one Python
+package. These interfaces provide a way to investigate decision-theoretic
+approaches to document processing. Their presence does not establish a priority
+claim over prior work, semantic accuracy, calibrated uncertainty or global
+policy optimality. The implemented entry points and their limits are listed in
+[Core Components](04_core_components.md).
 
-### 1. Document-as-MDP Paradigm
-First comprehensive application of MDP/POMDP theory to document structure modeling, treating documents as stochastic processes amenable to decision-theoretic analysis rather than static text objects.
+### Questions for Comparison with Language Models
 
-### 2. Semantic Uncertainty Modeling
-Explicit probabilistic treatment of the uncertainty inherent in interpreting syntactic structure as semantic meaning—a fundamental challenge that neural approaches often address implicitly through learned representations.
+The framework permits inspection of its configured state representations,
+rewards and transformation choices. Whether that inspection improves a user's
+understanding or trust requires an appropriate human evaluation. A belief
+vector can expose implementation-defined scores, but normalization alone does
+not establish calibration against labeled observations.
 
-### 3. Policy-Based Document Optimization
-Novel application of reinforcement learning to document improvement, learning optimal transformation policies that maximize user-specified reward functions rather than relying on fixed rules or post-hoc evaluation.
+Plugins can change local transformations and reward functions. Their utility,
+maintenance cost and domain transfer should be compared under specified tasks
+and data. The current manuscript does not establish how much customization or
+training any language-model baseline would require.
 
-### 4. Unified Probabilistic Framework
-Integration of document generation, analysis, and optimization within a single coherent probabilistic framework, enabling seamless transitions between different document processing tasks.
+Resource use and output quality must be measured together for identified
+implementations, inputs and execution conditions. No matched benchmark in this
+revision establishes comparable quality, lower computational cost or suitability
+for edge deployment. Likewise, mathematical guarantees require explicit model
+assumptions and a verified solver; the use of MDP/POMDP vocabulary does not itself
+supply those guarantees.
 
-### 5. Extensible Theoretical Architecture
-Plugin system that allows domain-specific customizations while maintaining theoretical coherence, enabling researchers and practitioners to extend functionality without compromising the underlying mathematical foundations.
-
-## Positioning and Significance
-
-These contributions position MDP at the intersection of several rapidly advancing fields:
-
-- **Document AI**: Bridging traditional document processing with modern AI capabilities
-- **Decision Theory**: Applying rigorous mathematical frameworks to practical document problems
-- **Interactive Systems**: Enabling user-controlled, interpretable document optimization
-
-### Complementarity with Large Language Models
-
-The MDP framework complements rather than competes with modern large language models (LLMs) by addressing fundamental limitations in neural approaches:
-
-**Interpretability Gap**: While LLMs excel at pattern recognition and content generation, they provide limited insight into their decision-making processes. MDP offers explicit, interpretable models that users can understand, modify, and trust.
-
-**Uncertainty Quantification**: LLMs typically provide point predictions without uncertainty estimates. MDP's belief updating mechanism provides calibrated probability distributions over semantic interpretations, enabling uncertainty-aware decision making.
-
-**Domain Customization**: LLMs require extensive fine-tuning for domain-specific applications. MDP's plugin architecture allows rapid customization through modular components without requiring large-scale retraining.
-
-**Resource Efficiency**: LLMs demand substantial computational resources (billions of parameters, GPU clusters). MDP provides comparable performance for structured document tasks with dramatically lower computational requirements (millions of operations, CPU-based), making it suitable for edge devices and resource-constrained environments.
-
-**Theoretical Grounding**: LLMs are primarily empirical successes, while MDP is grounded in well-established decision theory and probabilistic modeling, providing theoretical guarantees and principled uncertainty handling.
-
-By grounding document processing in decision theory, MDP provides a theoretically principled alternative to black-box neural approaches while offering greater interpretability and control than traditional rule-based systems. This approach addresses fundamental limitations in current document processing tools while opening new avenues for research in document understanding and generation.
+The [prospective evaluation protocol](06_evaluation.md) describes the evidence
+needed for these comparisons. The [evidence review](EVALUATION_EVIDENCE.md)
+records the unresolved historical model, experiment, participant and statistical
+provenance. These research questions are not reported experimental findings.

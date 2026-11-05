@@ -4,6 +4,23 @@
 
 This directory contains a modular academic paper describing the Markdown Decision Process framework. The paper is designed for submission to conferences or journals in machine learning, natural language processing, or software engineering.
 
+## Evidence and publication boundary
+
+The active manuscript is a corrected source draft with a prospective evaluation,
+not a new deposited edition. Read [EVALUATION_EVIDENCE.md](EVALUATION_EVIDENCE.md)
+before changing claims. Historical model/checkpoint, experiment, participant and
+statistical provenance is unresolved. Never invent observations, select a GPT-2
+variant by inference, or treat test fixtures, examples or benchmark timings as
+quality or human-study results. A future study is a new dated source epoch.
+
+The evidence review is a required assembly input and accompanies both text
+formats. Write assembled artifacts to a new review-output directory with
+`--output-dir`; preserve the historical `outputs/` files and DOI. Validate the
+full assembled body as well as its abstract so withdrawn assertions cannot
+survive in background or future-work prose. The actual CLI in
+`assemble_paper.py --help` is authoritative; code and submission examples below
+are illustrations, not implemented features or records of completed studies.
+
 ## Paper Structure
 
 ```
@@ -14,12 +31,14 @@ paper/
 ├── 03_methodology.md       # System architecture and approach
 ├── 04_core_components.md   # Detailed component descriptions
 ├── 05_implementation.md    # Implementation details and algorithms
-├── 06_evaluation.md        # Experimental design and setup
-├── 07_results.md # Experimental results and findings
+├── 06_evaluation.md        # Prospective protocol and evidence requirements
+├── 07_results.md           # Implementation evidence and results boundary
 ├── 08_discussion.md        # Interpretation and implications
 ├── 09_conclusion.md        # Summary and impact
 ├── 10_future_work.md       # Research directions and extensions
-├── 11_references.md        # Bibliography and citations
+├── 11_code.md              # Implemented source pointers and minimal example
+├── 12_references.md        # Bibliography and citations
+├── EVALUATION_EVIDENCE.md  # Unresolved provenance and acceptance criteria
 ├── assemble_paper.py       # Paper assembly script
 ├── outputs/                # Generated paper files
 │   ├── mdp_paper.md        # Complete markdown
@@ -44,7 +63,7 @@ paper/
 **00_abstract.md** - Paper Summary
 - 150-250 words
 - Key contributions (3-5 bullet points)
-- Main results with numbers
+- State the implementation and evidence boundary; report numbers only when supported by reviewed observations
 - Keywords (5-8 terms)
 
 **01_introduction.md** - Motivation and Overview
@@ -86,11 +105,11 @@ paper/
 - Baseline comparisons
 - Statistical testing methodology
 
-**07_results.md** - Experimental Results and Findings
-- Quantitative results with statistics
-- Qualitative analysis
-- Ablation studies
-- Limitations and threats to validity
+**07_results.md** - Implementation Evidence and Results Boundary
+- Distinguish source/test behavior from empirical research findings
+- Keep unsupported numerical, model and participant claims withdrawn
+- Link future results to reviewed data and executable analysis
+- State limitations and threats to validity
 
 **08_discussion.md** - Discussion and Interpretation
 - Contribution summary
@@ -110,7 +129,11 @@ paper/
 - Application domains
 - Research opportunities
 
-**11_references.md** - Bibliography and Citations
+**11_code.md** - Implemented Source and Minimal Example
+
+**12_references.md** - Bibliography and Citations
+
+**EVALUATION_EVIDENCE.md** - Required Evidence Review
 
 ## Writing Guidelines
 
@@ -215,7 +238,7 @@ python paper/check_equations.py
 - [ ] Mathematical notation is consistent
 - [ ] Figures and tables have descriptive captions
 - [ ] Code examples are correct and runnable
-- [ ] Results include statistical significance
+- [ ] Any statistical claim has reviewed observations, an appropriate analysis and uncertainty; significance is not required or inferred
 - [ ] Limitations are honestly acknowledged
 - [ ] Contributions are clearly stated
 
@@ -392,56 +415,17 @@ git push origin edit/methodology
 Closes #42 (Add algorithm complexity analysis)
 ```
 
-## Version Management
+## Version and evidence management
 
-### Paper Versions
+Use immutable source revisions for source corrections. The existing publication
+DOI remains historical until a separately authorized, identified deposit exists.
+Record what changed, which evidence was reviewed and what remains unavailable.
+Do not create fictional venue dates, reviewer responses, ablation studies,
+significance tests or changelog results to populate a template.
 
-```python
-# In paper/versions.py
-
-VERSIONS = {
-    'v1.0': {
-        'date': '2024-01-15',
-        'venue': 'NeurIPS 2024 submission',
-        'status': 'submitted',
-        'changes': 'Initial submission'
-    },
-    'v1.1': {
-        'date': '2024-03-20',
-        'venue': 'NeurIPS 2024 revision',
-        'status': 'revised',
-        'changes': 'Addressed reviewer comments'
-    },
-    'v2.0': {
-        'date': '2024-06-10',
-        'venue': 'JMLR extended version',
-        'status': 'in_preparation',
-        'changes': 'Extended journal version with appendices'
-    }
-}
-```
-
-### Changelog
-
-```markdown
-# paper/CHANGELOG.md
-
-## [1.1] - 2024-03-20 (NeurIPS Revision)
-
-### Reviewer 1 Responses
-- Added ablation study for belief updater (Section 7.3)
-- Clarified computational complexity (Section 5.4)
-- Expanded related work comparison (Section 2.3)
-
-### Reviewer 2 Responses
-- Added statistical significance tests (Section 6.4)
-- Improved figure quality (Figures 3-5)
-- Addressed scalability concerns (Section 8.2)
-
-### Reviewer 3 Responses
-- Clarified novelty vs. existing work (Section 1.3)
-- Added real-world case study (Section 7.5)
-```
+New empirical results require the acceptance bundle in EVALUATION_EVIDENCE.md
+and explicit review of the claim. Preserve prior source and artifacts, including
+withdrawn claims, as historical context without presenting them as current facts.
 
 ## LaTeX/PDF Troubleshooting
 
@@ -532,7 +516,7 @@ def verify_citations():
 
 1. **Check Technical Accuracy**: Verify algorithms and math
 2. **Ensure Clarity**: Complex concepts explained well?
-3. **Verify Results**: Numbers consistent across sections?
+3. **Verify Evidence**: Are claims supported, uncertainty stated and unavailable provenance kept explicit?
 4. **Test Assembly**: Does the paper build correctly?
 5. **Style Consistency**: Writing style uniform?
 

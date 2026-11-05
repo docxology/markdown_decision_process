@@ -4,7 +4,7 @@ This directory contains the modular sections of an academic paper describing the
 
 ## Evaluation evidence status
 
-The corrected active source withdraws unsupported numerical tables, participant-study results and model/statistical comparisons. Section 06 is a prospective evaluation protocol; Section 07 reports the implementation/evidence boundary. Historical GPT-2 identity remains unresolved. See [Evaluation evidence review](EVALUATION_EVIDENCE.md). Previously generated files in `outputs/` are historical artifacts and do not contain this correction; regenerate from the modular sources for review.
+The corrected active source withdraws unsupported numerical tables, participant-study results and model/statistical comparisons. Section 06 is a prospective evaluation protocol; Section 07 reports the implementation/evidence boundary. Historical GPT-2 identity remains unresolved. See [Evaluation evidence review](EVALUATION_EVIDENCE.md). Previously generated files in `outputs/` are historical artifacts and do not contain this correction; assemble the modular sources into a new review-output directory without replacing those originals. The evidence review is required and included in the assembled Markdown and LaTeX-compatible Markdown.
 
 ## Overview
 
@@ -34,42 +34,26 @@ The paper is organized into modular sections that can be assembled into a comple
 
 ### Using the Assembly Script
 
-The easiest way to create the complete paper is using the provided assembly script:
+Run from the repository root. Choose a new output directory for each review;
+previous files in `paper/outputs/` remain historical artifacts.
 
 ```bash
-# Validate all sections are present
-python assemble_paper.py --validate-only
+# Validate sections and the evidence-review appendix; no TeX dependency
+python paper/assemble_paper.py --validate-only --output-dir /path/to/new-review-output
 
-# Create paper in all formats
-python assemble_paper.py --format all
+# Assemble the corrected draft without requiring a PDF toolchain
+python paper/assemble_paper.py --format markdown --output-dir /path/to/new-review-output
 
-# Create specific formats
-python assemble_paper.py --format pdf
-python assemble_paper.py --format html
-python assemble_paper.py --format markdown
+# Other formats require the appropriate local tools
+python paper/assemble_paper.py --format html --output-dir /path/to/new-review-output
+python paper/assemble_paper.py --format pdf --output-dir /path/to/new-review-output
 ```
 
-### Manual Assembly
-
-If you prefer to assemble the paper manually:
-
-1. Concatenate the section files in numerical order
-2. Add appropriate front matter (title, authors, abstract)
-3. Use Pandoc for format conversion:
-
-```bash
-# Combine sections
-cat 0?_*.md > complete_paper.md
-
-# Convert to PDF
-pandoc complete_paper.md -o paper.pdf --pdf-engine=pdflatex
-
-# Convert to HTML
-pandoc complete_paper.md -o paper.html --self-contained
-
-# Convert to Word
-pandoc complete_paper.md -o paper.docx
-```
+Use the assembler rather than a filename glob: numbered globs can omit the
+code supplement, references and unnumbered evidence review. The assembler
+preserves the correction's draft status and labels the existing DOI as a
+historical publication. Successful assembly checks file structure; it does not
+verify research data or establish a new publication version.
 
 ## Output Formats
 
@@ -135,7 +119,7 @@ When contributing to the paper:
 
 1. Edit the relevant section file(s)
 2. Run the assembly script to verify the complete paper
-3. Check that all formats generate correctly
+3. Check the requested formats in the new review-output directory and report unavailable tools explicitly
 4. Update this README if you add new sections or change the structure
 
 ## Version Control
@@ -164,4 +148,4 @@ For questions about the paper or framework:
 
 ---
 
-*This paper describes ongoing research in probabilistic modeling and document processing. The Markdown Decision Process framework represents a novel approach to understanding and optimizing digital documents through the lens of decision theory and stochastic processes.*
+*This paper describes a software prototype and prospective research. Future empirical claims require the source-bound evidence and review listed in EVALUATION_EVIDENCE.md.*

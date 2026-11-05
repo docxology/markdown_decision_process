@@ -1,6 +1,6 @@
 # Future Work
 
-This section outlines a comprehensive roadmap for extending and enhancing the Markdown Decision Process framework, prioritizing developments based on current limitations, empirical evidence, and theoretical opportunities. We organize future work into immediate (6-12 months), medium-term (1-2 years), and long-term (2-5 years) horizons with specific research questions and implementation priorities.
+This section lists prospective research directions and implementation ideas. The suggested priorities and time horizons are planning estimates, not conclusions from the withdrawn experiments or commitments to delivery. Expected impacts below are hypotheses to evaluate under the protocol in Section 06; they are not measured benefits of the current prototype.
 
 ## Theoretical Extensions
 
@@ -14,7 +14,7 @@ This section outlines a comprehensive roadmap for extending and enhancing the Ma
 
 **Nested Markov Models**: Develop nested Markov models where higher-level structures (sections) contain lower-level models (paragraphs within sections), enabling context-aware generation and optimization.
 
-*Implementation Priority*: High (addresses fundamental scalability limitations)
+*Implementation Priority*: High (proposed investigation of scaling behavior)
 *Expected Impact*: Improved structural coherence for complex documents
 
 ### Temporal and Evolutionary Models
@@ -41,7 +41,7 @@ This section outlines a comprehensive roadmap for extending and enhancing the Ma
 **Integration with Modern Deep Learning**: Combine MDP foundations with contemporary deep learning approaches for hybrid models that leverage both interpretability and representational power.
 
 *Research Questions*:
-- How can we maintain theoretical guarantees while incorporating learned representations?
+- What assumptions and solver checks would be needed to establish theoretical guarantees when incorporating learned representations?
 - What hybrid architectures best balance interpretability with performance?
 - Can transformer-based encodings improve state representation while preserving MDP structure?
 
@@ -57,7 +57,7 @@ This section outlines a comprehensive roadmap for extending and enhancing the Ma
 - Actor-critic methods with experience replay for sample-efficient learning
 - Hierarchical reinforcement learning for multi-scale document optimization
 
-*Implementation Priority*: Critical (current bottleneck for large documents)
+*Implementation Priority*: High (requires profiling to identify actual bottlenecks)
 *Expected Impact*: Improved optimization speed for large documents
 
 **Distributed and Parallel Processing**: Implement distributed algorithms for training Markov chains and optimizing policies across large document corpora using modern distributed computing frameworks (Ray, Dask, Spark).
@@ -278,8 +278,4 @@ This section outlines a comprehensive roadmap for extending and enhancing the Ma
 
 ## Conclusion
 
-The Markdown Decision Process framework represents a foundation for a new paradigm in document processing. The future work outlined here spans theoretical innovations, practical enhancements, and ecosystem development, positioning MDP as a central technology for intelligent content creation and management.
-
-By pursuing these directions systematically, the framework can evolve from a research prototype to a mature platform that significantly impacts how humans and machines collaborate in creating, maintaining, and understanding documentation across diverse domains and applications.
-
-The success of this roadmap depends on continued interdisciplinary collaboration between computer scientists, cognitive scientists, software engineers, and domain experts, ensuring that theoretical advancements translate into practical tools that genuinely enhance human capabilities in information management and communication.
+These directions extend beyond the evidence currently available for the prototype. Each proposed benefit needs an identified task, appropriate comparison, retained observations and a statement of limitations. Future studies must be reported as new source epochs; they cannot recover the provenance of the withdrawn historical claims by substitution.

@@ -311,7 +311,8 @@ class PaperAssembler:
             "09_conclusion": "Conclusion",
             "10_future_work": "Future Work",
             "12_references": "References",
-            "11_code": "Code Supplement"
+            "11_code": "Code Supplement",
+            "EVALUATION_EVIDENCE": "Evaluation evidence review"
         }
 
         for filename, title in section_files.items():
@@ -322,7 +323,10 @@ class PaperAssembler:
         return sections
 
     def create_markdown_paper(self) -> str:
-        """Create the complete paper in Markdown format."""
+        """Create the complete paper in Markdown format with its evidence review."""
+        review = self.paper_dir / "EVALUATION_EVIDENCE.md"
+        if not review.is_file() or not review.read_text(encoding="utf-8").strip():
+            raise ValueError("EVALUATION_EVIDENCE.md is required and must be nonempty")
         sections = self.get_paper_sections()
 
         # Create front matter
@@ -709,7 +713,8 @@ keywords: {keywords}
             "09_conclusion.md",
             "10_future_work.md",
             "12_references.md",
-            "11_code.md"
+            "11_code.md",
+            "EVALUATION_EVIDENCE.md"
         ]
 
         missing_sections = []
