@@ -34,9 +34,9 @@ class PluginManager:
             plugin_dir: Optional directory to search for plugins. If None, uses default locations.
             config_path: Optional path to the plugin configuration file. If None, uses default.
         """
-        self.plugins = {}  # Dictionary of registered plugins
-        self.transformations = {}  # Dictionary of registered transformations
-        self.reward_functions = {}  # Dictionary of registered reward functions
+        self.plugins: Dict[str, Any] = {}  # Dictionary of registered plugins
+        self.transformations: Dict[str, Any] = {}  # Dictionary of registered transformations
+        self.reward_functions: Dict[str, Callable] = {}  # Dictionary of registered reward functions
         
         # Set default plugin directory if not provided
         if plugin_dir is None:
@@ -258,7 +258,7 @@ class PluginManager:
         Returns:
             Dictionary containing plugin configuration.
         """
-        config = {"plugins": {}}
+        config: Dict[str, Any] = {"plugins": {}}
         
         # Check if the configuration file exists
         if not os.path.exists(self.config_path):

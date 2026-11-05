@@ -199,6 +199,8 @@ def convert_with_transformations(
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_dir_path = Path(temp_dir)
             
+            pandoc_input: Union[str, Path]
+            pandoc_output: Union[str, Path]
             # Step 1: Apply pre-transformations if specified
             if pre_transformations and len(pre_transformations) > 0:
                 pre_transform_path = temp_dir_path / "pre_transformed.md"
@@ -288,7 +290,8 @@ def _metadata_text(value: Any) -> str:
         return "".join(_metadata_text(item) for item in value)
     if not isinstance(value, dict):
         return ""
-    kind, content = value.get("t"), value.get("c")
+    kind = value.get("t")
+    content: Any = value.get("c")
     if kind in {"Space", "SoftBreak", "LineBreak"}:
         return " "
     if kind in {"Code", "CodeBlock", "Math", "RawInline", "RawBlock"}:
@@ -302,7 +305,8 @@ def _metadata_text(value: Any) -> str:
 
 def _metadata_value(value: Dict[str, Any]) -> Any:
     """Convert the documented Pandoc Meta constructors to Python values."""
-    kind, content = value.get("t"), value.get("c")
+    kind = value.get("t")
+    content: Any = value.get("c")
     if kind in {"MetaString", "MetaBool"}:
         return content
     if kind == "MetaList":
@@ -451,6 +455,7 @@ class PandocConverter:
         Raises:
             PandocNotFoundError: If Pandoc is not found (and not overridden).
         """
+        self.pandoc_path: Optional[str]
         try:
             if pandoc_path_override:
                 # Basic check for the overridden path

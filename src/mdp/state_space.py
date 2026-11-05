@@ -25,14 +25,14 @@ class StateSpace:
             simplify_states: Whether to simplify state representations
             min_count: Minimum count for state inclusion
         """
-        self.states = {}
-        self.transitions = defaultdict(lambda: defaultdict(int))
+        self.states: Dict[str, Dict[str, Any]] = {}
+        self.transitions: Dict[str, Dict[str, int]] = defaultdict(lambda: defaultdict(int))
         self.graph = nx.DiGraph()
         self.state_counter = 0
         self.simplify_states = simplify_states
         self.min_count = min_count
-        self.features = {}
-        self.state_metadata = {}
+        self.features: Dict[str, Any] = {}
+        self.state_metadata: Dict[str, Dict[str, Any]] = {}
         
         if document is not None:
             self.parse_markdown(document.get_content())
@@ -278,7 +278,7 @@ class StateSpace:
         
         return structure
     
-    def save(self, filepath: str) -> None:
+    def save(self, filepath: Union[str, Path]) -> None:
         """Save state space to file (uses networkx for graph serialization)."""
         import pickle
         from pathlib import Path
@@ -298,7 +298,7 @@ class StateSpace:
             with open(filepath, 'w') as f:
                 json.dump(data, f)
     
-    def load(self, filepath: str) -> None:
+    def load(self, filepath: Union[str, Path]) -> None:
         """Load state space from file."""
         import pickle
         from pathlib import Path
@@ -566,7 +566,7 @@ class StateSpace:
     
     def _get_metadata_for_type(self, state_type: str, content: str) -> Dict[str, Any]:
         """Generate metadata for a given state type and content."""
-        metadata = {'type': state_type}
+        metadata: Dict[str, Any] = {'type': state_type}
         
         if state_type == 'header':
             level = len(content) - len(content.lstrip('#'))

@@ -25,7 +25,7 @@ class Document:
             raise ValueError("Either file_path or content must be provided")
 
         self.file_path = None
-        self._content = None
+        self._content: str = ""
 
         # Determine if file_path is actually a file path or content
         if file_path:
@@ -48,19 +48,21 @@ class Document:
                     self._content = f.read()
             else:
                 # Treat as content
-                self._content = file_path
+                self._content = str(file_path)
         else:
+            if content is None:
+                raise ValueError("Either file_path or content must be provided")
             self._content = content
             
         self._parse_document()
     
     def _parse_document(self) -> None:
         """Parse the document into its components."""
-        self._parsed_headings = None
-        self._parsed_paragraphs = None
-        self._parsed_lists = None
-        self._parsed_code_blocks = None
-        self._parsed_structure = None
+        self._parsed_headings: Optional[List[Dict[str, Any]]] = None
+        self._parsed_paragraphs: Optional[List[str]] = None
+        self._parsed_lists: Optional[List[Dict[str, Any]]] = None
+        self._parsed_code_blocks: Optional[List[Dict[str, Any]]] = None
+        self._parsed_structure: Optional[List[Dict[str, Any]]] = None
     
     def get_content(self) -> str:
         """
@@ -224,8 +226,8 @@ class Document:
             List of dictionaries representing the document structure
         """
         if self._parsed_structure is None:
-            structure = []
-            current_sections = [None] * 7  # Level 0-6 sections (0 is the root)
+            structure: List[Dict[str, Any]] = []
+            current_sections: List[Optional[Dict[str, Any]]] = [None] * 7  # Level 0-6 sections (0 is the root)
             current_sections[0] = {'children': structure}
 
             headings = self.get_headings()
@@ -244,8 +246,9 @@ class Document:
 
                 # Add this section as a child of the appropriate parent
                 parent_level = level - 1
-                if parent_level < 7 and current_sections[parent_level] is not None:
-                    current_sections[parent_level]['children'].append(section)
+                parent = current_sections[parent_level]
+                if parent is not None:
+                    parent['children'].append(section)
 
                 # Update current_sections
                 current_sections[level] = section
@@ -281,7 +284,7 @@ class Document:
         # Search in headings
         if 'headings' in element_types:
             for heading in self.get_headings():
-                if (use_regex and pattern.search(heading['text'])) or (not use_regex and query in heading['text']):
+                if (pattern is not None and pattern.search(heading['text'])) or (not use_regex and query in heading['text']):
                     results.append({
                         'type': 'heading',
                         'level': heading['level'],
@@ -292,7 +295,7 @@ class Document:
         # Search in paragraphs
         if 'paragraphs' in element_types:
             for paragraph in self.get_paragraphs():
-                if (use_regex and pattern.search(paragraph)) or (not use_regex and query in paragraph):
+                if (pattern is not None and pattern.search(paragraph)) or (not use_regex and query in paragraph):
                     results.append({
                         'type': 'paragraph',
                         'text': paragraph,
@@ -303,7 +306,7 @@ class Document:
         if 'lists' in element_types:
             for list_item in self.get_lists():
                 for item in list_item['items']:
-                    if (use_regex and pattern.search(item)) or (not use_regex and query in item):
+                    if (pattern is not None and pattern.search(item)) or (not use_regex and query in item):
                         results.append({
                             'type': 'list_item',
                             'list_type': list_item['type'],
@@ -314,7 +317,7 @@ class Document:
         # Search in code blocks
         if 'code_blocks' in element_types:
             for block in self.get_code_blocks():
-                if (use_regex and pattern.search(block['code'])) or (not use_regex and query in block['code']):
+                if (pattern is not None and pattern.search(block['code'])) or (not use_regex and query in block['code']):
                     results.append({
                         'type': 'code_block',
                         'language': block['language'],

@@ -25,18 +25,21 @@ except ImportError:
     def smog_index(text): return 10.0            # Neutral SMOG score
     def coleman_liau_index(text): return 12.0    # Grade 12 level
 try:
-    from wordcloud import WordCloud, STOPWORDS
+    import wordcloud
+    WordCloud = wordcloud.WordCloud
+    STOPWORDS = wordcloud.STOPWORDS
     WORDCLOUD_AVAILABLE = True
 except ImportError:
     WORDCLOUD_AVAILABLE = False
     # Define fallback if wordcloud is not available
-    class WordCloud:
+    class _UnavailableWordCloud:
         def __init__(self, **kwargs):
             pass
         def generate(self, text):
             return None
         def to_image(self):
             return None
+    WordCloud = _UnavailableWordCloud
 
 from .document import Document
 from .markchain import MarkChain
@@ -74,7 +77,7 @@ def plot_document_metrics(metrics_dict: Dict[str, Dict[str, Dict[str, float]]],
         "flesch_kincaid_grade": "Flesch-Kincaid Grade"
     }
     
-    readability_values = {name: [] for name in doc_names}
+    readability_values: Dict[str, List[float]] = {name: [] for name in doc_names}
     for doc_name, metrics in metrics_dict.items():
         for metric in readability_metrics:
             if metric in metrics.get("readability", {}):
@@ -101,7 +104,7 @@ def plot_document_metrics(metrics_dict: Dict[str, Dict[str, Dict[str, float]]],
         "entropy": "Information Entropy"
     }
     
-    density_values = {name: [] for name in doc_names}
+    density_values: Dict[str, List[float]] = {name: [] for name in doc_names}
     for doc_name, metrics in metrics_dict.items():
         for metric in density_metrics:
             if metric in metrics.get("information_density", {}):
@@ -126,7 +129,7 @@ def plot_document_metrics(metrics_dict: Dict[str, Dict[str, Dict[str, float]]],
         "content_variety": "Content Variety"
     }
     
-    structure_values = {name: [] for name in doc_names}
+    structure_values: Dict[str, List[float]] = {name: [] for name in doc_names}
     for doc_name, metrics in metrics_dict.items():
         for metric in structure_metrics:
             if metric in metrics.get("structural_balance", {}):
@@ -145,7 +148,7 @@ def plot_document_metrics(metrics_dict: Dict[str, Dict[str, Dict[str, float]]],
     ax.set_xticks(x)
     ax.set_xticklabels([structure_metrics[m] for m in structure_metrics])
     
-    plt.tight_layout(rect=[0, 0, 1, 0.95])  # Adjust layout for the suptitle
+    plt.tight_layout(rect=(0, 0, 1, 0.95))  # Adjust layout for the suptitle
     
     return fig
 
@@ -424,7 +427,7 @@ def plot_readability_comparison(documents: Dict[str, Union[Document, str, Path]]
             doc_instances[name] = doc
     
     # Calculate readability metrics
-    metrics = {
+    metrics: Dict[str, Dict[str, float]] = {
         'Flesch Reading Ease': {},
         'Flesch-Kincaid Grade': {},
         'SMOG Index': {},
@@ -478,15 +481,15 @@ def plot_readability_comparison(documents: Dict[str, Union[Document, str, Path]]
         else:
             ax.set_xlabel('Lower grade level is easier')
     
-    plt.tight_layout(rect=[0, 0, 1, 0.95])  # Adjust layout for the suptitle
+    plt.tight_layout(rect=(0, 0, 1, 0.95))  # Adjust layout for the suptitle
     
     return fig
 
 
 def plot_filtered_state_space(
     chain: MarkChain,
-    filter_func: Callable[[Any], bool] = None,
-    highlight_func: Callable[[Any], bool] = None,
+    filter_func: Optional[Callable[[Any], bool]] = None,
+    highlight_func: Optional[Callable[[Any], bool]] = None,
     figsize: Tuple[int, int] = (12, 10),
     node_size_factor: float = 1000,
     edge_width_factor: float = 3,

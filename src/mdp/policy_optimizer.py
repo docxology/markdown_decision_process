@@ -9,6 +9,7 @@ import random
 from typing import Dict, List, Callable, Optional, Union, Tuple, Any
 from collections import defaultdict
 from .document import Document
+from .state_space import StateSpace
 
 class PolicyOptimizer:
     """
@@ -47,8 +48,8 @@ class PolicyOptimizer:
         self.max_iterations = max_iterations
         
         # Initialize Q-table, policy, and value function
-        self.q_table = {}
-        self.q_values = {}  # Alias for q_table for compatibility
+        self.q_table: Dict[Tuple[str, str], float] = {}
+        self.q_values: Dict[Tuple[str, str], float] = {}  # Alias for q_table for compatibility
         self.policy = {}
         self.value_function = {}
         
@@ -79,7 +80,7 @@ class PolicyOptimizer:
         }
 
         # Initialize custom rewards
-        self.custom_rewards = {}
+        self.custom_rewards: Dict[str, Callable] = {}
     
     def _default_reward_function(self, state):
         """
@@ -399,7 +400,7 @@ class PolicyOptimizer:
             
             # Headers
             if line.startswith('#'):
-                level = len(re.match(r'^#+', line).group())
+                level = len(line) - len(line.lstrip('#'))
                 text = line[level:].strip()
                 elements.append({
                     'type': 'header',
@@ -581,7 +582,7 @@ class PolicyOptimizer:
             return reward if reward > 0 else 0.0
         
         # Calculate word frequency
-        word_freq = {}
+        word_freq: Dict[str, int] = {}
         for word in words:
             word = re.sub(r'[^\w]', '', word)
             if len(word) >= 4:  # Only count substantive words
@@ -616,7 +617,7 @@ class PolicyOptimizer:
         # Track header levels to check hierarchy
         current_level = 0
         sections = []
-        current_section = []
+        current_section: List[Dict[str, Any]] = []
         
         for element in document_structure:
             if element['type'] == 'header':
@@ -735,7 +736,7 @@ class PolicyOptimizer:
         import pickle
         from pathlib import Path
 
-        filepath = Path(filepath)
+        path = Path(filepath)
         state = {
             'q_table': dict(self.q_table),
             'policy': dict(self.policy),
@@ -749,7 +750,7 @@ class PolicyOptimizer:
             'custom_rewards': self.custom_rewards
         }
 
-        with open(filepath, 'wb') as f:
+        with open(path, 'wb') as f:
             pickle.dump(state, f)
 
     def load(self, filepath: str) -> None:
@@ -757,11 +758,11 @@ class PolicyOptimizer:
         import pickle
         from pathlib import Path
 
-        filepath = Path(filepath)
-        with open(filepath, 'rb') as f:
+        path = Path(filepath)
+        with open(path, 'rb') as f:
             state = pickle.load(f)
 
-        self.q_table = defaultdict(lambda: defaultdict(float), state['q_table'])
+        self.q_table = defaultdict(float, state['q_table'])
         self.policy = defaultdict(dict, state['policy'])
         self.value_function = state['value_function']
 
@@ -990,7 +991,7 @@ class PolicyOptimizer:
         # Return the action with highest probability
         return max(action_probs.items(), key=lambda x: x[1])[0]
 
-    def evaluate_policy(self, test_document: Optional[Union[str, Dict]] = None) -> Dict[str, float]:
+    def evaluate_policy(self, test_document: Optional[Union[str, Dict]] = None) -> Dict[str, Any]:
         """
         Evaluate the current policy on a test document.
 

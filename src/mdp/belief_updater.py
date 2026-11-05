@@ -49,7 +49,7 @@ class BeliefUpdater:
         self.noise_factor = min(max(noise_factor, 0.0), 1.0)  # Clamp between 0 and 1
         
         # Initialize observations storage
-        self.observations = []
+        self.observations: List[Dict[str, Any]] = []
         
         # Create belief_state as property alias for beliefs
         self.belief_state = self.beliefs
@@ -222,7 +222,7 @@ class BeliefUpdater:
         # Extract document properties from state space
         if hasattr(state_space, 'states'):
             # Count different types of states
-            state_types = {}
+            state_types: Dict[str, int] = {}
             for state_id, state_data in state_space.states.items():
                 state_type = state_data.get('type', 'unknown')
                 state_types[state_type] = state_types.get(state_type, 0) + 1
@@ -344,8 +344,8 @@ class BeliefUpdater:
         self.beliefs = {cls: 1.0 / len(self.semantic_classes) for cls in self.semantic_classes}
         
         # Track section-level semantics
-        section_semantics = []
-        current_section = []
+        section_semantics: List[Dict[str, Any]] = []
+        current_section: List[Dict[str, Any]] = []
         current_belief = self.beliefs.copy()
         
         for i, obs in enumerate(observations):
@@ -427,7 +427,7 @@ class BeliefUpdater:
     def _initialize_observation_model(self) -> None:
         """Initialize the observation model relating markdown features to semantic classes."""
         # P(feature | semantic class)
-        self.observation_model = {
+        self.observation_model: Dict[str, Dict[Union[int, str], Dict[str, float]]] = {
             'header_level': {
                 1: {'instruction': 0.1, 'explanation': 0.2, 'example': 0.1, 'reference': 0.1,
                     'summary': 0.3, 'definition': 0.05, 'warning': 0.05, 'note': 0.1},
@@ -519,9 +519,9 @@ class BeliefUpdater:
         Returns:
             Predicted belief distribution
         """
-        predicted = {}
+        predicted: Dict[str, float] = {}
         for next_class in self.semantic_classes:
-            prob = 0
+            prob = 0.0
             for curr_class, curr_prob in self.beliefs.items():
                 # Get probability of transitioning from curr_class to next_class
                 trans_prob = self.transition_model.get(curr_class, {}).get(next_class, 0)

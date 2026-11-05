@@ -62,6 +62,7 @@ class DocumentQuality:
         self.information_density_weight = information_density_weight
         self.structural_balance_weight = structural_balance_weight
         self.target_audience = target_audience
+        self._last_document: Optional[Document] = None
 
     def analyze_document(self, document: Union[Document, str, Path]) -> Dict[str, Any]:
         """
@@ -73,6 +74,8 @@ class DocumentQuality:
         Returns:
             Dictionary of quality metrics organized by category
         """
+        # A failed replacement must not leave a previous selection usable.
+        self._last_document = None
         # Ensure we have a MarkdownDocument
         if not isinstance(document, Document):
             if isinstance(document, (str, Path)) and Path(document).exists():
@@ -100,6 +103,7 @@ class DocumentQuality:
             readability, information_density, structural_balance
         )
         
+        self._last_document = document
         return {
             'readability': readability,
             'information_density': information_density,
@@ -312,7 +316,7 @@ class DocumentQuality:
         
         # Calculate section balance
         sections = []
-        current_section = {'heading': None, 'elements': []}
+        current_section: Dict[str, Any] = {'heading': None, 'elements': []}
         
         for element in structure:
             if element['type'] == 'heading':
@@ -439,20 +443,22 @@ class DocumentQuality:
             'comparison_result': comparison_result
         }
 
-    def get_all_metrics(self) -> Dict[str, float]:
-        """Calculates all quality metrics for the document."""
-        # Ensure content is loaded for textstat analysis
-        content = self.document.get_content()
-        if not content:
-            return {metric: 0.0 for metric in self.metrics_registry}
+    def get_all_metrics(
+        self, document: Optional[Union[Document, str, Path]] = None
+    ) -> Dict[str, float]:
+        """Return the existing numerical quality metrics in one mapping.
 
-        # if not self.document.elements: # Use parsed elements if available # Old line
-        if not self.document.get_elements(): # Use parsed elements if available. get_elements() ensures parsing.
-            # This case implies content is empty or parsing yielded nothing, 
-            # but content check above should handle empty content.
-            # If get_elements() is empty but content is not, metrics might still be calculable.
-            pass 
-
-        results = {}
-        # ... existing code ...
-        return results 
+        Uses an explicit document or the last successfully analyzed document.
+        Category metric names and values are those of ``analyze_document``;
+        ``overall_score`` is included and the semantic class remains categorical.
+        A failed replacement analysis clears the prior document selection.
+        """
+        selected = document if document is not None else self._last_document
+        if selected is None:
+            raise ValueError("Provide a document or successfully analyze one first")
+        analysis = self.analyze_document(selected)
+        results: Dict[str, float] = {}
+        for category in ("readability", "information_density", "structural_balance"):
+            results.update(analysis[category])
+        results["overall_score"] = analysis["overall_score"]
+        return results

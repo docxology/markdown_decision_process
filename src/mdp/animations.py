@@ -13,6 +13,7 @@ import numpy as np
 from typing import List, Dict, Optional, Tuple, Any, Callable
 from pathlib import Path
 import json
+import random
 
 from .document import Document
 from .state_space import StateSpace
@@ -37,7 +38,7 @@ class DocumentEvolutionAnimator:
             figsize: Figure size for animations
         """
         self.figsize = figsize
-        self.frames = []
+        self.frames: List[Dict[str, Any]] = []
         
     def add_transformation_step(self, 
                                before_doc: Document, 
@@ -175,7 +176,7 @@ class StateSpaceEvolutionAnimator:
             figsize: Figure size for animations
         """
         self.figsize = figsize
-        self.state_spaces = []
+        self.state_spaces: List[Dict[str, Any]] = []
         
     def add_snapshot(self, state_space: StateSpace, label: str = ""):
         """
@@ -314,7 +315,6 @@ class MarkChainGenerationAnimator:
         
         # Choose starting state
         if self.chain.start_states:
-            import random
             states_list = list(self.chain.start_states.keys())
             weights = [self.chain.start_states[s] for s in states_list]
             current = random.choices(states_list, weights=weights)[0]
@@ -419,7 +419,7 @@ class BeliefStateAnimator:
         """
         self.updater = updater
         self.figsize = figsize
-        self.belief_history = []
+        self.belief_history: List[Dict[str, Any]] = []
         
     def add_observation(self, observation: Dict[str, float], label: str = ""):
         """

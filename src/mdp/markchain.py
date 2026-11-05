@@ -83,9 +83,9 @@ class MarkChain:
         """
         self.order = order
         self.smoothing = smoothing
-        self.transitions = defaultdict(Counter)
-        self.states = set()
-        self.start_states = Counter()
+        self.transitions: Dict[str, Counter[str]] = defaultdict(Counter)
+        self.states: Set[str] = set()
+        self.start_states: Counter[str] = Counter()
         self.is_trained = False
         
     def train(self, markdown_text: str) -> None:

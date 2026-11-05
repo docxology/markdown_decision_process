@@ -307,6 +307,13 @@ quality = DocumentQuality(
 
 - `analyze_document(document: Document) -> Dict`: Analyze quality
 - `compare_documents(doc1: Document, doc2: Document) -> Dict`: Compare
+- `get_all_metrics(document=None) -> Dict[str, float]`: Flatten the existing
+  category metrics and `overall_score`, retaining their names and values
+  (including boolean structural indicators). Accepts a `Document`, content or
+  path, or reanalyzes the last successfully selected document when omitted.
+  With no selection it raises `ValueError`; a failed replacement analysis
+  clears the previous selection. This is the same scoring implementation as
+  `analyze_document`, not independent scientific validation.
 
 **Example:**
 ```python

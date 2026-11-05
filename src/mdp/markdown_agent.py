@@ -64,8 +64,8 @@ class MarkdownAgent:
         self.belief_updater = BeliefUpdater()
         
         # Track experience
-        self.experiences = []
-        self.value_function = {}  # State -> value mapping
+        self.experiences: List[Dict[str, Any]] = []
+        self.value_function: Dict[str, float] = {}  # State -> value mapping
         
         # Load models if provided
         if model_path:
@@ -354,7 +354,7 @@ class MarkdownAgent:
         self.belief_updater = BeliefUpdater()
         
         # Track actions and their effects
-        actions_taken = []
+        actions_taken: List[Dict[str, Any]] = []
         modified_content = markdown_content
         
         # Determine semantic intent
@@ -453,10 +453,10 @@ class MarkdownAgent:
         os.makedirs(path, exist_ok=True)
         
         # Save value function
-        np.save(os.path.join(path, "value_function.npy"), self.value_function)
+        np.save(os.path.join(path, "value_function.npy"), np.array(self.value_function, dtype=object))
         
         # Save experiences
-        np.save(os.path.join(path, "experiences.npy"), self.experiences)
+        np.save(os.path.join(path, "experiences.npy"), np.array(self.experiences, dtype=object))
         
         # Note: For a real implementation, we would need to add proper
         # serialization for the component models

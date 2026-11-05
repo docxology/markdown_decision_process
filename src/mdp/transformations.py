@@ -158,7 +158,7 @@ class ListFormatTransformation(Transformation):
         
         # Track list items and their nesting level
         in_list = False
-        list_items = []
+        list_items: List[str] = []
         list_indents = {}  # Maps indent level to current counter
         
         for line in lines:
@@ -540,7 +540,7 @@ def split_paragraph(document: Document, paragraph_index: int, split_point: int) 
 
     # Find the paragraph
     paragraphs = []
-    current_paragraph = []
+    current_paragraph: List[str] = []
 
     for line in lines:
         if line.strip() == '':
@@ -590,7 +590,7 @@ def merge_paragraphs(document: Document, para1_index: int, para2_index: int) -> 
 
     # Find paragraphs
     paragraphs = []
-    current_paragraph = []
+    current_paragraph: List[str] = []
 
     for line in lines:
         if line.strip() == '':
