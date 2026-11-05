@@ -159,6 +159,16 @@ implementation checks, not paper performance evidence. Report every skipped or
 unavailable test. The real metadata tests require an actual local Pandoc;
 `extract_metadata` reads its JSON AST and does not require PyYAML.
 
+The test workflow stages that exact dictionary with
+[prepare_test_data.py](../.github/scripts/prepare_test_data.py), checks size and
+SHA-256 before extraction, and keeps it under `runner.temp`. Its `--archive PATH`
+option validates a retained local copy without network access. Ordinary test
+runs use `--benchmark-disable`; the separate benchmark step retains calibration.
+Linux/Python 3.11 also installs the official Ubuntu 24.04 Pandoc package and
+requires the real metadata integration tests. Other matrix entries retain
+optional native-tool behavior. Pushes to `codex/**` run the same path-filtered
+workflow before an ordinary promotion of the tested commit to `main`.
+
 ### Documentation
 
 - Keep documentation in sync with code
