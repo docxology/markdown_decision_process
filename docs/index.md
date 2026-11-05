@@ -4,12 +4,12 @@ Welcome to the comprehensive documentation for the **Markdown Decision Process (
 
 ## 📖 Overview
 
-The Markdown Decision Process is a revolutionary framework that treats Markdown documents as **Markov Decision Processes**, enabling intelligent analysis, generation, and optimization of documentation through probabilistic modeling and reinforcement learning.
+Markdown Decision Process is a Python prototype with document parsing, graph analysis, Markov sampling, configurable optimization and heuristic belief-update interfaces. The active paper is a corrected source draft with a prospective evaluation. It does not establish comparative quality, calibrated semantic probabilities or human-study outcomes; see the [evaluation evidence review](../paper/EVALUATION_EVIDENCE.md). The historical DOI identifies an older deposit, not this corrected draft.
 
 ### Key Features
-- 🎯 **Intelligent Document Optimization** - Improve structure and quality using RL
-- 🔄 **Dynamic Content Generation** - Generate contextually appropriate content
-- 🧠 **Semantic Understanding** - Track document intent and meaning
+- 🎯 **Configurable Optimization** - Apply transformations using specified rewards
+- 🔄 **Markov Sampling** - Generate sequences from learned transitions
+- 🧠 **Heuristic Beliefs** - Inspect implementation-defined semantic scores
 - 📊 **Comprehensive Analysis** - Detailed metrics and insights
 - 🎨 **Beautiful Visualizations** - Animate document evolution
 

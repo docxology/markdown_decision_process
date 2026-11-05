@@ -1,6 +1,6 @@
 # Markdown Decision Process (MDP) 🎲📄
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17244387-blue.svg)](https://doi.org/10.5281/zenodo.17244387)
 
@@ -10,9 +10,12 @@
 
 - **What this is:** a Python library treating Markdown documents as
   Markov Decision Processes (v0.3.0 — see `pyproject.toml`).
-- **Current status:** no dated status surface is maintained; verify live
-  with `python3 run_all_tests.py` (known-failing files are skipped and
-  listed in that script). Open work lives in [TODO.md](TODO.md).
+- **Evidence status:** the active paper is a corrected source draft with a
+  prospective evaluation, not a new deposit or validated performance report.
+  Historical checkpoint, experiment, participant and statistical provenance
+  remains unresolved; see [the evidence review](paper/EVALUATION_EVIDENCE.md).
+  Software tests check implementation behavior, not those withdrawn findings.
+  Open work and verification commands live in [TODO.md](TODO.md).
 - **Next actions:** the single backlog is [TODO.md](TODO.md) (Minor /
   Medium / Major). Feature roadmap: [docs/ROADMAP.md](docs/ROADMAP.md).
 - **Agent conventions:** [AGENTS.md](AGENTS.md) — architecture, code

@@ -38,11 +38,17 @@ Created 2026-08-31 by the agent-ergonomics deep pass
 - [ ] tests/reports/ holds 12 git-tracked junit XML files from 2025-06-25 —
   transient test output in version control. Stop tracking the directory
   (add to .gitignore), keep one exemplar if useful, or purge. (tests/reports/)
-- [ ] No lockfile; environment reproducibility depends on loose pyproject
-  extras. Add a uv/requirements lock or document the pinned dev install.
-  (pyproject.toml)
+- [x] (source checked 2026-11-05) The earlier no-lockfile entry is
+  superseded: `uv.lock` is committed. Use a frozen environment and retain its
+  actual runtime receipt; a lockfile alone does not prove an experiment ran.
+  (uv.lock, pyproject.toml)
 
 - [ ] Resolve the manuscript evaluation evidence gaps in
   [paper/EVALUATION_EVIDENCE.md](paper/EVALUATION_EVIDENCE.md): baseline
   checkpoint identity, traceable experiment outputs, participant-study evidence
   and reproducible per-comparison statistics. Numerical claims remain unverified.
+
+- [x] (source correction 2026-11-05) Remove surviving unsupported background
+  comparisons and qualify future-work expectations. Require/include the evidence
+  review in assembled text and cover the full body with regressions. This does
+  not resolve the historical evidence gaps listed above.
