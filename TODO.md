@@ -22,6 +22,14 @@ Created 2026-08-31 by the agent-ergonomics deep pass
   `DocumentQuality` result keys (`readability_score`). README.md examples were
   corrected 2026-10-25; the deep pages were not touched.
   (docs/api/*.md, docs/guides/user_guide.md)
+  - Partial resolution (2026-11-05): `docs/api/markchain.md` now uses the actual
+    `sample`/`generate` argument order and JSON `save_model`/`load_model` methods.
+    Its Python examples execute in the test suite. The other API pages listed
+    above remain pending.
+- [x] (source correction 2026-11-05) Retain leading/skipped-level headings in
+  `Document.get_structure`; exclude fenced code from heading parsing and heading
+  level transformations while preserving fenced bytes and public return shapes.
+  (src/mdp/_headings.py, tests/test_heading_boundaries.py)
 
 ## Medium
 
