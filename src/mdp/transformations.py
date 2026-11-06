@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List, Optional, Union, Dict, Any, Callable
 
+from ._headings import iter_atx_headings
 from .document import Document
 
 
@@ -53,24 +54,15 @@ class HeadingLevelTransformation(Transformation):
         """
         content = document.get_content()
         lines = content.split('\n')
-        transformed_lines = []
-        
-        for line in lines:
-            # Check if line is a heading
-            heading_match = re.match(r'^(#{1,6})\s+(.+)$', line)
-            if heading_match:
-                level = len(heading_match.group(1))
-                text = heading_match.group(2)
-                
-                # Apply transformation if level meets minimum requirement
-                if level >= self.min_level:
-                    new_level = max(1, min(6, level + self.increment))
-                    transformed_lines.append('#' * new_level + ' ' + text)
-                else:
-                    transformed_lines.append(line)
-            else:
-                transformed_lines.append(line)
-        
+        transformed_lines = lines.copy()
+
+        for index, heading_match in iter_atx_headings(content):
+            level = len(heading_match.group(1))
+            text = heading_match.group(2)
+            if level >= self.min_level:
+                new_level = max(1, min(6, level + self.increment))
+                transformed_lines[index] = '#' * new_level + ' ' + text
+
         # Update document content in-place
         new_content = '\n'.join(transformed_lines)
         document.update_content(new_content)
@@ -82,25 +74,16 @@ class HeadingLevelTransformation(Transformation):
     def change_heading_level(self, document: Document, heading_text: str, new_level: int) -> str:
         """Changes the level of a specific heading."""
         lines = document.get_content().split('\n')
-        new_lines = []
+        new_lines = lines.copy()
         found = False
-        
-        for line in lines:
-            # Check if line is a heading
-            heading_match = re.match(r'^(#{1,6})\s+(.+)$', line)
-            if heading_match:
-                level = len(heading_match.group(1))
-                text = heading_match.group(2)
-                
-                if text == heading_text:
-                    new_level = max(1, min(6, new_level))
-                    new_lines.append('#' * new_level + ' ' + text)
-                    found = True
-                else:
-                    new_lines.append(line)
-            else:
-                new_lines.append(line)
-        
+
+        for index, heading_match in iter_atx_headings(document.get_content()):
+            text = heading_match.group(2)
+            if text == heading_text:
+                new_level = max(1, min(6, new_level))
+                new_lines[index] = '#' * new_level + ' ' + text
+                found = True
+
         if not found:
             raise ValueError(f"Heading '{heading_text}' not found in document")
         
@@ -664,10 +647,7 @@ def change_heading_level(document: Document, heading_index: int, new_level: int)
     lines = content.split('\n')
 
     # Find headings
-    headings = []
-    for i, line in enumerate(lines):
-        if line.strip().startswith('#'):
-            headings.append((i, line))
+    headings = [(index, lines[index]) for index, _ in iter_atx_headings(content)]
 
     if heading_index >= len(headings):
         return document

@@ -6,6 +6,8 @@ import re
 from pathlib import Path
 from typing import List, Dict, Optional, Union, Any
 
+from ._headings import iter_atx_headings
+
 
 class Document:
     """Class for parsing and manipulating Markdown documents."""
@@ -124,24 +126,17 @@ class Document:
     
     def get_headings(self) -> List[Dict[str, Any]]:
         """
-        Get all headings from the document.
+        Get ATX headings outside fenced code blocks from the document.
         
         Returns:
             List of dictionaries with heading data (level and text)
         """
         if self._parsed_headings is None:
-            # Pattern for headings
-            pattern = r'^(#{1,6})\s+(.+)$'
-            self._parsed_headings = []
-            
-            for line in self._content.split('\n'):
-                match = re.match(pattern, line)
-                if match:
-                    self._parsed_headings.append({
-                        'level': len(match.group(1)),
-                        'text': match.group(2).strip()
-                    })
-        
+            self._parsed_headings = [
+                {'level': len(match.group(1)), 'text': match.group(2).strip()}
+                for _, match in iter_atx_headings(self._content)
+            ]
+
         return self._parsed_headings
     
     def get_lists(self) -> List[Dict[str, Any]]:
@@ -246,6 +241,8 @@ class Document:
 
                 # Add this section as a child of the appropriate parent
                 parent_level = level - 1
+                while current_sections[parent_level] is None:
+                    parent_level -= 1
                 parent = current_sections[parent_level]
                 if parent is not None:
                     parent['children'].append(section)
