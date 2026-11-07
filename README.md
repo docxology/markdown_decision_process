@@ -283,21 +283,18 @@ pytest tests/ -v
 ## 🧪 Testing
 
 ```bash
-# Run all tests
-python -m pytest tests/
+# Run the checked-in tests using the CI entry point
+python -m pytest --benchmark-disable tests/
 
-# Resilient runner (handles known-failing skips; see tests/README.md)
-python3 run_all_tests.py
-
-# Direct pytest on real test files
-python -m pytest tests/test_integration.py # Integration tests
-python -m pytest tests/test_performance.py # Performance benchmarks
+# Integration tests and performance benchmarks
+python -m pytest tests/test_integration.py
+python -m pytest tests/test_performance.py --benchmark-only
 
 # Run with coverage
-python -m pytest --cov=src tests/
+python -m pytest --benchmark-disable --cov=src tests/
 ```
 
-**Test status:** not tracked as a prose number — see [TODO.md](TODO.md) for the verification protocol; run `python3 run_all_tests.py` to check current state.
+The [test guide](tests/README.md) describes collection, focused runs, and the compatibility runner. Use the [Tests workflow](https://github.com/docxology/markdown_decision_process/actions/workflows/tests.yml) for dated hosted results.
 
 ## 📖 API Reference
 

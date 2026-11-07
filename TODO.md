@@ -33,9 +33,9 @@ Created 2026-08-31 by the agent-ergonomics deep pass
 
 ## Medium
 
-- [ ] Establish a dated, command-verified test-status surface (e.g. refresh a
-  STATUS line in this file after each full `python3 run_all_tests.py` run)
-  and have README link to it instead of prose numbers. (TODO.md, README.md)
+- [x] Use the dated hosted Tests workflow for status and document direct pytest.
+  The compatibility runner now executes the checked-in suite without rewriting
+  tests or filtering historical failures. (README.md, tests/README.md)
 - [ ] docs/index.md and docs/README.md link to per-module API pages that do
   not exist for several modules (transformations, animations, pandoc) —
   either generate them via docs/build_docs.py or trim the index.
@@ -43,9 +43,8 @@ Created 2026-08-31 by the agent-ergonomics deep pass
 
 ## Major
 
-- [ ] tests/reports/ holds 12 git-tracked junit XML files from 2025-06-25 —
-  transient test output in version control. Stop tracking the directory
-  (add to .gitignore), keep one exemplar if useful, or purge. (tests/reports/)
+- [x] The earlier tracked JUnit report concern is superseded. Current
+  `tests/reports/` is ignored and contains no tracked entries. (.gitignore)
 - [x] (source checked 2026-11-05) The earlier no-lockfile entry is
   superseded: `uv.lock` is committed. Use a frozen environment and retain its
   actual runtime receipt; a lockfile alone does not prove an experiment ran.
