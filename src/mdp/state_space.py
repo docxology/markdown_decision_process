@@ -6,9 +6,11 @@ import re
 import json
 import networkx as nx
 import matplotlib.pyplot as plt
-from typing import Dict, List, Tuple, Optional, Set, Any, Union
+from typing import Dict, Iterator, List, Tuple, Optional, Set, Any, Union
 from pathlib import Path
 from collections import Counter, defaultdict
+
+from ._headings import iter_fenced_lines
 
 
 class StateSpace:
@@ -44,18 +46,9 @@ class StateSpace:
         Args:
             content: Markdown content
         """
-        lines = content.split('\n')
         prev_state_id = None
         
-        for i, line in enumerate(lines):
-            line = line.strip()
-            
-            if not line:
-                continue
-                
-            # Determine state type
-            state_type = self._classify_line(line)
-            
+        for i, line, state_type in self._iter_state_lines(content):
             # Create state
             state_id = f"{state_type}_{self.state_counter}"
             self.state_counter += 1
@@ -82,6 +75,12 @@ class StateSpace:
                 
             prev_state_id = state_id
     
+    def _iter_state_lines(self, content: str) -> Iterator[Tuple[int, str, str]]:
+        for index, raw_line, fenced in iter_fenced_lines(content):
+            line = raw_line.strip()
+            if line:
+                yield index, line, 'code' if fenced else self._classify_line(line)
+
     def _classify_line(self, line: str) -> str:
         """Classify a line of markdown."""
         if line.startswith('#'):
@@ -434,16 +433,9 @@ class StateSpace:
             List of processed elements
         """
         elements = []
-        lines = content.split('\n')
         prev_state = None
 
-        for line in lines:
-            line = line.strip()
-            if not line:
-                continue
-
-            state_type = self._classify_line(line)
-
+        for _, line, state_type in self._iter_state_lines(content):
             # Get simplified state name
             if self.simplify_states:
                 state_id = self._simplify_state_name(state_type, line)
@@ -497,15 +489,7 @@ class StateSpace:
             List of state identifiers
         """
         states = []
-        lines = content.split('\n')
-        
-        for line in lines:
-            line = line.strip()
-            if not line:
-                continue
-                
-            state_type = self._classify_line(line)
-            
+        for _, line, state_type in self._iter_state_lines(content):
             # Use simplification if enabled
             if self.simplify_states:
                 state_id = self._simplify_state_name(state_type, line)

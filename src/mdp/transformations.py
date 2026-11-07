@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List, Optional, Union, Dict, Any, Callable
 
-from ._headings import iter_atx_headings
+from ._headings import iter_atx_headings, iter_fenced_lines
 from .document import Document
 
 
@@ -604,7 +604,7 @@ def merge_paragraphs(document: Document, para1_index: int, para2_index: int) -> 
 
 def normalize_headings(document: Document) -> Document:
     """
-    Normalize heading levels in a document.
+    Clamp heading levels to six outside fenced code blocks.
 
     Args:
         document: The document to normalize
@@ -613,19 +613,12 @@ def normalize_headings(document: Document) -> Document:
         New document with normalized headings
     """
     content = document.get_content()
-    lines = content.split('\n')
     normalized_lines = []
 
-    for line in lines:
-        if line.strip().startswith('#'):
-            # Count leading # symbols
-            level = len(line) - len(line.lstrip('#'))
-            # Normalize to reasonable levels (max 6)
-            normalized_level = min(level, 6)
-            normalized_line = '#' * normalized_level + line.lstrip('#')
-            normalized_lines.append(normalized_line)
-        else:
-            normalized_lines.append(line)
+    for _, line, fenced in iter_fenced_lines(content):
+        if not fenced and line.startswith('#######'):
+            line = '######' + line.lstrip('#')
+        normalized_lines.append(line)
 
     new_content = '\n'.join(normalized_lines)
     return Document(content=new_content)
@@ -662,4 +655,4 @@ def change_heading_level(document: Document, heading_index: int, new_level: int)
         lines[line_index] = new_line
 
     new_content = '\n'.join(lines)
-    return Document(content=new_content) 
+    return Document(content=new_content)

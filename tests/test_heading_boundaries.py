@@ -3,7 +3,12 @@
 import pytest
 
 from mdp.document import Document
-from mdp.transformations import HeadingLevelTransformation, change_heading_level
+from mdp.state_space import StateSpace
+from mdp.transformations import (
+    HeadingLevelTransformation,
+    change_heading_level,
+    normalize_headings,
+)
 
 
 @pytest.mark.parametrize("level", [2, 3, 6])
@@ -106,3 +111,43 @@ def test_transform_preserves_crlf_inside_fenced_code():
     assert document.get_content() == (
         "## Before\r\n```sh\r\n# Code\r\n```\r\n### After\r\n"
     )
+
+
+@pytest.mark.parametrize("code", FENCED_EXAMPLES)
+def test_normalize_headings_keeps_fenced_bytes(code):
+    code = code.replace("# code comment", "####### code comment").replace("\n", "\r\n")
+    source = "####### Before\r\n" + code + "\r\n####### After\r\n"
+    document = Document(content=source)
+
+    assert normalize_headings(document).get_content() == (
+        "###### Before\r\n" + code + "\r\n###### After\r\n"
+    )
+    assert document.get_content() == source
+
+
+def test_normalize_headings_keeps_unclosed_fence_content():
+    source = "# Before\n~~~sh\n####### Code comment\n"
+    assert normalize_headings(Document(content=source)).get_content() == source
+
+
+@pytest.mark.parametrize("code", FENCED_EXAMPLES)
+def test_state_space_keeps_fenced_lines_out_of_document_structure(code):
+    code = code.replace("# code comment", "# Code comment\n- Code list")
+    space = StateSpace()
+    space.parse_markdown("# Before\n" + code + "\n## After")
+
+    structure = space.extract_structure()
+    assert [row["header"] for row in structure if row["type"] == "header"] == [
+        "Before",
+        "After",
+    ]
+    assert [(row["type"], row["content"]) for row in structure[1:-1]] == [
+        ("code", line.strip()) for line in code.splitlines()
+    ]
+    assert list(space.states.values())[-1]["line"] == len(code.splitlines()) + 1
+
+
+def test_state_space_keeps_unclosed_fence_content_as_code():
+    space = StateSpace()
+    structure = space.extract_structure("# Before\n~~~sh\n# Code comment\n- Code list")
+    assert [row["type"] for row in structure] == ["header", "code", "code", "code"]
