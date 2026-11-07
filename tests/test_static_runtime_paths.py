@@ -51,6 +51,18 @@ def test_quality_all_metrics_requires_input_then_matches_analysis():
     assert quality.get_all_metrics(Document(content=""))["overall_readability"] == 0
 
 
+def test_quality_distinguishes_long_raw_markdown_from_existing_files(tmp_path):
+    source = "# Overview\n\n" + "A short sentence. " * 260
+    quality = DocumentQuality()
+    expected = quality.analyze_document(Document(content=source))
+    assert quality.analyze_document(source) == expected
+
+    path = tmp_path / "example.md"
+    path.write_text(source, encoding="utf-8")
+    assert quality.analyze_document(path) == expected
+    assert quality.analyze_document(str(path)) == expected
+
+
 def test_failed_quality_replacement_clears_previous_selection(tmp_path):
     quality = DocumentQuality()
     quality.analyze_document(Document(content="# Selected\n\nA short sentence."))

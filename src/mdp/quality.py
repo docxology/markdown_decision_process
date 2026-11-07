@@ -6,6 +6,7 @@ and structural balance of markdown documents through the lens of value functions
 in a Markov Decision Process.
 """
 
+from errno import ENAMETOOLONG
 from typing import Dict, Any, List, Optional, Union
 import re
 import math
@@ -76,9 +77,15 @@ class DocumentQuality:
         """
         # A failed replacement must not leave a previous selection usable.
         self._last_document = None
-        # Ensure we have a MarkdownDocument
         if not isinstance(document, Document):
-            if isinstance(document, (str, Path)) and Path(document).exists():
+            try:
+                is_path = isinstance(document, (str, Path)) and Path(document).exists()
+            except OSError as error:
+                if not isinstance(document, str) or error.errno != ENAMETOOLONG:
+                    raise
+                # A raw Markdown string may exceed filesystem path limits.
+                is_path = False
+            if is_path:
                 document = Document(file_path=document)
             else:
                 document = Document(content=str(document))

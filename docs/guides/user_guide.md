@@ -175,7 +175,7 @@ def custom_reward_function(element):
 ### Document Quality Metrics
 
 ```python
-from mdp import Document, StateSpace
+from mdp import Document
 from mdp.quality import DocumentQuality
 
 doc = Document(content=content)
@@ -183,8 +183,8 @@ quality = DocumentQuality()
 metrics = quality.analyze_document(doc)
 
 print(f"Overall quality: {metrics['overall_score']}")
-print(f"Readability: {metrics['readability_score']}")
-print(f"Structure: {metrics['structure_score']}")
+print(f"Readability: {metrics['readability']['overall_readability']}")
+print(f"Structure: {metrics['structural_balance']['overall_balance']}")
 ```
 
 ### State Space Analysis
@@ -198,11 +198,13 @@ state_space = StateSpace(doc)
 # Get state statistics
 print(f"Total states: {len(state_space.graph.nodes)}")
 print(f"Total transitions: {len(state_space.graph.edges)}")
-print(f"Average connectivity: {len(state_space.graph.edges) / len(state_space.graph.nodes)}")
+states = len(state_space.graph.nodes)
+transitions = len(state_space.graph.edges)
+print(f"Average outgoing transitions: {transitions / states if states else 0}")
 
 # Analyze specific states
 for node_id in state_space.graph.nodes:
-    metadata = state_space.get_state_metadata(node_id)
+    metadata = state_space.get_features(node_id)
     successors = state_space.get_successor_states(node_id)
     print(f"{node_id}: {metadata['type']} -> {len(successors)} successors")
 ```

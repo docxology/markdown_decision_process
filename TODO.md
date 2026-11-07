@@ -26,6 +26,9 @@ Created 2026-08-31 by the agent-ergonomics deep pass
     `sample`/`generate` argument order and JSON `save_model`/`load_model` methods.
     Its Python examples execute in the test suite. The other API pages listed
     above remain pending.
+  - Partial resolution (2026-11-07) The StateSpace reference and user guide
+    now use `get_features` and the current nested quality metrics. Other API
+    pages remain open.
 - [x] (source correction 2026-11-05) Retain leading/skipped-level headings in
   `Document.get_structure`; exclude fenced code from heading parsing and heading
   level transformations while preserving fenced bytes and public return shapes.
