@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+type: software
+title: "markdown_decision_process"
+authors:
+  - family-names: Friedman
+    given-names: Daniel Ari
+    orcid: "https://orcid.org/0000-0001-6232-9096"
+repository-code: "https://github.com/docxology/markdown_decision_process"
+abstract: "Treats Markdown documents as Markov decision processes — parses structure into a NetworkX state space, optimizes it with reinforcement learning policies, tracks POMDP belief updates, and generates text from learned Markov chains. Python with Pandoc conversion, with a test suite."
