@@ -76,3 +76,6 @@ tests/reports/
 tests/outputs/
 *.backup*
 .venv/
+
+# OS, editor and Python cache files
+.DS_Store
