@@ -149,10 +149,13 @@ class Document:
         if self._parsed_lists is None:
             self._parsed_lists = []
             
+            # Lists are runs of consecutive item lines. Each item is matched as one
+            # whole line, so the patterns run in linear time (the previous
+            # `(?:[*-]\s+.+\n?)+` form backtracked exponentially on long lines).
             # Pattern for unordered lists
-            ul_pattern = r'(?:^|\n\n)((?:[\*\-]\s+.+\n?)+)(?=\n\n|\Z)'
+            ul_pattern = r'(?:^|\n\n)([\*\-][^\S\n][^\n]+(?:\n[\*\-][^\S\n][^\n]+)*)(?=\n\n|\n?\Z)'
             # Pattern for ordered lists
-            ol_pattern = r'(?:^|\n\n)((?:\d+\.\s+.+\n?)+)(?=\n\n|\Z)'
+            ol_pattern = r'(?:^|\n\n)(\d+\.[^\S\n][^\n]+(?:\n\d+\.[^\S\n][^\n]+)*)(?=\n\n|\n?\Z)'
             
             # Find unordered lists
             for ul_match in re.finditer(ul_pattern, "\n\n" + self._content, re.MULTILINE):
