@@ -1,0 +1,30 @@
+paper:
+  title: "Markdown Decision Process"
+  subtitle: "A Framework for Probabilistic Document Analysis and Optimization"
+  description: "Corrected source draft with a prospective evaluation and a reproducible structural fixture."
+
+authors:
+  - name: "Daniel Ari Friedman"
+    affiliation: "Active Inference Institute"
+
+publication:
+  github_repository: docxology/markdown_decision_process
+  repository_url: https://github.com/docxology/markdown_decision_process
+
+keywords:
+  - Markdown
+  - Markov chains
+  - document processing
+  - policy optimization
+  - reproducibility
+
+metadata:
+  language: en-US
+
+render:
+  formats:
+    pdf: true
+    html: true
+    docx: false
+    epub: false
+    slides: false

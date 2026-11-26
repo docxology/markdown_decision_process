@@ -1,9 +1,9 @@
-import os
+from pathlib import Path
 import sys
 from datetime import datetime
 
 # Add the project source directory to the path
-sys.path.insert(0, os.path.abspath('../src'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 
 # Project information
 project = 'Markdown Decision Process'
@@ -18,7 +18,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
-    'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx_markdown_tables',
@@ -26,16 +25,16 @@ extensions = [
 ]
 
 # Add any paths that contain templates here
-templates_path = ['_templates']
+root_doc = 'index'
 
 # List of patterns to exclude from source
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'archive', 'manuscript', 'render-assets', 'AGENTS.md', 'README.md', 'Thumbs.db', '.DS_Store']
 
 # The theme to use for HTML and HTML Help pages
 html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files
-html_static_path = ['_static']
+
 
 # Theme options
 html_theme_options = {
@@ -44,13 +43,6 @@ html_theme_options = {
     'sticky_navigation': True,
     'includehidden': True,
     'titles_only': False,
-}
-
-# Intersphinx mapping
-intersphinx_mapping = {
-    'python': ('https://docs.python.org/3', None),
-    'numpy': ('https://numpy.org/doc/stable/', None),
-    'networkx': ('https://networkx.org/documentation/stable/', None),
 }
 
 # Napoleon settings

@@ -27,12 +27,19 @@ class PaperAssembler:
         """Initialize the paper assembler.
 
         Args:
-            paper_dir: Directory containing paper sections (default: current dir)
-            output_dir: Output directory for assembled paper (default: paper/outputs)
+            paper_dir: Directory containing paper sections (default: docs/manuscript)
+            output_dir: Output directory for assembled paper (default: output/paper-assembly)
         """
         self.paper_dir = Path(paper_dir or Path(__file__).parent)
-        self.output_dir = Path(output_dir or self.paper_dir / "outputs")
-        self.output_dir.mkdir(exist_ok=True)
+        self.output_dir = Path(output_dir or Path(__file__).resolve().parents[2] / "output/paper-assembly")
+        self.output_dir = self.output_dir.resolve()
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+
+        custom_template = self.paper_dir / "academic_template.tex"
+        self.latex_template = (
+            custom_template if custom_template.is_file()
+            else Path(__file__).resolve().parents[1] / "render-assets" / "academic_template.tex"
+        )
 
         # Paper metadata
         self.title = "Markdown Decision Process: A Framework for Probabilistic Document Analysis and Optimization"
@@ -351,7 +358,15 @@ class PaperAssembler:
                     continue  # Skip existing main headers
                 cleaned_lines.append(line)
 
-            content_parts.append('\n'.join(cleaned_lines))
+            figure_ref = "../../output/figures/heading_fixture.png"
+            figure_path = (section_path.parent / figure_ref).resolve()
+            for line in cleaned_lines:
+                if figure_ref in line:
+                    if not figure_path.is_file():
+                        continue
+                    shutil.copy2(figure_path, self.output_dir / figure_path.name)
+                    line = line.replace(figure_ref, figure_path.name)
+                content_parts.append(line)
 
         # Join everything together
         full_content = '\n'.join(content_parts)
@@ -522,7 +537,7 @@ keywords: {keywords}
             return None
 
         pdf_file = self.output_dir / "mdp_paper.pdf"
-        latex_template = self.paper_dir / "academic_template.tex"
+        latex_template = self.latex_template
 
         # Primary PDF generation with custom template
         # Note: Citations in format [@key] are converted to (Author, Year) format in text
@@ -530,6 +545,7 @@ keywords: {keywords}
         cmd = [
             'pandoc',
             markdown_file,
+            '--resource-path', str(self.output_dir),
             '-o', str(pdf_file),
             '--template', str(latex_template),
             '--pdf-engine=pdflatex',
@@ -570,7 +586,7 @@ keywords: {keywords}
             'pandoc',
             markdown_file,
             '-o', str(latex_file),
-            '--template', str(self.paper_dir / "academic_template.tex"),  # Custom template
+            '--template', str(self.latex_template),  # Custom template
             '--listings',
             '--number-sections',
             '--bibliography', str(self.paper_dir / "references.bib"),
@@ -595,6 +611,7 @@ keywords: {keywords}
         cmd = [
             'pandoc',
             markdown_file,
+            '--resource-path', str(self.output_dir),
             '-o', str(docx_file),
             '--metadata', f'author={", ".join(self.authors)}',
             '--metadata', f'title={self.title}',
@@ -619,6 +636,7 @@ keywords: {keywords}
         cmd = [
             'pandoc',
             markdown_file,
+            '--resource-path', str(self.output_dir),
             '-o', str(html_file),
             '--embed-resources',
             '--standalone',
@@ -804,12 +822,12 @@ def main():
     parser.add_argument(
         "--paper-dir",
         default=None,
-        help="Directory containing paper sections (default: paper/)"
+        help="Directory containing paper sections (default: docs/manuscript/)"
     )
     parser.add_argument(
         "--output-dir",
         default=None,
-        help="Output directory for assembled paper (default: paper/outputs/)"
+        help="Output directory for assembled paper (default: output/paper-assembly/)"
     )
     parser.add_argument(
         "--format",

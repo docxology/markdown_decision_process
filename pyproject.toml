@@ -54,7 +54,7 @@ dev = [
 "Homepage" = "https://github.com/docxology/markdown_decision_process"
 "Bug Tracker" = "https://github.com/docxology/markdown_decision_process/issues"
 "Documentation" = "https://github.com/docxology/markdown_decision_process/tree/main/docs"
-"Paper" = "https://doi.org/10.5281/zenodo.17244387"
+"Historical paper" = "https://doi.org/10.5281/zenodo.17244387"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

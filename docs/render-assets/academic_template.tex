@@ -11,8 +11,8 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{xcolor}
-\usepackage{algorithm}
-\usepackage{algorithmic}
+\IfFileExists{algorithm.sty}{\usepackage{algorithm}}{}
+\IfFileExists{algorithmic.sty}{\usepackage{algorithmic}}{}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{longtable}

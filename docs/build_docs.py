@@ -10,7 +10,6 @@ import shutil
 import subprocess
 from pathlib import Path
 import argparse
-from datetime import datetime
 
 def ensure_directory(path):
     """Ensure directory exists, creating it if necessary."""
@@ -26,74 +25,11 @@ def run_command(cmd, cwd=None):
         sys.exit(1)
     return result.stdout
 
-def generate_api_docs(output_dir, src_dir):
-    """Generate API documentation using sphinx-apidoc."""
-    ensure_directory(output_dir)
-    modules = [
-        "mdp", 
-        "mdp.markchain", 
-        "mdp.document", 
-        "mdp.state_space",
-        "mdp.policy_optimizer", 
-        "mdp.transformations", 
-        "mdp.belief_updater",
-        "mdp.visualization", 
-        "mdp.pandoc", 
-        "mdp.markdown_agent"
-    ]
-    
-    for module in modules:
-        rst_path = os.path.join(output_dir, f"{module.split('.')[-1]}.rst")
-        if not os.path.exists(rst_path):
-            # If RST file doesn't exist, create a basic one
-            with open(rst_path, 'w') as f:
-                module_name = module.split('.')[-1]
-                title = module_name.replace('_', ' ').title()
-                f.write(f"{title}\n")
-                f.write("=" * len(title) + "\n\n")
-                f.write(f".. automodule:: {module}\n")
-                f.write("   :members:\n")
-                f.write("   :undoc-members:\n")
-                f.write("   :show-inheritance:\n")
-
-def copy_markdown_files(docs_dir, output_dir):
-    """Copy Markdown files to the documentation directory."""
-    # Map of source files to destination files
-    files_to_copy = {
-        "README.md": "index.md",
-        "CONTRIBUTING.md": "dev/contributing.md",
-        "docs/ROADMAP.md": "dev/roadmap.md",
-        "docs/technical/markchain.md": "technical/markchain.md",
-        "docs/technical/policy_optimization.md": "technical/policy_optimization.md",
-    }
-    
-    for src, dest in files_to_copy.items():
-        src_path = os.path.join(os.path.dirname(docs_dir), src)
-        dest_path = os.path.join(output_dir, dest)
-        
-        # Ensure destination directory exists
-        os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-        
-        if os.path.exists(src_path):
-            # Technical guides already live at their build-source destination.
-            if Path(src_path).resolve() == Path(dest_path).resolve():
-                continue
-            shutil.copy2(src_path, dest_path)
-            print(f"Copied {src_path} to {dest_path}")
-        else:
-            print(f"Warning: Source file {src_path} does not exist")
-
 def build_docs(docs_dir, output_dir, builder="html"):
     """Build documentation using Sphinx."""
     # Create necessary directories
     build_dir = os.path.join(docs_dir, "_build", builder)
     ensure_directory(build_dir)
-    
-    # Generate API documentation
-    generate_api_docs(os.path.join(docs_dir, "api"), os.path.join(os.path.dirname(docs_dir), "src"))
-    
-    # Copy markdown files
-    copy_markdown_files(docs_dir, docs_dir)
     
     # Build the documentation
     cmd = [

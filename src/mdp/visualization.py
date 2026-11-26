@@ -515,8 +515,8 @@ def plot_filtered_state_space(
     Returns:
         Matplotlib figure object
     
-    Example:
-        ```python
+    Example::
+
         # Only show heading states (assuming states are strings)
         filter_func = lambda state: str(state).startswith('#')
         
@@ -525,7 +525,6 @@ def plot_filtered_state_space(
         
         fig = plot_filtered_state_space(chain, filter_func, highlight_func)
         plt.show()
-        ```
     """
     if not chain.is_trained:
         raise ValueError("MarkChain must be trained before visualizing state space")

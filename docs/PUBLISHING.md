@@ -1,7 +1,7 @@
 # Documentation build and publication
 
-The Documentation workflow uses Python 3.12 to build Sphinx HTML and uploads
-the `github-pages` artifact. Builds run for relevant pushes, pull requests and
+The Documentation workflow uses the Python version selected by `.python-version` to build Sphinx HTML
+and uploads the `github-pages` artifact. Builds run for relevant pushes, pull requests and
 manual dispatches. A successful build establishes document generation, not the
 validity of research claims or every illustrative guide example.
 
@@ -25,8 +25,7 @@ workflow run for inspection. The artifact action's retention period applies.
 
 ## Local build
 
-Use Python 3.12 in an isolated environment and a disposable checkout, because
-the builder stages the README and contributor guides into the docs source tree.
+Use the Python version selected by `.python-version` in an isolated environment.
 
 ```sh
 python -m pip install -e ".[dev]"
@@ -34,5 +33,4 @@ python -m pip install sphinx sphinx-rtd-theme myst-parser sphinx-markdown-tables
 python docs/build_docs.py --clean
 ```
 
-Open `docs/_build/html/index.html` to inspect the result. In-place technical
-guides are preserved when their source and destination are the same file.
+Open `docs/_build/html/index.html` to inspect the result. Sphinx reads the maintained navigation in `docs/index.md` and the API directives under `docs/reference/`.

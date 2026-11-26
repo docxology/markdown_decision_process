@@ -1,8 +1,8 @@
 # Code Supplement
 
 The implementation described in this source revision is maintained in
-[`src/mdp/`](../src/mdp/), with executable regression checks in
-[`tests/`](../tests/). Use a fixed Git commit and record the environment when
+[`src/mdp/`](https://github.com/docxology/markdown_decision_process/tree/main/src/mdp/), with executable regression checks in
+[`tests/`](https://github.com/docxology/markdown_decision_process/tree/main/tests/). Use a fixed Git commit and record the environment when
 evaluating it. The prior supplement's hypothetical modules, deployment recipes
 and numerical example outcomes have been removed from the active paper; they
 remain available in Git history and historical generated publications.
