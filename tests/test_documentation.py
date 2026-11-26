@@ -87,54 +87,15 @@ class TestDocumentationBuild(unittest.TestCase):
         with self.assertRaises(SystemExit):
             build_docs.run_command(["test", "command"])
 
-    def test_generate_api_docs(self):
-        """Test generate_api_docs function."""
-        # Test
-        api_dir = self.docs_dir / "api"
-        build_docs.generate_api_docs(api_dir, "src_dir")
-        
-        # Check if files were created
-        self.assertTrue((api_dir / "mdp.rst").exists())
-        self.assertTrue((api_dir / "markchain.rst").exists())
-        self.assertTrue((api_dir / "document.rst").exists())
-        
-        # Check content of one file
-        with open(api_dir / "markchain.rst") as f:
-            content = f.read()
-            self.assertIn("Markchain", content)
-            self.assertIn(".. automodule:: mdp.markchain", content)
-
-    @patch('shutil.copy2')
-    @patch('os.path.exists')
-    def test_copy_markdown_files(self, mock_exists, mock_copy):
-        """Test copy_markdown_files function."""
-        # Setup mocks
-        mock_exists.return_value = True
-        
-        # Test
-        build_docs.copy_markdown_files(self.docs_dir, self.docs_dir)
-        
-        # Assertions
-        self.assertEqual(mock_copy.call_count, 3)  # Two technical guides are already in place
-
-    @patch('build_docs.run_command')
-    @patch('build_docs.generate_api_docs')
-    @patch('build_docs.copy_markdown_files')
-    def test_build_docs(self, mock_copy, mock_gen_api, mock_run):
-        """Test build_docs function."""
-        # Setup mock
-        mock_run.return_value = "Build successful"
-        
-        # Test
+    @patch("build_docs.run_command")
+    def test_build_docs(self, mock_run):
+        """Use the maintained docs as Sphinx's source."""
         result = build_docs.build_docs(self.docs_dir, self.output_dir)
-        
-        # Assertions
-        mock_gen_api.assert_called_once()
-        mock_copy.assert_called_once()
-        mock_run.assert_called_once()
-        
-        # Check output_dir is returned
-        self.assertTrue(str(self.docs_dir) in str(result))
+
+        command = mock_run.call_args.args[0]
+        self.assertEqual(Path(command[-2]), self.docs_dir)
+        self.assertEqual(Path(command[-1]), self.docs_dir / "_build" / "html")
+        self.assertEqual(Path(result), self.docs_dir / "_build" / "html")
 
     @patch('shutil.rmtree')
     @patch('os.path.exists')

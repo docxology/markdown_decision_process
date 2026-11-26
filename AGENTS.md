@@ -27,7 +27,6 @@ markdown_decision_process/
 ├── tests/                # Comprehensive test suite
 ├── examples/             # Usage examples and demonstrations
 ├── docs/                 # Documentation and guides
-├── paper/                # Academic paper and research
 └── pyproject.toml        # Modern Python packaging
 ```
 
@@ -480,9 +479,9 @@ When using this framework in research:
 
 ### Paper Development
 
-The `paper/` directory contains modular academic paper sections:
-- Edit individual section files (`00_abstract.md` through `10_references.md`)
-- Run `python paper/assemble_paper.py` to generate complete paper
+The `docs/manuscript/` directory contains the corrected draft.
+- Edit individual section files (`00_abstract.md` through `12_references.md`)
+- Run `python docs/manuscript/assemble_paper.py` to generate complete paper
 - Output formats: Markdown, PDF, HTML, DOCX
 
 ## Contact and Support
@@ -504,7 +503,7 @@ version-controlled truth is `version` in `pyproject.toml`.)
 
 ## Backlog
 
-Open work and known doc-debt live in [TODO.md](TODO.md) — the single
+Open work and known doc-debt live in [backlog](docs/TODO.md) — the single
 canonical backlog. Do not duplicate status numbers here; link instead.
 
 ---

@@ -1,190 +1,51 @@
-# Markdown Decision Process Documentation
+# Markdown Decision Process documentation
 
-Welcome to the comprehensive documentation for the **Markdown Decision Process (MDP)** framework.
+Markdown Decision Process is a Python prototype for parsing Markdown, analyzing document graphs, sampling Markov transitions, and applying configurable transformations and reward functions. Belief updates provide heuristic semantic labels. The corrected research draft preserves the implementation’s evidence and proposes a separate empirical evaluation.
 
-## 📖 Overview
+- [Quick start](guides/quickstart.md), [user guide](guides/user_guide.md), [API reference](API_COMPLETE.md), and [technical notes](technical/README.md)
+- [Manuscript, fixture, and render commands](manuscript-build.md)
+- [Contributing](CONTRIBUTING.md), [development](DEVELOPMENT_PROCESS.md), and [publishing](PUBLISHING.md)
 
-Markdown Decision Process is a Python prototype with document parsing, graph analysis, Markov sampling, configurable optimization and heuristic belief-update interfaces. The active paper is a corrected source draft with a prospective evaluation. It does not establish comparative quality, calibrated semantic probabilities or human-study outcomes; see the [evaluation evidence review](../paper/EVALUATION_EVIDENCE.md). The historical DOI identifies an older deposit, not this corrected draft.
+```{toctree}
+:hidden:
+:maxdepth: 2
+:caption: Using the library
 
-### Key Features
-- 🎯 **Configurable Optimization** - Apply transformations using specified rewards
-- 🔄 **Markov Sampling** - Generate sequences from learned transitions
-- 🧠 **Heuristic Beliefs** - Inspect implementation-defined semantic scores
-- 📊 **Comprehensive Analysis** - Detailed metrics and insights
-- 🎨 **Beautiful Visualizations** - Animate document evolution
-
-## 🚀 Quick Start
-
-```python
-from mdp import Document, MarkdownAgent
-
-# Create and optimize a document
-doc = Document(content="# My Document\n\nThis is content.")
-agent = MarkdownAgent()
-result = agent.interact(doc.content, objective="optimize")
-
-print(f"Optimized content: {result['modified_content']}")
+guides/quickstart
+guides/user_guide
+API_COMPLETE
+technical/README
+manuscript-build
 ```
 
-## 📚 Documentation Structure
+```{toctree}
+:hidden:
+:maxdepth: 2
+:caption: Contributing
 
-### 🎯 Core Concepts
-- **[User Guide](guides/user_guide.md)** - Complete getting started guide
-- **[API Reference](api/)** - Detailed API documentation
-- **[Examples](examples/)** - Practical usage examples
-
-### 🔧 Component Documentation
-
-#### Core Components
-- **[Document](api/document.md)** - Markdown document representation
-- **[StateSpace](api/state_space.md)** - Graph-based structure analysis
-- **[MarkChain](api/markchain.md)** - Markov chain text generation
-- **[PolicyOptimizer](api/policy_optimizer.md)** - Reinforcement learning optimization
-- **[MarkdownAgent](api/markdown_agent.md)** - Autonomous document processing
-
-#### Advanced Features
-- **Transformations (`src/mdp/transformations.py`)** - Document transformation pipelines
-- **Visualization (`src/mdp/visualization.py`)** - Plotting and animation tools
-- **Animations (`src/mdp/animations.py`)** - Dynamic document evolution
-- **Pandoc Integration (`src/mdp/pandoc.py`)** - Multi-format conversion
-
-### 💡 Usage Examples
-
-#### Basic Usage
-- **[Basic Examples](examples/basic_usage.py)** - Fundamental operations
-- **[Advanced Examples](examples/advanced_usage.py)** - Sophisticated applications
-
-#### Specialized Guides
-- **Custom reward functions — see `src/mdp/quality.py`** - Design effective rewards
-- **Performance optimization — see [API_COMPLETE.md](API_COMPLETE.md)** - Scale efficiently
-- **Integration patterns — see [DEVELOPMENT_PROCESS.md](DEVELOPMENT_PROCESS.md)** - Work with external tools
-
-## 🏗️ Architecture
-
-```mermaid
-graph TB
-    subgraph MDP["Markdown Decision Process Framework"]
-        subgraph Core["Core Components"]
-            Document["Document<br/>• Structure<br/>• Parsing<br/>• Updates"]
-            StateSpace["StateSpace<br/>• Graph<br/>• Analysis<br/>• Metrics"]
-            MarkChain["MarkChain<br/>• Training<br/>• Sampling<br/>• Generation"]
-            Agent["Agent<br/>• POMDP<br/>• RL<br/>• Belief"]
-        end
-        
-        subgraph Tools["Supporting Tools"]
-            Transform["Transformations<br/>• Pipelines<br/>• Headings<br/>• Lists"]
-            Viz["Visualization<br/>• Plots<br/>• Networks<br/>• Metrics"]
-            Anim["Animations<br/>• Evolution<br/>• Generation<br/>• State"]
-            Pandoc["Pandoc<br/>• Export<br/>• Import<br/>• Convert"]
-        end
-    end
-    
-    Document --> StateSpace
-    StateSpace --> MarkChain
-    StateSpace --> Agent
-    Document --> Transform
-    StateSpace --> Viz
-    MarkChain --> Viz
-    Agent --> Anim
-    Document --> Pandoc
-    
-    style MDP fill:#f9f9f9,stroke:#333,stroke-width:2px
-    style Core fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style Tools fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+CONTRIBUTING
+DEVELOPMENT_PROCESS
+ROADMAP
+TODO
+PUBLISHING
 ```
 
-## 🎯 Use Cases
+```{toctree}
+:hidden:
+:maxdepth: 1
+:caption: Module guides
 
-### 📝 Document Optimization
-Automatically improve document structure, readability, and quality using reinforcement learning algorithms.
-
-### 🎨 Content Generation
-Generate contextually appropriate content that fits seamlessly with existing documents.
-
-### 📊 Document Analysis
-Extract comprehensive insights including structure metrics, semantic analysis, and quality assessments.
-
-### 🔄 Format Conversion
-Convert between various document formats (Markdown, PDF, HTML, DOCX) using Pandoc integration.
-
-### 🎭 Interactive Processing
-Provide autonomous agents that can analyze, optimize, and extend documents based on user objectives.
-
-## 🛠️ Installation & Setup
-
-### Requirements
-- Python 3.11+
-- uv package manager (recommended)
-
-### Quick Install
-```bash
-git clone https://github.com/your-org/markdown_decision_process.git
-cd markdown_decision_process
-uv venv
-source .venv/bin/activate
-uv pip install -e .
+api/document
+api/markchain
+api/state_space
+api/policy_optimizer
+api/markdown_agent
 ```
 
-### Optional Dependencies
-```bash
-# For visualizations and animations
-uv pip install matplotlib networkx
+```{toctree}
+:hidden:
+:maxdepth: 1
+:caption: API from the source
 
-# For Pandoc conversion
-# Install Pandoc: https://pandoc.org/installing.html
-
-# For notebook processing
-uv pip install nbconvert nbformat
+reference/mdp
 ```
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-python -m pytest tests/
-
-# Run with coverage
-python -m pytest --cov=src tests/
-
-# Run specific test categories
-python -m pytest tests/test_core.py        # Core functionality
-python -m pytest tests/test_integration.py # Integration tests
-python -m pytest tests/test_performance.py # Performance benchmarks
-```
-
-**Test Status:** ✅ 238/243 tests passing (98% coverage)
-
-## 🤝 Contributing
-
-We welcome contributions! See our [Contributing Guide](../CONTRIBUTING.md) for details.
-
-### Development Workflow
-1. Fork the repository
-2. Create a feature branch
-3. Write tests first (TDD)
-4. Implement functionality
-5. Ensure all tests pass
-6. Submit a pull request
-
-## 📞 Support & Community
-
-- **Issues**: [GitHub Issues](https://github.com/your-org/markdown_decision_process/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/markdown_decision_process/discussions)
-- **Documentation Issues**: Report problems with this documentation
-
-## 📄 License
-
-MIT License - see [LICENSE](../LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Markov Decision Processes**: Foundational theory from reinforcement learning
-- **Pandoc**: Universal document converter
-- **NetworkX**: Graph analysis and visualization
-- **Matplotlib**: Plotting and animation framework
-
----
-
-**Made with ❤️ for the documentation community**
-
-

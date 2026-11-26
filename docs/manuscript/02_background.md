@@ -83,7 +83,7 @@ package. These interfaces provide a way to investigate decision-theoretic
 approaches to document processing. Their presence does not establish a priority
 claim over prior work, semantic accuracy, calibrated uncertainty or global
 policy optimality. The implemented entry points and their limits are listed in
-[Core Components](04_core_components.md).
+[Core Components](https://github.com/docxology/markdown_decision_process/blob/main/docs/manuscript/04_core_components.md).
 
 ### Questions for Comparison with Language Models
 
@@ -105,7 +105,7 @@ for edge deployment. Likewise, mathematical guarantees require explicit model
 assumptions and a verified solver; the use of MDP/POMDP vocabulary does not itself
 supply those guarantees.
 
-The [prospective evaluation protocol](06_evaluation.md) describes the evidence
-needed for these comparisons. The [evidence review](EVALUATION_EVIDENCE.md)
+The [prospective evaluation protocol](https://github.com/docxology/markdown_decision_process/blob/main/docs/manuscript/06_evaluation.md) describes the evidence
+needed for these comparisons. The [evidence review](https://github.com/docxology/markdown_decision_process/blob/main/docs/manuscript/EVALUATION_EVIDENCE.md)
 records the unresolved historical model, experiment, participant and statistical
 provenance. These research questions are not reported experimental findings.

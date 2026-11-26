@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
-spec=importlib.util.spec_from_file_location("paper_assembly",ROOT/"paper/assemble_paper.py")
+spec=importlib.util.spec_from_file_location("paper_assembly",ROOT/"docs/manuscript/assemble_paper.py")
 module=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
@@ -22,7 +22,7 @@ def test_markdown_and_validation_do_not_require_tex(tmp_path,monkeypatch):
 
 
 def test_revised_assembly_is_a_draft_without_reasserting_old_version_doi(tmp_path):
-    assembler=module.PaperAssembler(paper_dir=str(ROOT/"paper"),output_dir=str(tmp_path/"out"))
+    assembler=module.PaperAssembler(paper_dir=str(ROOT/"docs/manuscript"),output_dir=str(tmp_path/"out"))
     assert assembler.validate_sections()
     output=assembler.create_markdown_paper()
     text=Path(output).read_text()
@@ -41,7 +41,7 @@ def assembled_draft(tmp_path_factory):
     """Read the actual manuscript and write both text formats outside the tree."""
     output = tmp_path_factory.mktemp("corrected-draft")
     assembler = module.PaperAssembler(
-        paper_dir=str(ROOT / "paper"), output_dir=str(output)
+        paper_dir=str(ROOT / "docs/manuscript"), output_dir=str(output)
     )
     assert assembler.validate_sections()
     return {
@@ -92,7 +92,7 @@ def test_active_draft_does_not_reassert_withdrawn_comparisons(
 def test_validation_requires_the_evidence_review(tmp_path, review_state):
     paper = tmp_path / "paper"
     paper.mkdir()
-    for source in (ROOT / "paper").glob("*.md"):
+    for source in (ROOT / "docs/manuscript").glob("*.md"):
         shutil.copyfile(source, paper / source.name)
     review = paper / "EVALUATION_EVIDENCE.md"
     if review_state == "missing":
@@ -114,7 +114,7 @@ def test_direct_text_assembly_requires_the_evidence_review(
 ):
     paper = tmp_path / "paper"
     paper.mkdir()
-    for source in (ROOT / "paper").glob("*.md"):
+    for source in (ROOT / "docs/manuscript").glob("*.md"):
         shutil.copyfile(source, paper / source.name)
     review = paper / "EVALUATION_EVIDENCE.md"
     if review_state == "missing":

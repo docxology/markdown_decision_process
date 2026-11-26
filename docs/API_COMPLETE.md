@@ -1,4 +1,4 @@
-# Complete API Reference - Markdown Decision Process
+# API overview
 
 ## Core Modules
 
@@ -69,7 +69,7 @@ chain = MarkChain(order=1, smoothing=0.01)
 
 **Example:**
 ```python
-chain = MarkChain(order=2)
+chain = MarkChain()
 chain.train("# Tutorial\n\nStep 1: Install\n\nStep 2: Configure")
 generated = chain.sample(length=10)
 print(generated)
@@ -212,19 +212,13 @@ Optimize documents using reward functions and transformation strategies.
 ```python
 from mdp import PolicyOptimizer
 
-optimizer = PolicyOptimizer(
-    reward_weights={
-        "readability": 0.6,
-        "information_density": 0.3,
-        "structure_clarity": 0.1
-    }
-)
+optimizer = PolicyOptimizer(max_iterations=10)
 ```
 
 **Methods:**
 
 - `set_reward_function(reward_fn: Callable) -> None`: Set custom reward
-- `optimize_with_func(reward_fn: Callable) -> Document`: Optimize with function
+- `optimize(document, output_path=None) -> dict`: Search structural edits and return the content and reward history
 - `transform(markdown_path: str) -> str`: Transform document
 
 **Example:**
@@ -379,36 +373,6 @@ print(f"Animations: {list(outputs.keys())}")
 
 ---
 
-## Installation
+## Installation and verification
 
-```bash
-# Create virtual environment
-uv venv
-source .venv/bin/activate
-
-# Install package
-uv pip install -e .
-
-# Install dependencies
-uv pip install textstat wordcloud numpy matplotlib networkx tqdm pytest
-```
-
-## Testing
-
-```bash
-# Run all tests
-python -m pytest tests/ -v
-
-# Run specific module
-python -m pytest tests/test_document.py -v
-
-# With coverage
-python -m pytest tests/ --cov=mdp --cov-report=html
-```
-
----
-
-*API Reference Complete - All methods documented and tested*
-*Last Updated: 2025-09-29*
-
-
+Follow the [quick start](guides/quickstart.md) to install the locked package and the [verification instructions](manuscript-build.md) to run the test suite. The [documentation build](PUBLISHING.md) includes API signatures generated from the source.

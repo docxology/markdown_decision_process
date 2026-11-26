@@ -1,22 +1,35 @@
-"""The real docs build keeps in-place technical guides and copies external sources."""
-from docs.build_docs import copy_markdown_files
+"""The Sphinx build preserves maintained navigation and technical guides."""
+
+from pathlib import Path
+
+from docs.build_docs import build_docs
 
 
-def test_copy_sources_preserves_in_place_guides_and_is_repeatable(tmp_path):
+def test_build_preserves_sources_and_is_repeatable(tmp_path, monkeypatch):
     docs = tmp_path / "docs"
     technical = docs / "technical"
     technical.mkdir(parents=True)
-    (tmp_path / "README.md").write_text("# Public overview\n")
-    (tmp_path / "CONTRIBUTING.md").write_text("# Contribution process\n")
-    (docs / "ROADMAP.md").write_text("# Future work\n")
-    first = technical / "markchain.md"
-    second = technical / "policy_optimization.md"
-    first.write_text("# Markchain source\n")
-    second.write_text("# Policy source\n")
+    (tmp_path / "README.md").write_text("# Repository overview\n")
+    index = docs / "index.md"
+    guide = technical / "markchain.md"
+    index.write_text("# Documentation index\n")
+    guide.write_text("# Markchain guide\n")
+    reference = docs / "reference"
+    reference.mkdir()
+    stub = reference / "markchain.rst"
+    stub.write_text(".. automodule:: mdp.markchain\n")
+    invocations = []
+
+    def run_sphinx(command):
+        invocations.append(command)
+
+    monkeypatch.setattr("docs.build_docs.run_command", run_sphinx)
     for _ in range(2):
-        copy_markdown_files(str(docs), str(docs))
-        assert first.read_text() == "# Markchain source\n"
-        assert second.read_text() == "# Policy source\n"
-        assert (docs / "index.md").read_text() == "# Public overview\n"
-        assert (docs / "dev/contributing.md").read_text() == "# Contribution process\n"
-        assert (docs / "dev/roadmap.md").read_text() == "# Future work\n"
+        build_docs(str(docs), str(docs / "_build/html"))
+        assert index.read_text() == "# Documentation index\n"
+        assert guide.read_text() == "# Markchain guide\n"
+        assert stub.read_text() == ".. automodule:: mdp.markchain\n"
+        assert not (docs / "api").exists()
+
+    assert len(invocations) == 2
+    assert Path(invocations[0][-2]) == docs

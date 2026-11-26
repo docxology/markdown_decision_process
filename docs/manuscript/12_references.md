@@ -169,6 +169,6 @@ For implementation details, tutorials, and examples, refer to:
 - **Framework Documentation**: `/docs/` directory in the repository
 - **Example Scripts**: `/examples/` directory with usage demonstrations
 - **API Reference**: `/docs/api/` for comprehensive API documentation
-- **Development Guide**: `/CONTRIBUTING.md` for contribution guidelines
+- **Development Guide**: `docs/CONTRIBUTING.md` for contribution guidelines
 
 The bibliography above represents the key theoretical foundations, implementation technologies, and related work that inform the Markdown Decision Process framework. Citations are organized thematically to facilitate understanding of the diverse influences shaping this research.

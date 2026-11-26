@@ -39,10 +39,10 @@ Created 2026-08-31 by the agent-ergonomics deep pass
 - [x] Use the dated hosted Tests workflow for status and document direct pytest.
   The compatibility runner now executes the checked-in suite without rewriting
   tests or filtering historical failures. (README.md, tests/README.md)
-- [ ] docs/index.md and docs/README.md link to per-module API pages that do
+- [x] Earlier docs indexes linked to per-module API pages that do
   not exist for several modules (transformations, animations, pandoc) —
   either generate them via docs/build_docs.py or trim the index.
-  (docs/index.md, docs/README.md)
+  (docs/index.md)
 
 ## Major
 
@@ -54,7 +54,7 @@ Created 2026-08-31 by the agent-ergonomics deep pass
   (uv.lock, pyproject.toml)
 
 - [ ] Resolve the manuscript evaluation evidence gaps in
-  [paper/EVALUATION_EVIDENCE.md](paper/EVALUATION_EVIDENCE.md): baseline
+  [evaluation evidence review](https://github.com/docxology/markdown_decision_process/blob/main/docs/manuscript/EVALUATION_EVIDENCE.md): baseline
   checkpoint identity, traceable experiment outputs, participant-study evidence
   and reproducible per-comparison statistics. Numerical claims remain unverified.
 

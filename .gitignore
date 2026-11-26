@@ -79,3 +79,6 @@ tests/outputs/
 
 # OS, editor and Python cache files
 .DS_Store
+
+/output/
+/docs/_build/
