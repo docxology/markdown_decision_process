@@ -347,7 +347,7 @@ pytest tests/ -v
 pytest tests/test_markchain.py -v
 
 # Run specific test
-pytest tests/test_markchain.py::TestMarkChain::test_training_convergence -v
+pytest tests/test_markchain.py::test_generate_and_analyze_samples -v
 
 # Run with coverage
 pytest tests/ --cov=src/mdp --cov-report=html --cov-report=term-missing
@@ -373,10 +373,9 @@ pytest tests/ --lf
 
 # Run tests in parallel (requires pytest-xdist)
 pytest tests/ -n auto
-
-# Generate HTML report
-pytest tests/ --html=report.html --self-contained-html
 ```
+
+The coverage command above writes an HTML coverage report to `htmlcov/`.
 
 ## Writing Effective Tests
 
@@ -449,10 +448,12 @@ def test_complex_scenario():
 
 ### Common Debugging Techniques
 
-```python
+```bash
 # Use pytest's debugging flag
-pytest tests/test_markchain.py::test_failing -vv --pdb
+pytest tests/test_markchain.py::test_generate_and_analyze_samples -vv --pdb
+```
 
+```python
 # Add print statements (will show in -vv mode)
 def test_something():
     result = function_under_test()
@@ -522,15 +523,25 @@ jobs:
 
 ## Test Maintenance
 
-### Updating Snapshots
+### Checking and Regenerating Snapshots
+
+Run the snapshot tests from the repository root.
 
 ```bash
-# Update all snapshots
-pytest tests/ --snapshot-update
-
-# Update specific snapshot
-pytest tests/test_snapshot.py::test_specific --snapshot-update
+pytest tests/test_snapshot.py -q
 ```
+
+To regenerate a snapshot, use a disposable checkout and move only the JSON file
+you intend to refresh out of `tests/snapshots/`. For example, move
+`tests/snapshots/normalize_headings.json` aside and run its test.
+
+```bash
+pytest tests/test_snapshot.py::TestDocumentTransformations::test_normalize_headings -q
+```
+
+The first run creates the missing snapshot and reports a skip. Review the new
+JSON against the saved copy, then rerun the test to compare against the new
+snapshot.
 
 ### Test Data Management
 
