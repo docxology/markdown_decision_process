@@ -71,15 +71,13 @@ Each module has a single responsibility and clear interfaces:
 git clone https://github.com/docxology/markdown_decision_process.git
 cd markdown_decision_process
 
-# Install in development mode
-pip install -e ".[dev]"
-
-# Run tests
-pytest tests/ -v --cov=src/mdp --cov-report=html
-
-# Build documentation
-cd docs && python build_docs.py
+uv sync --locked --extra dev
 ```
+
+Follow the [test setup](tests/README.md#setup) to prepare the reviewed CMU
+pronunciation dictionary and set `NLTK_DATA` before running the suite. The
+[Sphinx build guide](docs/PUBLISHING.md#local-build) installs the four site
+dependencies and runs `python docs/build_docs.py --clean` from the repository root.
 
 ### Code Style and Standards
 
@@ -116,19 +114,19 @@ cd docs && python build_docs.py
 4. **Performance Tests**: Benchmark critical paths
 5. **Snapshot Tests**: Ensure output consistency
 
-**Running Tests**:
+After the [test setup](tests/README.md#setup), run from the repository root.
+
 ```bash
-# All tests
-pytest tests/ -v
+uv run --locked --no-sync python -m pytest --benchmark-disable tests/
 
 # Specific test file
-pytest tests/test_markchain.py -v
+uv run --locked --no-sync python -m pytest tests/test_markchain.py -v
 
 # With coverage
-pytest tests/ --cov=src/mdp --cov-report=term-missing
+uv run --locked --no-sync python -m pytest --benchmark-disable --cov=src tests/
 
 # Performance benchmarks
-pytest tests/test_performance.py --benchmark-only
+uv run --locked --no-sync python -m pytest tests/test_performance.py --benchmark-only
 ```
 
 ## Key Implementation Patterns
@@ -333,7 +331,7 @@ visualizer.plot_optimization_trajectory(
 2. Include examples in docstrings
 3. Add type hints for all parameters
 4. Link to related functions/classes
-5. Update API documentation in `docs/api/`
+5. Update API directives under `docs/reference/`
 
 ## Troubleshooting Guide
 
@@ -479,10 +477,11 @@ When using this framework in research:
 
 ### Paper Development
 
-The `docs/manuscript/` directory contains the corrected draft.
-- Edit individual section files (`00_abstract.md` through `12_references.md`)
-- Run `python docs/manuscript/assemble_paper.py` to generate complete paper
-- Output formats: Markdown, PDF, HTML, DOCX
+Edit the numbered sections in `docs/manuscript/`. Follow the [local Markdown
+assembly steps](docs/manuscript-build.md#local-markdown-assembly) to generate the
+heading figure before assembling the draft. The assembler omits the figure
+when that generated file is missing. Use the [Template render
+steps](docs/manuscript-build.md#pdf-and-html) for the PDF and HTML checks.
 
 ## Contact and Support
 

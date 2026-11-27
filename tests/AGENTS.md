@@ -6,30 +6,10 @@ This directory contains comprehensive tests for the Markdown Decision Process fr
 
 ## Test Organization
 
-```
-tests/
-├── conftest.py              # Pytest fixtures and configuration
-├── fixtures/                # Sample documents for testing
-│   ├── blog_post.md
-│   ├── research_paper.md
-│   └── technical_doc.md
-├── outputs/                 # Test output artifacts
-├── snapshots/               # Snapshot test baselines
-├── reports/                 # Test reports (XML, HTML)
-├── test_markchain.py        # Markov chain tests
-├── test_state_space.py      # State space tests
-├── test_policy_optimizer.py # Optimization tests
-├── test_belief_updater.py   # Belief update tests
-├── test_document.py         # Document parsing tests
-├── test_transformations.py  # Transformation tests
-├── test_visualization.py    # Visualization tests
-├── test_export.py           # Export functionality tests
-├── test_quality.py          # Quality assessment tests
-├── test_integration.py      # End-to-end integration tests
-├── test_performance.py      # Performance benchmarks
-├── test_property_based.py   # Property-based tests
-└── test_snapshot.py         # Snapshot tests
-```
+- [conftest.py](conftest.py) defines shared Markdown inputs and temporary file fixtures.
+- [fixtures/](fixtures/) contains the tracked Markdown inputs and expected transformation outputs.
+- [snapshots/](snapshots/) holds the tracked JSON baselines for [test_snapshot.py](test_snapshot.py).
+- [examples/sample_docs/](../examples/sample_docs/) contains the blog post, research paper and technical document examples.
 
 ## Testing Principles
 
@@ -280,62 +260,19 @@ class TestSnapshotConsistency:
 
 ## Fixtures and Test Data
 
-### Global Fixtures (conftest.py)
+Reuse `sample_markdown` and `complex_markdown` for inline content. Use
+`sample_document_file` or `complex_document_file` when an API takes a file
+path. Keep fixtures specific to one module near their tests.
 
-```python
-import pytest
-from pathlib import Path
-
-@pytest.fixture(scope="session")
-def fixtures_dir():
-    """Return path to fixtures directory."""
-    return Path(__file__).parent / "fixtures"
-
-@pytest.fixture
-def sample_document(fixtures_dir):
-    """Load sample document for testing."""
-    with open(fixtures_dir / "technical_doc.md") as f:
-        return f.read()
-
-@pytest.fixture
-def training_corpus(fixtures_dir):
-    """Load corpus of training documents."""
-    docs = []
-    for md_file in fixtures_dir.glob("*.md"):
-        with open(md_file) as f:
-            docs.append(f.read())
-    return docs
-
-@pytest.fixture
-def sample_state_space(sample_document):
-    """Create state space from sample document."""
-    doc = Document(content=sample_document)
-    return StateSpace(doc)
-```
-
-### Module-Specific Fixtures
-
-```python
-# In test_markchain.py
-@pytest.fixture
-def trained_markchain(training_corpus):
-    """Return trained Markov chain."""
-    chain = MarkChain(order=2, smoothing=0.01)
-    chain.train(training_corpus)
-    return chain
-
-# In test_policy_optimizer.py
-@pytest.fixture
-def reward_function():
-    """Return composite reward function."""
-    return CompositeReward({
-        'readability': 0.4,
-        'structure': 0.3,
-        'coherence': 0.3
-    })
-```
+Readability tests need a prepared CMU pronunciation dictionary. The [test
+setup](README.md#setup) uses CI's checksum-verified script and shows how to set
+`NLTK_DATA` for the test run.
 
 ## Running Tests
+
+Use the environment and corpus from the [test setup](README.md#setup). The
+`pytest` commands below assume an activated environment. They also work with
+`uv run --locked --no-sync` before `pytest`.
 
 ### Basic Test Execution
 
@@ -352,11 +289,11 @@ pytest tests/test_markchain.py::test_generate_and_analyze_samples -v
 # Run with coverage
 pytest tests/ --cov=src/mdp --cov-report=html --cov-report=term-missing
 
-# Run only fast tests (skip benchmarks)
-pytest tests/ -v -m "not benchmark"
+# Run the suite without benchmark timing
+pytest tests/ -v --benchmark-disable
 
 # Run only benchmarks
-pytest tests/ -v -m benchmark --benchmark-only
+pytest tests/ -v --benchmark-only
 ```
 
 ### Advanced Test Options
@@ -475,51 +412,17 @@ def test_with_logging(caplog):
 ### Isolating Test Failures
 
 ```bash
-# Run single test in isolation
-pytest tests/test_file.py::TestClass::test_method -v
-
-# Run with maximum output
-pytest tests/test_file.py::test_method -vv --tb=long --showlocals
-
-# Capture stdout/stderr
-pytest tests/test_file.py::test_method -v -s
+pytest tests/test_markchain.py::test_generate_and_analyze_samples -vv --tb=long --showlocals
 ```
 
 ## Continuous Integration
 
-### GitHub Actions Workflow
-
-```yaml
-# .github/workflows/tests.yml
-name: Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, '3.10', 3.11]
-    
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    
-    - name: Install dependencies
-      run: |
-        pip install -e ".[dev]"
-    
-    - name: Run tests
-      run: |
-        pytest tests/ --cov=src/mdp --cov-report=xml
-    
-    - name: Upload coverage
-      uses: codecov/codecov-action@v2
-```
+The [test workflow](../.github/workflows/tests.yml) declares Python 3.11 and
+3.15 on Ubuntu 24.04, macOS and Windows. Matrix jobs prepare the reviewed
+readability data before running coverage and benchmarks. Linux on Python 3.11
+also requires native Pandoc and PDF export checks. See the [GitHub Actions
+workflow page](https://github.com/docxology/markdown_decision_process/actions/workflows/tests.yml)
+for current enablement and run results.
 
 ## Test Maintenance
 
@@ -546,7 +449,7 @@ snapshot.
 ### Test Data Management
 
 - Keep test fixtures minimal but realistic
-- Version control all test data
+- Version control small fixtures and baselines. Prepare the reviewed corpus through the test setup.
 - Document test data sources
 - Clean up generated test outputs
 
