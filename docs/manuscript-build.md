@@ -35,7 +35,7 @@ companion `heading_fixture.png`.
 
 ## PDF and HTML
 
-Use a separate checkout of [docxology/template](https://github.com/docxology/template/tree/87704feae0a4490ef7dad9c931d268e8c30273c2) at the pinned revision, with Pandoc, its cross-reference filter, and a LaTeX toolchain installed as described in the [Template setup guide](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/docs/RUN_GUIDE.md). Set `mdp_root` to the absolute project checkout path before running the following from the Template checkout.
+Use a separate checkout of [docxology/template](https://github.com/docxology/template/tree/87704feae0a4490ef7dad9c931d268e8c30273c2) at the pinned revision, with Pandoc, its cross-reference filter, and a LaTeX toolchain installed as described in the [Template setup guide](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/docs/RUN_GUIDE.md). Set `mdp_root` to the absolute path of a clean project checkout named `markdown_decision_process` before running the following from the Template checkout.
 
 ```bash
 uv sync --locked --no-dev
